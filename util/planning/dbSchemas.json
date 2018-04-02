@@ -1,0 +1,17 @@
+/*
+* Basic user account.
+* */
+
+{
+    -id:ObjectId(),
+    'firstName': 'Zoe',
+    'lastName': 'Robertson',
+    'dob': '10041995', // DDMMYYYY
+    'username': 'zoe.robertson.m@gmail.com',
+    'password': 'testPassw0rd',
+    'isLoggedIn': true,
+    'lastLogin': ISODate(),
+    'lastModified': ISODate(),
+    'lastIP': '127.0.0.1', // if current IP does not match last IP, re-authenticate
+
+}
