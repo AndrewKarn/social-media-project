@@ -27,6 +27,7 @@ Vagrant.configure("2") do |config|
     apt-get install -y nginx
     echo 'extension=mongodb.so' | tee -a /etc/php/7.2/fpm/php.ini
     echo 'extension=mongodb.so' | tee -a /etc/php/7.2/cli/php.ini
+    cd /vagrant && composer install
   SHELL
   config.vm.provision "shell", run: "always", inline: <<-SHELL
     service mongod start
