@@ -22,14 +22,16 @@ sudo service apache2 stop
 sudo apt-get install -y nginx
 
 # add mongodb library extensions and composer install
+echo "Configuring php.ini files"
 echo 'extension=mongodb.so' | sudo tee -a /etc/php/7.2/fpm/php.ini
+echo 'cgi.fix_pathinfo=0' | sudo tee -a /etc/php/7.2/fpm/php.ini
 echo 'extension=mongodb.so' | sudo tee -a /etc/php/7.2/cli/php.ini
 cd /vagrant && sudo composer install
 
 # nginx setup
-sudo cp /vagrant/util/conf/zoe-nginx.conf /etc/nginx/sites-available/zoe-nginx.conf
-sudo chmod 744 /etc/nginx/sites-available/zoe-nginx.conf
-sudo ln -s /etc/nginx/sites-available/zoe-nginx.conf /etc/nginx/sites-enabled/zoe-nginx.conf
+sudo cp /vagrant/util/conf/zoe-nginx.conf /etc/nginx/sites-available/zoes-social-media-project.com
+sudo chmod 744 /etc/nginx/sites-available/zoes-social-media-project.com
+sudo ln -s /etc/nginx/sites-available/zoes-social-media-project.com /etc/nginx/sites-enabled/zoes-social-media-project.com
 # sudo service nginx restart
 # I believe the inline always provisioner will handle this
 
