@@ -9,26 +9,10 @@ Vagrant.configure("2") do |config|
   config.vm.provider "virtualbox" do |vb|
     vb.gui = false
     vb.memory = "1024"
+    vb.cpus = 1
+    vb.customize [ "modifyvm", :id, "--uartmode1", "disconnected"]
   end
-  config.vm.provision "shell", inline: <<-SHELL
-    sudo su
-    apt-get update && apt-get upgrade
-    apt-get install -y python-software-properties
-    add-apt-repository -y ppa:ondrej/php
-    apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 2930ADAE8CAF5059EE73BB4B58712A2291FA4AD5
-    echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.6 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.6.list
-    apt-get update
-    apt-get install -y mongodb-org
-    apt-get install -y composer
-    apt-get install -y php7.2
-    apt-get install -y php-pear php7.2-curl php7.2-dev php7.2-fpm zip unzip
-    pecl install mongodb
-    service apache2 stop
-    apt-get install -y nginx
-    echo 'extension=mongodb.so' | tee -a /etc/php/7.2/fpm/php.ini
-    echo 'extension=mongodb.so' | tee -a /etc/php/7.2/cli/php.ini
-    cd /vagrant && composer install
-  SHELL
+  config.vm.provision "shell", path: "util/conf/bootstrap.sh"
   config.vm.provision "shell", run: "always", inline: <<-SHELL
     service mongod start
     sudo service php7.2-fpm restart

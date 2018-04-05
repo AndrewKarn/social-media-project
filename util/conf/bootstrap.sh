@@ -32,6 +32,11 @@ sudo chmod 744 /etc/nginx/sites-available/zoe-nginx.conf
 sudo ln -s /etc/nginx/sites-available/zoe-nginx.conf /etc/nginx/sites-enabled/zoe-nginx.conf
 # sudo service nginx restart
 # I believe the inline always provisioner will handle this
+
 # link to vagrant home directory
 sudo rm -rf /var/www
 sudo ln -s /vagrant/src /var/www
+
+# sync error logs
+sudo ln -s /var/log/nginx/error.log /vagrant/util/logs/nginx-error.log
+sudo ln -s /var/log/php7.2-fpm.log /vagrant/util/logs/php-nginx-error.log

@@ -1,0 +1,7 @@
+Create a way for the
+
+location {
+	try_files $uri $uri/test.html 
+}
+
+to add upon provisioning (even if it was in the shell script to accept a STDIN) a different root file.
