@@ -11,6 +11,7 @@ Vagrant.configure("2") do |config|
     vb.memory = "1024"
     vb.cpus = 1
     vb.customize [ "modifyvm", :id, "--uartmode1", "disconnected"]
+    vb.name = "social-media-box-local"
   end
   config.vm.provision "shell", path: "util/conf/bootstrap.sh"
   config.vm.provision "shell", run: "always", inline: <<-SHELL
