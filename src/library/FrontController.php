@@ -7,6 +7,11 @@
  */
 
 namespace Utilities;
+require __DIR__ . "/../../vendor/autoload.php";
+use Home\HomeController as HomeController;
+use Home\HomeView as HomeView;
+use Debugging\DebuggingMethods as Debug;
+// use Home\HomeModel;
 
 class FrontController implements FrontControllerInterface
 {
@@ -46,19 +51,20 @@ class FrontController implements FrontControllerInterface
     protected function parseURI() {
         $uri = $_SERVER["REQUEST_URI"];
         // only allow standard characters
-        $uri = preg_replace('/[^a-zA-Z0-9]//', "", $uri);
+        $uri = substr(preg_replace('/[^a-zA-Z0-9\/]/', "", $uri), 1);
 
         @list($controller, $action, $params) = explode('/', $uri, 3);
+        Debug::logRouteVars($controller, $action, $params);
 
-        if (isset($controller)) {
+        if (isset($controller) && !empty($controller)) {
             $this->setController($controller);
         }
 
-        if (isset($action)) {
+        if (isset($action) && !empty($action)) {
             $this->setAction($action);
         }
 
-        if (isset($params)) {
+        if (isset($params) && !empty($params)) {
             $this->setParams(explode('/', $params));
         }
     }
@@ -95,7 +101,9 @@ class FrontController implements FrontControllerInterface
 
     public function route($controller, $action, $params = array())
     {
-        $class = new $controller;
+        // require_once __DIR__ . '/controllers/' . $controller . '.php';
+        $class = new $controller();
+
         if (!empty($params)) {
             $class->$action($params);
         } else {
