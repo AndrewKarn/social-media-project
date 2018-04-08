@@ -16,7 +16,7 @@ class DebuggingMethods
         if (!empty($controller)) {
             $message .= 'The controller from this uri is: ' . $controller . "\n";
         } else {
-            $message .= 'The controller from this uri is blank.';
+            $message .= 'The controller from this uri is blank.' . "\n";
         }
         if (!empty($action)) {
             $message .= 'The action from this uri is: ' . $action . "\n";

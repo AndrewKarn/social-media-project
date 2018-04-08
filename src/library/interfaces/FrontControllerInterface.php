@@ -5,7 +5,7 @@
  * Date: 4/6/18
  * Time: 4:52 PM
  */
-namespace Utilities;
+namespace Front;
 
 interface FrontControllerInterface {
     public function setController($controller);

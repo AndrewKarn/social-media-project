@@ -18,7 +18,7 @@ class HomeController implements HomeControllerInterface {
         if ($this->authenticatedUser) {
             // populate model and view
         } else {
-            //$this->getHomePage();
+            //
         }
     }
 

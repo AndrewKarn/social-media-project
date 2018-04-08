@@ -6,16 +6,14 @@
  * Time: 4:50 PM
  */
 
-namespace Utilities;
+namespace Front;
 require __DIR__ . "/../../vendor/autoload.php";
-use Home\HomeController as HomeController;
-use Home\HomeView as HomeView;
 use Debugging\DebuggingMethods as Debug;
 // use Home\HomeModel;
 
 class FrontController implements FrontControllerInterface
 {
-    const DEFAULT_CONTROLLER = "HomeController";
+    const DEFAULT_CONTROLLER = "Home";
     const DEFAULT_ACTION = "getHomePage";
 
     protected $controller = self::DEFAULT_CONTROLLER;
@@ -51,6 +49,7 @@ class FrontController implements FrontControllerInterface
     protected function parseURI() {
         $uri = $_SERVER["REQUEST_URI"];
         // only allow standard characters
+
         $uri = substr(preg_replace('/[^a-zA-Z0-9\/]/', "", $uri), 1);
 
         @list($controller, $action, $params) = explode('/', $uri, 3);
@@ -69,11 +68,11 @@ class FrontController implements FrontControllerInterface
         }
     }
 
-    public function setController($controller = self::DEFAULT_CONTROLLER)
+    public function setController($namespace = self::DEFAULT_CONTROLLER)
     {
-        $controller = ucfirst(strtolower($controller));
-        if (!class_exists($controller)) {
-            throw new \InvalidArgumentException("The controller '" . $controller . "' does not exist");
+        $namespace = ucfirst(strtolower($namespace));
+        if (!class_exists($namespace)) {
+            throw new \InvalidArgumentException("The controller '" . $namespace . "' does not exist");
         }
         return $this;
     }
@@ -99,10 +98,10 @@ class FrontController implements FrontControllerInterface
         return $this;
     }
 
-    public function route($controller, $action, $params = array())
+    public function route($namespace, $action, $params = array())
     {
-        // require_once __DIR__ . '/controllers/' . $controller . '.php';
-        $class = new $controller();
+        $controller = '\\' . $namespace . '\\' . $namespace . 'Controller';
+        $class = new $controller;
 
         if (!empty($params)) {
             $class->$action($params);

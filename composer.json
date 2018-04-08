@@ -5,13 +5,17 @@
     },
     "autoload": {
         "psr-4": {
-            "Utilities\\": ["src/library/", "src/shared/"],
-            "Home\\": "src/",
-            "MongoShared\\": "src/shared/MongoShared"
+            "Front\\": "src/library/",
+            "Home\\": [
+                "src/library/controllers/",
+                "src/library/interfaces/",
+                "src/library/models/",
+                "src/library/views/"
+            ],
+            "MongoShared\\": "src/shared/MongoShared/",
+            "Debugging\\": "util/"
         },
         "classmap": [
-            "src/library/",
-            "src/shared/",
             "src/shared/MongoShared/MongoQueries.php",
             "src/library/controllers/HomeController.php",
             "src/library/interfaces/HomeControllerInterface.php",

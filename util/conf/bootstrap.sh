@@ -41,6 +41,12 @@ sudo ln -s /vagrant/src /var/www
 sudo ln -s /var/log/nginx/error.log /vagrant/util/logs/
 sudo ln -s /var/log/php7.2-fpm.log /vagrant/util/logs/
 
+# change log file to nginx owner so nginx can write log files
+sudo chown www-data /var/log/nginx
+
+# add bashrc scripts
+sudo cat /vagrant/util/conf/write-to-vagrant-bashrc.sh ~/.bashrc
+
 # restart nginx and php
 sudo service nginx restart
 sudo service php7.2-fpm restart
