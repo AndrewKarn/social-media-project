@@ -13,7 +13,8 @@
                 "src/library/views/"
             ],
             "MongoShared\\": "src/shared/MongoShared/",
-            "Debugging\\": "util/"
+            "Debugging\\": "util/",
+            "Utility\\": "src/shared/Utility/"
         },
         "classmap": [
             "src/shared/MongoShared/MongoQueries.php",

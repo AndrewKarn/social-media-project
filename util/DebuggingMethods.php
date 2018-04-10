@@ -7,11 +7,12 @@
  */
 
 namespace Debugging;
-
+require_once __DIR__ . '/../vendor/autoload.php';
+use Utility\UtilityMethods as Utilities;
 
 class DebuggingMethods
 {
-    public static function logRouteVars($controller = '', $action = '', $params = '') {
+    public static function logRouteVars($controller = '', $action = '', $params = []) {
         $message = '';
         if (!empty($controller)) {
             $message .= 'The controller from this uri is: ' . $controller . "\n";
@@ -24,10 +25,11 @@ class DebuggingMethods
             $message .= 'The action from this uri is blank.' . "\n";
         }
         if (!empty($params)) {
-            $params = explode('&', $params);
+           //  $params = Utilities::formatUriQueryString($params);
             $message .= 'The param(s) from this uri:' . "\n";
-            for ($i = 0; $i < count($params); $i++) {
-                $message .= 'Param ' . ($i + 1) . ': ' . $params[$i] . "\n";
+            $i = 0;
+            foreach ($params as $key => $val) {
+                $message .= 'Param ' . ++$i . ': ' . $key . '=>' . $val . "\n";
             }
         } else {
             $message .= 'The params from this uri are blank.' . "\n";
