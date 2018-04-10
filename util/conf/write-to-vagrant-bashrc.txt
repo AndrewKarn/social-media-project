@@ -1,4 +1,3 @@
-#!/usr/bin/env bash
 function getlogs() {
     printf '*****************************\n'
     printf 'Fetching error.log and route-vars.log\n'
