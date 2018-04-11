@@ -15,3 +15,18 @@
     'lastIP': '127.0.0.1', // if current IP does not match last IP, re-authenticate
 
 }
+
+{
+    "_id": ObjectId(),
+    "email": "zoe.robertson@getalma.com",
+    "username": "zoboym",
+    "password": "some_hash",
+    "passwordUpdated": ISODate(),
+    "dateCreated": ISODate(),
+    "accountVerified": true,
+    "firstName": "Zoe",
+    "lastName": "Robertson",
+    "dob": "10041995",
+    "isLoggedIn": true,
+    "lastLogin": ISODate()
+}

@@ -6,12 +6,12 @@
 </head>
 <body>
     <div>
-        <span>This is a test for the homepage serving correctly.</span>
+        <span>Existing Users Login:</span>
     </div>
-    <form action="http://www.zoes-social-media-project.com/Login/Authenticate/">
+    <form action="http://www.zoes-social-media-project.com/login/authenticate/" method="post">
         <div>
             <label for="email">Input your email:</label>
-            <input name="email" type="text" >
+            <input name="email" type="email" >
         </div>
         <div>
             <label for="password">Input your password:</label>
@@ -19,6 +19,37 @@
         </div>
         <div>
             <button type="submit">Submit</button>
+        </div>
+    </form>
+    <br />
+    <form action="http://www.zoes-social-media-project.com/user/registration/" method="post">
+        <div>
+            <label for="firstname">First Name:</label>
+            <input id="firstname-register" type="text" name="firstname" required>
+        </div>
+        <div>
+            <label for="lastname">Last Name:</label>
+            <input id="lastname-register" type="text" name="lastname" required>
+        </div>
+        <div>
+            <label for="dob">Birth Date:</label>
+            <input id="dob-register" type="Date" name="dob" required>
+        </div>
+        <div>
+            <label for="email">Email (This will be used for login):</label>
+            <input id="email-register" type="email" name="email" required>
+        </div>
+        <div>
+            <label for="password">Enter Password:</label>
+            <input id="password-register1" type="password" name="password" required>
+        </div>
+        <div>
+            <label for="passwordVerify">Re-enter Password:</label>
+            <input id="password-register2" type="password" name="passwordVerify" required>
+        </div>
+        <div>
+            <button id="reset-registration" type="reset">Reset</button>
+            <button id="submit-registration" type="submit">Submit</button>
         </div>
     </form>
 </body>

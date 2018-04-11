@@ -15,4 +15,12 @@ class UtilityMethods
         parse_str(substr($uri, strpos($uri, '?') + 1), $results);
         return $results;
     }
+
+    public static function sanitizePostData($data) {
+
+    }
+
+    public static function formatPostData(array $data) {
+    	
+    }
 }
