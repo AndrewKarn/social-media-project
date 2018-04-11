@@ -56,7 +56,11 @@ class UserController implements UserControllerInterface {
 	    					# code...
 	    					break;
 	    			}
-	    		}			
+	    		}
+	    		if (isset($cleanData['email']) && isset($cleanData['password']) && isset($cleanData['firstname']) && isset($cleanData['lastname'])
+	    			&& isset($cleanData['dob'])) {
+	    			\MongoShared\MongoCreate::createUser($cleanData);
+	    		}	
     		}
 		} catch (e) {
 
