@@ -14,6 +14,7 @@ class DebuggingMethods
 {
     public static function logRouteVars($controller = '', $action = '', $params = []) {
         $message = '';
+        $message .= date('h:i:s A') . "\n";
         if (!empty($controller)) {
             $message .= 'The controller from this uri is: ' . $controller . "\n";
         } else {

@@ -14,7 +14,11 @@
             ],
             "MongoShared\\": "src/shared/MongoShared/",
             "Debugging\\": "util/",
-            "Utility\\": "src/shared/Utility/"
+            "Utility\\": "src/shared/Utility/",
+            "User\\": [
+                "src/library/controllers/",
+                "src/library/interfaces/"
+            ]
         },
         "classmap": [
             "src/shared/MongoShared/MongoQueries.php",

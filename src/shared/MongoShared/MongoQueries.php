@@ -12,19 +12,6 @@ use MongoDB;
 
 class BaseQueries
 {
-    public static function getCollection($collection) {
-        $db = new MongoDB\Client("mongodb://localhost:27017");
-        return $db->main->$collection;
-    }
-
-    public static function makeProjection(array $fields) {
-        $fieldsToProject = array();
-        foreach($fields as $field) {
-            $fieldsToProject[$field] = 1;
-        }
-        return array('projection' => $fieldsToProject);
-    }
-
     /** Queries db by collection for objectId
      *
      * @param string $collection MongoDB collection
@@ -35,14 +22,14 @@ class BaseQueries
      * @return array|null|object
      */
     public static function findById($collection, $objectId, $projectionFields = array(), $toArray = true) {
-        $collection = self::getCollection($collection);
+        $collection = MongoUtilities::getCollection($collection);
 
         $idQuery = [
             "_id" => new MongoDB\BSON\ObjectId($objectId)
         ];
 
         if (!empty($projectionFields)) {
-            $projection = self::makeProjection($projectionFields);
+            $projection = MongoUtilities::makeProjection($projectionFields);
             $cursor = $collection->findOne($idQuery, $projection);
         } else {
             $cursor = $collection->findOne($idQuery);

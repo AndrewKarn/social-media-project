@@ -14,7 +14,7 @@ use Utility\UtilityMethods as Utility;
 
 class FrontController implements FrontControllerInterface
 {
-    const DEFAULT_CONTROLLER = "Home";
+    const DEFAULT_CONTROLLER = "\Home\HomeController";
     const DEFAULT_ACTION = "getHomePage";
 
     protected $controller = self::DEFAULT_CONTROLLER;
@@ -58,7 +58,6 @@ class FrontController implements FrontControllerInterface
         $uri = substr(preg_replace('/[^a-zA-Z0-9\/]/', "", $uri), 1);
 
         @list($controller, $action) = explode('/', $uri, 3);
-        Debug::logRouteVars($controller, $action, $params);
 
         if (isset($controller) && !empty($controller)) {
             $this->setController($controller);
@@ -76,9 +75,11 @@ class FrontController implements FrontControllerInterface
     public function setController($namespace = self::DEFAULT_CONTROLLER)
     {
         $namespace = ucfirst(strtolower($namespace));
-        if (!class_exists($namespace)) {
-            throw new \InvalidArgumentException("The controller '" . $namespace . "' does not exist");
+        $controller = '\\' . $namespace . '\\' . $namespace . 'Controller';
+        if (!class_exists($controller)) {
+            throw new \InvalidArgumentException("The controller '" . $controller . "' does not exist");
         }
+        $this->controller = $controller;
         return $this;
     }
 
@@ -87,7 +88,7 @@ class FrontController implements FrontControllerInterface
         $methods = get_class_methods($this->controller);
         if (isset($methods)) {
             if (in_array($action, $methods)) {
-                $this->setAction($action);
+                $this->action = $action;
                 return $this;
             }
         } else {
@@ -103,9 +104,9 @@ class FrontController implements FrontControllerInterface
         return $this;
     }
 
-    public function route($namespace, $action, $params = array())
+    public function route($controller, $action, $params = array())
     {
-        $controller = '\\' . $namespace . '\\' . $namespace . 'Controller';
+        Debug::logRouteVars($controller, $action, $params);
         $class = new $controller;
 
         if (!empty($params)) {
