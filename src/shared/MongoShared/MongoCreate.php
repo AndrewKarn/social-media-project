@@ -6,6 +6,7 @@ use MongoDB;
 class MongoCreate {
 	public static function createUser(array $validData) {
 		$usersDB = MongoUtilities::getCollection('users');
-		$usersDB.
+		$response = $usersDB->insertOne($validData);
+		return $response;
 	}
 }

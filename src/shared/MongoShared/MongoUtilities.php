@@ -23,4 +23,28 @@ class MongoUtilities
         }
         return array('projection' => $fieldsToProject);
     }
+
+    /** formats cursor results in a specific way.
+     * @param object $cursor
+     * @param int $options:
+     * 0 => default, return is acknowledged
+     * 1 => return mongoId string
+     * 2 => return insertedCount
+     *
+     * @return mixed
+     */
+    public static function readInsertCursor($cursor, $options = 0) {
+        switch ($options) {
+            case 0:
+                return $cursor->isAcknowledged();
+                break;
+            case 1:
+                return $cursor->getInsertedId()->__toString();
+                break;
+            case 2:
+                return $cursor->getInsertedCount();
+                break;
+        };
+        return 'Read failed';
+    }
 }

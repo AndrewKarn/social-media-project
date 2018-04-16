@@ -1,6 +1,7 @@
 <?php
 namespace User;
 use Debugging\DebuggingMethods;
+use MongoShared\MongoCreate;
 use Utility\UtilityMethods;
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
@@ -14,13 +15,9 @@ class UserController implements UserControllerInterface {
     }
 
     public function register() {
-       try {
-           $sanitizedFormData = UtilityMethods::sanitizePostData(UtilityMethods::SANITIZE_WHITESPACE);
-           $validatedFormData = $this->validateRegistrationData($sanitizedFormData);
-           // make db call to enter data
-       } catch (\HttpInvalidParamException $e) {
-
-       }
+        $sanitizedFormData = UtilityMethods::sanitizePostData(UtilityMethods::SANITIZE_WHITESPACE);
+        $validatedFormData = $this->validateRegistrationData($sanitizedFormData);
+        $dbResponse = MongoCreate::createUser($validatedFormData);
     }
 
     public function createUser(array $registrationFields)
