@@ -7,13 +7,14 @@
  */
 
 namespace MongoShared;
+require __DIR__ . '/../../../vendor/autoload.php';
 use MongoDB;
 
 class MongoUtilities
 {
     public static function getCollection($collection) {
         $db = new MongoDB\Client("mongodb://localhost:27017");
-        return $db->main->collection;
+        return $db->main->$collection;
     }
 
     public static function makeProjection(array $fields) {
@@ -43,6 +44,9 @@ class MongoUtilities
                 break;
             case 2:
                 return $cursor->getInsertedCount();
+                break;
+            case 3:
+                return $cursor->getInsertedId();
                 break;
         };
         return 'Read failed';

@@ -10,6 +10,7 @@ namespace Front;
 require __DIR__ . "/../../vendor/autoload.php";
 use Debugging\DebuggingMethods as Debug;
 use Utility\UtilityMethods as Utility;
+use User\UserController;
 // use Home\HomeModel;
 
 class FrontController implements FrontControllerInterface

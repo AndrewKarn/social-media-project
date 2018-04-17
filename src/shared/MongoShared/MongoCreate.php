@@ -1,6 +1,6 @@
 <?php
 namespace MongoShared;
-require('../../../vendor/autoload.php');
+require __DIR__ . '/../../../vendor/autoload.php';
 use MongoDB;
 
 class MongoCreate {

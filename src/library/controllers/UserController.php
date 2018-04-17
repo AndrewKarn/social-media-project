@@ -2,6 +2,7 @@
 namespace User;
 use Debugging\DebuggingMethods;
 use MongoShared\MongoCreate;
+use MongoShared\MongoUtilities;
 use Utility\UtilityMethods;
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
@@ -18,16 +19,14 @@ class UserController implements UserControllerInterface {
         $sanitizedFormData = UtilityMethods::sanitizePostData(UtilityMethods::SANITIZE_WHITESPACE);
         $validatedFormData = $this->validateRegistrationData($sanitizedFormData);
         $dbResponse = MongoCreate::createUser($validatedFormData);
-    }
-
-    public function createUser(array $registrationFields)
-    {
-        // TODO: Implement createUser() method.
+        $mongoId = MongoUtilities::readInsertCursor($dbResponse, 1);
+        $this->sendVerificationEmail($mongoId);
     }
 
     public function sendVerificationEmail($mongoId)
     {
-        // TODO: Implement sendVerificationEmail() method.
+        $email = \MongoShared\BaseQueries::findById('users', $mongoId, \MongoShared\MongoUtilities::makeProjection(['email']));
+        echo '<p>' . $email . '</p>';
     }
 
     private function validateRegistrationData($registrationFields) {
@@ -86,5 +85,7 @@ class UserController implements UserControllerInterface {
 		} catch (\InvalidArgumentException $e) {
 
 		}
+		return $this;
     }
+
 }

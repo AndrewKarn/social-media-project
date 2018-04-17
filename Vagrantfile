@@ -18,6 +18,7 @@ Vagrant.configure("2") do |config|
     service mongod start
     sudo service php7.2-fpm restart
     sudo service nginx restart
+    cd /vagrant && composer dump-autoload
   SHELL
 end
   # Share an additional folder to the guest VM. The first argument is

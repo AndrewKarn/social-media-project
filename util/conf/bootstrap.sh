@@ -50,3 +50,6 @@ sudo cat /vagrant/util/conf/write-to-vagrant-bashrc.sh ~/.bashrc
 # restart nginx and php
 sudo service nginx restart
 sudo service php7.2-fpm restart
+
+# configure autoload files
+cd /vagrant && composer dump-autoload

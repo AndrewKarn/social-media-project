@@ -2,7 +2,7 @@
 namespace User;
 
 interface UserControllerInterface {
-	public function createUser(array $registrationFields);
+	public function register();
 	public function sendVerificationEmail($mongoId);
 	
 }
