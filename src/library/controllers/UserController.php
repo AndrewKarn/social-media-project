@@ -3,6 +3,7 @@ namespace User;
 use Debugging\DebuggingMethods;
 use MongoShared\MongoCreate;
 use MongoShared\MongoUtilities;
+use MongoShared\MongoUpdate;
 use Utility\UtilityMethods;
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
@@ -25,8 +26,39 @@ class UserController implements UserControllerInterface {
 
     public function sendVerificationEmail($mongoId)
     {
-        $email = \MongoShared\BaseQueries::findById('users', $mongoId, ['email']);
-        echo '<p>' . $email['email'] . '</p>';
+        $document = \MongoShared\BaseQueries::findById('users', $mongoId, ['email']);
+        $email = $document['email'];
+        $generatedKey = sha1(mt_rand(10000,99999) . time() . $email);
+        $inserted = MongoUpdate::insertOneField('users', ['_id'=> MongoUtilities::makeMongoId($mongoId)], 'verificationHash', $generatedKey);
+        try {
+            if (!$inserted) {
+                throw new \MongoWriteConcernException("The database failed to write the account verification hash");
+            }
+        } catch (\MongoWriteConcernException $e) {
+            error_log(json_encode($e));
+        }
+
+        $subject = "Your account with Zoe's Social Media!";
+
+        $message = "
+        Thanks for signing up for www.zoes-social-media-project.com!\n
+        Please click the link below to verify your email and activate your account.\n
+        \n
+        http://www.zoes-social-media-project.com/user/validate/hash=" . $generatedKey . "\n
+        \n
+        -Zoe Robertson\n
+        www.zoes-social-media-project.com
+        ";
+
+        $header = "From:noreply@zoessocialmediaproject.com\r\n";
+
+        $result = mail($email, $subject, $message, $header);
+        error_log(json_encode($result));
+        if ($result) {
+            return new AccountVerificationView($email);
+        } else {
+            return new AccountVerificationView();
+        }
     }
 
     private function validateRegistrationData($registrationFields) {

@@ -58,4 +58,8 @@ class MongoUtilities
         };
         return 'Read failed';
     }
+
+    public static function makeMongoId($mongoIdString) {
+        return new MongoDB\BSON\ObjectId($mongoIdString);
+    }
 }

@@ -10,18 +10,20 @@
                 "src/library/controllers/",
                 "src/library/interfaces/",
                 "src/library/models/",
-                "src/library/views/"
+                "src/library/views/Home"
+
             ],
             "MongoShared\\": "src/shared/MongoShared/",
             "Debugging\\": "util/",
             "Utility\\": "src/shared/Utility/",
             "User\\": [
                 "src/library/controllers/",
-                "src/library/interfaces/"
+                "src/library/interfaces/",
+                "src/library/views/",
+                "src/library/views/User"
             ]
         },
         "classmap": [
-            "src/shared/MongoShared/MongoQueries.php",
             "src/library/controllers/HomeController.php",
             "src/library/interfaces/HomeControllerInterface.php",
             "src/library/interfaces/FrontControllerInterface.php",
