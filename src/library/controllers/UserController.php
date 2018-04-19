@@ -25,8 +25,8 @@ class UserController implements UserControllerInterface {
 
     public function sendVerificationEmail($mongoId)
     {
-        $email = \MongoShared\BaseQueries::findById('users', $mongoId, \MongoShared\MongoUtilities::makeProjection(['email']));
-        echo '<p>' . $email . '</p>';
+        $email = \MongoShared\BaseQueries::findById('users', $mongoId, ['email']);
+        echo '<p>' . $email['email'] . '</p>';
     }
 
     private function validateRegistrationData($registrationFields) {

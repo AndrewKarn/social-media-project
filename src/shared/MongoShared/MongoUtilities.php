@@ -13,7 +13,13 @@ use MongoDB;
 class MongoUtilities
 {
     public static function getCollection($collection) {
-        $db = new MongoDB\Client("mongodb://localhost:27017");
+        $db = new MongoDB\Client("mongodb://localhost:27017", [], [
+            'typeMap' => [
+                'array' => 'array',
+                'document' => 'array',
+                'root' => 'array'
+            ]
+        ]);
         return $db->main->$collection;
     }
 
@@ -22,8 +28,9 @@ class MongoUtilities
         foreach($fields as $field) {
             $fieldsToProject[$field] = 1;
         }
-        return array('projection' => $fieldsToProject);
+        return ['projection' => $fieldsToProject];
     }
+
 
     /** formats cursor results in a specific way.
      * @param object $cursor

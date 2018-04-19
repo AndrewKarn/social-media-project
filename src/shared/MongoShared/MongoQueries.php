@@ -16,12 +16,11 @@ class BaseQueries
      *
      * @param string $collection MongoDB collection
      * @param string $objectId to search for
-     * @param array $projection option projection parameters field => 1
-     * @param bool $toArray option to convert to usable array
+     * @param array $projectionFields option projection parameters
      *
      * @return array|null|object
      */
-    public static function findById($collection, $objectId, $projectionFields = array(), $toArray = true) {
+    public static function findById($collection, $objectId, $projectionFields = array()) {
         $collection = MongoUtilities::getCollection($collection);
 
         $idQuery = [
@@ -30,21 +29,16 @@ class BaseQueries
 
         if (!empty($projectionFields)) {
             $projection = MongoUtilities::makeProjection($projectionFields);
-            $cursor = $collection->findOne($idQuery, $projection);
+            $result = $collection->findOne($idQuery, $projection);
         } else {
-            $cursor = $collection->findOne($idQuery);
+            $result = $collection->findOne($idQuery);
         }
 
-        if (empty($cursor)) {
+        if (empty($result)) {
             throw new \InvalidArgumentException("No results for id: " . $objectId . " in " . $collection . ".");
         }
 
-        // returns usable array
-        if ($toArray) {
-            return $cursor->toArray();
-        }
-        // returns cursor
-        return $cursor;
+        return $result;
     }
 
     public static function checkToken($objectId, $token) {
