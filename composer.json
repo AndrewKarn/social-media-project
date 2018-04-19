@@ -18,7 +18,10 @@
             ],
             "MongoShared\\": "src/shared/MongoShared/",
             "Debugging\\": "util/",
-            "Utility\\": "src/shared/Utility/",
+            "Utility\\": [
+                "src/shared/Utility/",
+                "util/"
+            ]
             "User\\": [
                 "src/library/controllers/",
                 "src/library/interfaces/",
