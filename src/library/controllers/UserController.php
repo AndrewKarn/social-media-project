@@ -5,6 +5,7 @@ use MongoShared\MongoCreate;
 use MongoShared\MongoUtilities;
 use MongoShared\MongoUpdate;
 use Utility\UtilityMethods;
+use Mailgun\Mailgun;
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
@@ -50,9 +51,16 @@ class UserController implements UserControllerInterface {
         www.zoes-social-media-project.com
         ";
 
-        $header = "From:noreply@zoessocialmediaproject.com\r\n";
+        $mgClient = new Mailgun(\Utility\Key::MAIL_GUN_API_KEY);
+        $domain = "sandbox22f99ecb576b4667bac436b9c4603ff8.mailgun.org";
 
-        $result = mail($email, $subject, $message, $header);
+
+        $result = $mgClient->sendMessage("$domain",
+            array('from'    => 'Zoe\'s Social Media <postmaster@sandbox22f99ecb576b4667bac436b9c4603ff8.mailgun.org>',
+                'to'      => 'Zoe Robertson <' . $email .'>',
+                'subject' => $subject,
+                'text'    => $message));
+
         error_log(json_encode($result));
         if ($result) {
             return new AccountVerificationView($email);
