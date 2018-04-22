@@ -8,7 +8,7 @@
 
 namespace Debugging;
 require_once __DIR__ . '/../vendor/autoload.php';
-use Utility\UtilityMethods as Utilities;
+use Utility\Utilities as Utilities;
 
 class DebuggingMethods
 {

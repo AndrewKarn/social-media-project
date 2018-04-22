@@ -11,27 +11,30 @@ namespace Home;
 
 class HomeView
 {
-    public function __construct($version = 'unverified')
+    public function __construct($version = 'unverified', $cookieVals = [])
     {
         if ($version === 'unverified') {
             error_log('entered unverified page');
             $this->showUnauthenticatedHomepage();
         } elseif ($version === 'emailFwd') {
             error_log("entered emailFwd");
-            $this->showEmailForwardHomepage();
+            $this->showEmailForwardHomepage($cookieVals);
         } else {
             error_log("entered authenticated");
             $this->showAuthenticatedHomepage();
         }
     }
 
+    /** ---Sends default static homepage to client---
+     *
+     */
     private function showUnauthenticatedHomepage() {
         error_log("then called showUnauthenticated function");
         $html = file_get_contents('unauthenticated-homepage.html', FILE_USE_INCLUDE_PATH);
         echo $html;
     }
 
-    private function showEmailForwardHomepage() {
+    private function showEmailForwardHomepage($cookieVals) {
         error_log("then called showEmail function.");
         echo '
         <!DOCTYPE html>
@@ -42,12 +45,11 @@ class HomeView
         </head>
         <body>
             <div>
-                <span>Existing Users Login:</span>
+                <span>Welcome ' . $cookieVals['name'] . '</span>
             </div>
             <form action="http://www.zoes-social-media-project.com/user/login/" method="post">
                 <div>
-                    <label for="email">Input your email:</label>
-                    <input name="email" type="email" >
+                    <span>Email: ' . $cookieVals['email'] . '</span>
                 </div>
                 <div>
                     <label for="password">Input your password:</label>

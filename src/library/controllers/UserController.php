@@ -5,28 +5,41 @@ use MongoShared\BaseQueries;
 use MongoShared\MongoCreate;
 use MongoShared\MongoUtilities;
 use MongoShared\MongoUpdate;
-use Utility\UtilityMethods;
+use Utility\Utilities;
 use Mailgun\Mailgun;
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
 class UserController implements UserControllerInterface {
 
-	private $userMongoId;
-
-	public function __construct() {
-
+    public function __construct()
+    {
     }
 
+    /** ---Used to register new user---
+     *  Sanitizes post data >
+     *  Validates post data >
+     *  Inserts into main database with isActivated: false >
+     *  Sends verification email based on returned mongoId
+     */
     public function register() {
-        $sanitizedFormData = UtilityMethods::sanitizePostData(UtilityMethods::SANITIZE_WHITESPACE);
+        $sanitizedFormData = Utilities::sanitizePostData(Utilities::SANITIZE_WHITESPACE);
         $validatedFormData = $this->validateRegistrationData($sanitizedFormData);
         $dbResponse = MongoCreate::createUser($validatedFormData);
         $mongoId = MongoUtilities::readInsertCursor($dbResponse, 1);
-        $this->sendVerificationEmail($mongoId);
+        $this->sendActivationEmail($mongoId);
     }
 
-    public function sendVerificationEmail($mongoId)
+    /** ---Used to send verification email via MailGun API---
+     *  Queries for email via mongoId string
+     *  Generates activation hash and inserts into user doc
+     *  Adds activation hash to url and emails url to user
+     *
+     * @param string     $mongoId
+     * @return object    AccountVerificationView
+     * @throws
+     */
+    public function sendActivationEmail($mongoId)
     {
         $document = BaseQueries::findById('users', $mongoId, ['email']);
         $email = $document['email'];
@@ -77,6 +90,11 @@ class UserController implements UserControllerInterface {
         }
     }
 
+    /** ---Validates registration post data fits db schema---
+     * @param  array  $registrationFields sanitized post data
+     * @return array  $cleanData          validated post data
+     * @throws \InvalidArgumentException  if any fields do not match
+     */
     private function validateRegistrationData($registrationFields) {
 		try {
 	    	if (is_array($registrationFields)) {
@@ -133,15 +151,23 @@ class UserController implements UserControllerInterface {
 		} catch (\InvalidArgumentException $e) {
 
 		}
-		return $this;
     }
 
-    public function validate() {
-
-	    UtilityMethods::redirect('http://www.zoes-social-media-project.com', false);
+    /** ---Validates activation hash from activation email---
+     * Redirects to home page after verifying hash string
+     * Sets 3 cookies to be used for redirect request
+     *
+     * @param array $validationHash  containing activation hash
+     */
+    public function validate($validationHash) {
+        $results = BaseQueries::findBySingleFieldStr('users', 'verificationHash', $validationHash['hash'], ['email', 'firstname']);
+	    Utilities::redirect('http://www.zoes-social-media-project.com', false);
 	    // cookie expires in 30 seconds from redirect
 	    setcookie('fromEmailVerification', 'true', time() + 30, '/',
             'zoes-social-media-project.com', false, true);
+	    setcookie('name', $results['firstname'], time() + 30, '/', 'zoes-social-media-project.com', false, true);
+	    // longer delay for email cookie, used for initial login
+	    setcookie('email', $results['email'], time() + 120, '/', 'zoes-social-media-project.com', false, true);
 	    die();
     }
 

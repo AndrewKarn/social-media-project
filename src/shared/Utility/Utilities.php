@@ -9,9 +9,15 @@
 namespace Utility;
 
 
-class UtilityMethods
+class Utilities
 {
     const SANITIZE_WHITESPACE = 'cleanWSpaces';
+    const COOKIES = [
+        'name' => 'UserName',
+        'email' => 'UserEmail',
+        'fromEmailVerification' => 'EmailVerificationLogin',
+        'PHPSESSID' => 'SessionId'
+    ];
 
     public static function formatUriQueryString($uri) {
         parse_str(substr($uri, strpos($uri, '?') + 1), $results);
@@ -39,6 +45,12 @@ class UtilityMethods
         setcookie($cookie, '',time() - 3600, '/', 'zoes-social-media-project.com');
         if ($kill) {
             die();
+        }
+    }
+
+    public static function revokeAllCookies() {
+        foreach(self::COOKIES as $cookie => $method) {
+            self::revokeCookie($cookie);
         }
     }
 }

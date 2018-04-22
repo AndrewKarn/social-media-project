@@ -6,7 +6,7 @@
  * Time: 6:19 PM
  */
 namespace Home;
-use Utility\UtilityMethods;
+use Utility\Utilities;
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
@@ -15,10 +15,12 @@ class HomeController {
     private $authenticatedUser;
     private $emailVerificationLogin;
     private $sessionId;
+    private $email;
+    private $name;
 
     public function __construct()
     {
-        $this->checkCookies();
+        $this->getCookies();
         // $this->checkAuthenticatedUser();
 //        if ($this->authenticatedUser) {
 //            // populate model and view
@@ -27,17 +29,35 @@ class HomeController {
 //        }
     }
 
-    private function checkCookies() {
-        if (isset($_COOKIE['fromEmailVerification']) && !empty($_COOKIE['fromEmailVerification'])) {
-            $this->setEmailVerificationLogin($_COOKIE['fromEmailVerification']);
+    /** ---Gets cookies from request if they exist---
+     * sets various initial variables to be used in the getHomePage method
+     */
+    private function getCookies() {
+        foreach (Utilities::COOKIES as $cookie => $setter) {
+            if (isset($_COOKIE[$cookie]) && !empty($_COOKIE[$cookie])) {
+                $setter = 'set' . $setter;
+                $this->$setter($_COOKIE[$cookie]);
+            }
         }
-        if (isset($_COOKIE['PHPSESSID']) && !empty($_COOKIE['PHPSESSID'])) {
-            $this->setSessionId($_COOKIE['PHPSESSID']);
-        }
+//        if (isset($_COOKIE['fromEmailVerification']) && !empty($_COOKIE['fromEmailVerification'])) {
+//            $this->setEmailVerificationLogin($_COOKIE['fromEmailVerification']);
+//        }
+//        if (isset($_COOKIE['PHPSESSID']) && !empty($_COOKIE['PHPSESSID'])) {
+//            $this->setSessionId($_COOKIE['PHPSESSID']);
+//        }
+//        if (isset($_COOKIE['name']) && !empty($_COOKIE['name'])) {
+//            $this->setUserName($_COOKIE['name']);
+//        }
+//        if (isset($_COOKIE['email']) && !empty($_COOKIE['email'])) {
+//            $this->setUserEmail($_COOKIE['email']);
+//        }
     }
 
-    private function setAuthenticatedUser($user) {
-        $this->authenticatedUser = $user;
+    /** ---setter for auth token---
+     * @param string  $userToken
+     */
+    private function setAuthenticatedUser($userToken) {
+        $this->authenticatedUser = $userToken;
     }
 
     private function getAuthenticatedUser() {
@@ -50,8 +70,7 @@ class HomeController {
 
     private function checkAuthenticatedUser()
     {
-        session_start();
-        return false;
+
     }
 
     private function setEmailVerificationLogin($cookieVal) {
@@ -67,6 +86,30 @@ class HomeController {
 
     }
 
+    private function setUserName($cookieVal) {
+        $this->name = $cookieVal;
+    }
+
+    private function getUserName() {
+        if (!empty($this->name)) {
+            return $this->name;
+        } else {
+            return false;
+        }
+    }
+
+    private function setUserEmail($cookieVal) {
+        $this->email = $cookieVal;
+    }
+
+    private function getUserEmail() {
+        if (!empty($this->email)) {
+            return $this->name;
+        } else {
+            return false;
+        }
+    }
+
     private function setSessionId($cookieVal) {
         $this->sessionId = $cookieVal;
     }
@@ -75,17 +118,32 @@ class HomeController {
         return $this->sessionId;
     }
 
+    /** ---Determines what version of homepage to return---
+     * checks if request was made with cookie: fromEmailVerification=true
+     *    -Returns HomeView with user's name and email ready for login
+     * checks if request was made with a verified auth token
+     *    -Redirects to protected user's homepage
+     * otherwise returns default homepage
+     *
+     * @return HomeView
+     */
     public function getHomePage() {
         if ($this->getEmailVerificationLogin()) {
             error_log("In homecontroller, routed through email verification");
-            UtilityMethods::revokeCookie('fromEmailVerification');
-            return new HomeView('emailFwd');
+            Utilities::revokeCookie('fromEmailVerification');
+            Utilities::revokeCookie('name');
+            //Utilities::revokeCookie('email');
+            return new HomeView('emailFwd', [
+                'email' => $this->getUserEmail(),
+                'name' => $this->getUserName()
+            ]);
         }
 
         $authenticatedUser = $this->getAuthenticatedUser();
         if ($authenticatedUser) {
             return new HomeView($authenticatedUser);
         }
+
         error_log("got to 3rd condition first.");
         return new HomeView();
     }
