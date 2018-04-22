@@ -41,6 +41,27 @@ class BaseQueries
         return $result;
     }
 
+    public static function findBySingleFieldStr($collection, $field, $val, $projection = array()) {
+        $collection = MongoUtilities::getCollection($collection);
+
+        $query = [
+            $field => $val
+        ];
+
+        if (!empty($projection)) {
+            $projection = MongoUtilities::makeProjection($projection);
+            $result = $collection->findOne($query, $projection);
+        } else {
+            $result = $collection->findOne($query);
+        }
+
+        if (empty($result)) {
+            throw new \InvalidArgumentException("No results for $field: $val in $collection");
+        }
+
+        return $result;
+    }
+
     public static function checkToken($objectId, $token) {
         self::findById("users", $objectId);
     }

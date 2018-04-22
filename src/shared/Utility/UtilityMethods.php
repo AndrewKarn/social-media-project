@@ -11,7 +11,7 @@ namespace Utility;
 
 class UtilityMethods
 {
-    public const SANITIZE_WHITESPACE = 'cleanWSpaces';
+    const SANITIZE_WHITESPACE = 'cleanWSpaces';
 
     public static function formatUriQueryString($uri) {
         parse_str(substr($uri, strpos($uri, '?') + 1), $results);
@@ -26,5 +26,19 @@ class UtilityMethods
 
     public static function sanitizePostData($callback) {
         return array_map('self::' . $callback, $_POST);
+    }
+
+    public static function redirect($url, $die = true, $permanent = false)
+    {
+        header('Location: ' . $url, true, $permanent ? 301 : 302);
+        if ($die) {
+            die();
+        }
+    }
+    public static function revokeCookie($cookie, $kill = false) {
+        setcookie($cookie, '',time() - 3600, '/', 'zoes-social-media-project.com');
+        if ($kill) {
+            die();
+        }
     }
 }

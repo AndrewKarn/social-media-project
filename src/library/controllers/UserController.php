@@ -1,6 +1,7 @@
 <?php
 namespace User;
 use Debugging\DebuggingMethods;
+use MongoShared\BaseQueries;
 use MongoShared\MongoCreate;
 use MongoShared\MongoUtilities;
 use MongoShared\MongoUpdate;
@@ -27,7 +28,7 @@ class UserController implements UserControllerInterface {
 
     public function sendVerificationEmail($mongoId)
     {
-        $document = \MongoShared\BaseQueries::findById('users', $mongoId, ['email']);
+        $document = BaseQueries::findById('users', $mongoId, ['email']);
         $email = $document['email'];
         $generatedKey = sha1(mt_rand(10000,99999) . time() . $email);
         $inserted = MongoUpdate::insertOneField('users', ['_id'=> MongoUtilities::makeMongoId($mongoId)], 'verificationHash', $generatedKey);
@@ -42,13 +43,20 @@ class UserController implements UserControllerInterface {
         $subject = "Your account with Zoe's Social Media!";
 
         $message = "
-        Thanks for signing up for www.zoes-social-media-project.com!\n
-        Please click the link below to verify your email and activate your account.\n
-        \n
-        http://www.zoes-social-media-project.com/user/validate/hash=" . $generatedKey . "\n
-        \n
-        -Zoe Robertson\n
-        www.zoes-social-media-project.com
+        <h1>Thanks for signing up for www.zoes-social-media-project.com!</h1>
+        <br>
+        <p>
+        Please click the link below to verify your email and activate your account.
+        </p>
+        <br>
+        <a href='http://www.zoes-social-media-project.com/user/validate/?hash=" . $generatedKey . "'>
+        <b>$generatedKey</b>
+        </a>
+        <br>
+        <br>
+        <span>-Zoe Robertson</span>
+        <br>
+        <span>www.zoes-social-media-project.com</span>
         ";
 
         $mgClient = new Mailgun(\Utility\Key::MAIL_GUN_API_KEY);
@@ -59,7 +67,7 @@ class UserController implements UserControllerInterface {
             array('from'    => 'Zoe\'s Social Media <postmaster@sandbox22f99ecb576b4667bac436b9c4603ff8.mailgun.org>',
                 'to'      => 'Zoe Robertson <' . $email .'>',
                 'subject' => $subject,
-                'text'    => $message));
+                'html'    => $message));
 
         error_log(json_encode($result));
         if ($result) {
@@ -126,6 +134,15 @@ class UserController implements UserControllerInterface {
 
 		}
 		return $this;
+    }
+
+    public function validate() {
+
+	    UtilityMethods::redirect('http://www.zoes-social-media-project.com', false);
+	    // cookie expires in 30 seconds from redirect
+	    setcookie('fromEmailVerification', 'true', time() + 30, '/',
+            'zoes-social-media-project.com', false, true);
+	    die();
     }
 
 }

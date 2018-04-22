@@ -111,8 +111,10 @@ class FrontController implements FrontControllerInterface
         $class = new $controller;
 
         if (!empty($params)) {
+            error_log("\nRouted with params\n");
             $class->$action($params);
         } else {
+            error_log("\nRouted without params\n");
             $class->$action();
         }
     }

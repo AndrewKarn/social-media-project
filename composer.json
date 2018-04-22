@@ -21,7 +21,7 @@
             "Utility\\": [
                 "src/shared/Utility/",
                 "util/"
-            ]
+            ],
             "User\\": [
                 "src/library/controllers/",
                 "src/library/interfaces/",

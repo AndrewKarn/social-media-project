@@ -13,7 +13,7 @@ use MongoDB;
 class MongoUtilities
 {
     public static function getCollection($collection) {
-        $db = new MongoDB\Client("mongodb://localhost:27017", [], [
+        $db = new MongoDB\Client("mongodb://192.168.50.40:27017", [], [
             'typeMap' => [
                 'array' => 'array',
                 'document' => 'array',

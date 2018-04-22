@@ -41,6 +41,51 @@ sudo ln -s /vagrant/src /var/www
 sudo ln -s /var/log/nginx/error.log /vagrant/util/logs/
 sudo ln -s /var/log/php7.2-fpm.log /vagrant/util/logs/
 
+# setup mongod.conf
+sudo echo '# mongod.conf
+
+      # for documentation of all options, see:
+      #   http://docs.mongodb.org/manual/reference/configuration-options/
+
+      # Where and how to store data.
+      storage:
+        dbPath: /var/lib/mongodb
+        journal:
+          enabled: true
+      #  engine:
+      #  mmapv1:
+      #  wiredTiger:
+
+      # where to write logging data.
+      systemLog:
+        destination: file
+        logAppend: true
+        path: /var/log/mongodb/mongod.log
+
+      # network interfaces
+      net:
+        port: 27017
+        bindIp: 192.168.50.40
+
+
+      # how the process runs
+      processManagement:
+        timeZoneInfo: /usr/share/zoneinfo
+
+      #security:
+
+      #operationProfiling:
+
+      #replication:
+
+      #sharding:
+
+      ## Enterprise-Only Options:
+
+      #auditLog:
+
+      #snmp:' > /etc/mongod.conf
+
 # change log file to nginx owner so nginx can write log files
 sudo chown www-data /var/log/nginx
 
