@@ -114,7 +114,7 @@ class UserController implements UserControllerInterface {
 	    					if (preg_match('/^[\da-zA-Z!@$_.]{8,16}$/', $val)) {
 		    					$check++;
 		    					if ($check === 1) {
-		    						$firstPassword = $val;
+		    						$firstPassword = password_hash($val, PASSWORD_DEFAULT);
 		    					}
 	    						if ($check === 2 && $firstPassword === $val) {
 	    							$cleanData['password'] = $val;
@@ -169,6 +169,39 @@ class UserController implements UserControllerInterface {
 	    // longer delay for email cookie, used for initial login
 	    setcookie('email', $results['email'], time() + 120, '/', 'zoes-social-media-project.com', false, true);
 	    die();
+    }
+
+    private function validateLoginData($loginData) {
+        $validLoginData = array();
+        try {
+            if (isset($loginData['email']) && !empty($loginData['email'])) {
+                $email = $loginData['email'];
+                if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                    $validLoginData['email'] = $email;
+                } else {
+                    throw new \InvalidArgumentException("There was an error, $email is not in valid email@test.com");
+                }
+            } else {
+                throw new \InvalidArgumentException("There was an error, no email received by the server");
+            }
+            if (isset($loginData['password']) && !empty($loginData['password'])) {
+                $password = $loginData['password'];
+                if (preg_match('/^[\da-zA-Z!@$_.]{8,16}$/', $password)) {
+                    $validLoginData['password'] = $password;
+                }
+            }
+        } catch (\InvalidArgumentException $e) {
+
+        }
+    }
+
+    public function login() {
+        if (isset($_COOKIE['email']) && !empty($_COOKIE['email'])) {
+            $_POST['email'] = $_COOKIE['email'];
+        }
+        $loginData = Utilities::sanitizePostData(Utilities::SANITIZE_WHITESPACE);
+        $validatedLoginData = $this->validateLoginData($loginData);
+
     }
 
 }
