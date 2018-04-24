@@ -6,6 +6,7 @@ use MongoShared\MongoCreate;
 use MongoShared\MongoUtilities;
 use MongoShared\MongoUpdate;
 use MongoDB;
+use Utility\Key;
 use Utility\Utilities;
 use Mailgun\Mailgun;
 
@@ -26,6 +27,7 @@ class UserController implements UserControllerInterface {
     public function register() {
         $sanitizedFormData = Utilities::sanitizePostData(Utilities::SANITIZE_WHITESPACE);
         $validatedFormData = $this->validateRegistrationData($sanitizedFormData);
+        //var_dump($validatedFormData);
         $dbResponse = MongoCreate::createUser($validatedFormData);
         $mongoId = MongoUtilities::readInsertCursor($dbResponse, 1);
         $this->sendActivationEmail($mongoId);
@@ -73,12 +75,12 @@ class UserController implements UserControllerInterface {
         <span>www.zoes-social-media-project.com</span>
         ";
 
-        $mgClient = new Mailgun(\Utility\Key::MAIL_GUN_API_KEY);
-        $domain = "sandbox22f99ecb576b4667bac436b9c4603ff8.mailgun.org";
+        $mgClient = new Mailgun(Key::MAIL_GUN_API_KEY);
+        $domain = "mg.zoes-social-media-project.com";
 
 
         $result = $mgClient->sendMessage("$domain",
-            array('from'    => 'Zoe\'s Social Media <postmaster@sandbox22f99ecb576b4667bac436b9c4603ff8.mailgun.org>',
+            array('from'    => 'Zoe\'s Social Media <postmaster@mg.zoes-social-media-project.com>',
                 'to'      => 'Zoe Robertson <' . $email .'>',
                 'subject' => $subject,
                 'html'    => $message));
