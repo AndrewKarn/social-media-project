@@ -31,6 +31,13 @@ class MongoUtilities
         return ['projection' => $fieldsToProject];
     }
 
+    /** creates timestamp for MongoDB
+     * @return string
+     */
+    public static function timestamp() {
+        $utcdate = new MongoDB\BSON\UTCDateTime();
+        return $utcdate->toDateTime()->format('c');
+    }
 
     /** formats cursor results in a specific way.
      * @param object $cursor

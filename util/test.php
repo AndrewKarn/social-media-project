@@ -5,10 +5,5 @@
  * Date: 3/30/18
  * Time: 4:15 PM
  */
-require('vendor/autoload.php');
-function createDBInstance($dbName) {
-    $db = new MongoDB\Client("mongodb://localhost:27017");
-    return $db->selectDatabase($dbName);
-}
-$db = createDBInstance('testDB');
-$db->createCollection('test');
+$mongodate = new \MongoDB\BSON\UTCDateTime();
+echo $mongodate->toDateTime()->format('c');

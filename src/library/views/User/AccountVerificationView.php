@@ -34,6 +34,7 @@ class AccountVerificationView
                     <p class="focus-font">
                         Your verification email has been sent to ' . $successfulEmail . '
                     </p>
+                    <span>Please allow 10 minutes for your email to be received.</span>
                 </div>
             </body>
             </html>

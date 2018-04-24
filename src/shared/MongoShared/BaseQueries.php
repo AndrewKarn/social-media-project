@@ -62,7 +62,4 @@ class BaseQueries
         return $result;
     }
 
-    public static function checkToken($objectId, $token) {
-        self::findById("users", $objectId);
-    }
 }

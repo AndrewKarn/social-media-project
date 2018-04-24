@@ -35,7 +35,8 @@
             "src/library/interfaces/FrontControllerInterface.php",
             "src/library/models/HomeModel.php",
             "src/library/views/Home/HomeView.php",
-            "util/DebuggingMethods.php"
+            "util/DebuggingMethods.php",
+            "util/test.php"
         ]
     }
 }

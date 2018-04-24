@@ -5,10 +5,11 @@ use MongoShared\BaseQueries;
 use MongoShared\MongoCreate;
 use MongoShared\MongoUtilities;
 use MongoShared\MongoUpdate;
+use MongoDB;
 use Utility\Utilities;
 use Mailgun\Mailgun;
 
-require_once __DIR__ . '/../../../vendor/autoload.php';
+//require_once __DIR__ . '/../../../vendor/autoload.php';
 
 class UserController implements UserControllerInterface {
 
@@ -114,10 +115,10 @@ class UserController implements UserControllerInterface {
 	    					if (preg_match('/^[\da-zA-Z!@$_.]{8,16}$/', $val)) {
 		    					$check++;
 		    					if ($check === 1) {
-		    						$firstPassword = password_hash($val, PASSWORD_DEFAULT);
+		    						$firstPassword = $val;
 		    					}
 	    						if ($check === 2 && $firstPassword === $val) {
-	    							$cleanData['password'] = $val;
+	    							$cleanData['password'] = password_hash($val, PASSWORD_DEFAULT);
 	    						}
 	    					} else {
 	    						throw new \InvalidArgumentException ("This is not a valid password.");
@@ -188,11 +189,14 @@ class UserController implements UserControllerInterface {
                 $password = $loginData['password'];
                 if (preg_match('/^[\da-zA-Z!@$_.]{8,16}$/', $password)) {
                     $validLoginData['password'] = $password;
+                } else {
+                    throw new \InvalidArgumentException("There was an error, $password is not in a valid format");
                 }
             }
         } catch (\InvalidArgumentException $e) {
 
         }
+        return $validLoginData;
     }
 
     public function login() {
@@ -201,7 +205,19 @@ class UserController implements UserControllerInterface {
         }
         $loginData = Utilities::sanitizePostData(Utilities::SANITIZE_WHITESPACE);
         $validatedLoginData = $this->validateLoginData($loginData);
-
+        $userDocument = BaseQueries::findBySingleFieldStr('users', 'email', $validatedLoginData['email'], [
+            '_id', 'email', 'password', 'firstname', 'isActivated', 'loginAttempts', 'lastLogin'
+        ]);
+        if (empty($userDocument)) {
+            // TODO there was no user with that email!
+            return false;
+        }
+        if (password_verify($validatedLoginData['password'], $userDocument['password'])) {
+            echo '<p>You successfully logged in! Welcome ' . $userDocument['firstname'] . '!';
+        }
+        if (!isset($userDocument['lastLogin'])) {
+            // incremenet loginAttempts
+            echo '<p>You have never logged in before.</p>';
+        }
     }
-
 }

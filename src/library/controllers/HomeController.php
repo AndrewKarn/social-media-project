@@ -133,6 +133,7 @@ class HomeController {
             Utilities::revokeCookie('fromEmailVerification');
             Utilities::revokeCookie('name');
             //Utilities::revokeCookie('email');
+            header("Cache-Control: no-cache, must-revalidate");
             return new HomeView('emailFwd', [
                 'email' => $this->getUserEmail(),
                 'name' => $this->getUserName()

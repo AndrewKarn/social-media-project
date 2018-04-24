@@ -41,6 +41,7 @@ class HomeView
         <html lang="en">
         <head>
             <meta charset="UTF-8">
+            <meta http-equiv="pragma" content="nocache">
             <title>Zoe\'s Social Media Project</title>
         </head>
         <body>
