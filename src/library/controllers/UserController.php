@@ -27,8 +27,8 @@ class UserController implements UserControllerInterface {
     public function register() {
         $sanitizedFormData = Utilities::sanitizePostData(Utilities::SANITIZE_WHITESPACE);
         $validatedFormData = $this->validateRegistrationData($sanitizedFormData);
-        //var_dump($validatedFormData);
         $dbResponse = MongoCreate::createUser($validatedFormData);
+        var_dump($dbResponse);
         $mongoId = MongoUtilities::readInsertCursor($dbResponse, 1);
         $this->sendActivationEmail($mongoId);
     }

@@ -49,6 +49,9 @@ class MongoUtilities
      * @return mixed
      */
     public static function readInsertCursor($cursor, $options = 0) {
+        if (!$cursor) {
+            return false;
+        }
         switch ($options) {
             case 0:
                 return $cursor->isAcknowledged();

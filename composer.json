@@ -19,6 +19,8 @@
             "MongoShared\\": "src/shared/MongoShared/",
             "Debugging\\": "util/",
             "Utility\\": [
+                "src/library/controllers/",
+                "src/library/views/Error/",
                 "src/shared/Utility/",
                 "util/"
             ],

@@ -1,0 +1,13 @@
+main {
+    display: flex;
+    flex-wrap: wrap;
+}
+.box1 {
+    order: 1;
+}
+.box2 {
+    order: 2;
+}
+.box1, .box2 {
+    margin: 32px;
+}
