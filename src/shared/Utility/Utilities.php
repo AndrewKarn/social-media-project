@@ -18,6 +18,7 @@ class Utilities
         'fromEmailVerification' => 'EmailVerificationLogin',
         'PHPSESSID' => 'SessionId'
     ];
+    const WEB_ROOT = 'www.zoes-social-media-project.com/';
 
     public static function formatUriQueryString($uri) {
         parse_str(substr($uri, strpos($uri, '?') + 1), $results);

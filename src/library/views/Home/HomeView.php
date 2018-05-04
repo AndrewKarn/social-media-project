@@ -11,17 +11,24 @@ namespace Home;
 
 class HomeView
 {
-    public function __construct($version = 'unverified', $cookieVals = [])
+    public function __construct($version = 'unverified', $options = [])
     {
-        if ($version === 'unverified') {
-            error_log('entered unverified page');
-            $this->showUnauthenticatedHomepage();
-        } elseif ($version === 'emailFwd') {
-            error_log("entered emailFwd");
-            $this->showEmailForwardHomepage($cookieVals);
-        } else {
-            error_log("entered authenticated");
-            $this->showAuthenticatedHomepage();
+        switch ($version) {
+            case 'unverified':
+                error_log('entered unverified page');
+                $this->showUnauthenticatedHomepage();
+                break;
+            case 'emailFwd':
+                error_log('entered emailFwd');
+                $this->showEmailForwardHomepage($options);
+                break;
+            case 'authenticated':
+                error_log('entered authenticated for ' . $options['email']);
+                $this->showAuthenticatedHomepage($options);
+                break;
+            case 'pswrdFail':
+                error_log('password login failed. ' . $options['loginAttempts']);
+                $this->showPswrdFail($options);
         }
     }
 
@@ -69,7 +76,11 @@ class HomeView
         ';
     }
 
-    private function showAuthenticatedHomepage() {
+    private function showAuthenticatedHomepage($options) {
         return true;
+    }
+
+    private function showPswrdFail($options) {
+
     }
 }

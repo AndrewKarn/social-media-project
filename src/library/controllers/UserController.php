@@ -9,6 +9,7 @@ use MongoDB;
 use Utility\Key;
 use Utility\Utilities;
 use Mailgun\Mailgun;
+use Firebase\JWT\JWT;
 
 //require_once __DIR__ . '/../../../vendor/autoload.php';
 
@@ -207,8 +208,15 @@ class UserController implements UserControllerInterface {
         }
         $loginData = Utilities::sanitizePostData(Utilities::SANITIZE_WHITESPACE);
         $validatedLoginData = $this->validateLoginData($loginData);
-        $userDocument = BaseQueries::findBySingleFieldStr('users', 'email', $validatedLoginData['email'], [
-            '_id', 'email', 'password', 'firstname', 'isActivated', 'loginAttempts', 'lastLogin'
+        $userDocument = BaseQueries::findBySingleFieldStr('users', 'email', $validatedLoginData['email'],
+            [
+            '_id',
+            'email',
+            'password',
+            'firstname',
+            'isActivated',
+            'loginAttempts',
+            'lastLogin'
         ]);
         if (empty($userDocument)) {
             // TODO there was no user with that email!
@@ -216,10 +224,25 @@ class UserController implements UserControllerInterface {
         }
         if (password_verify($validatedLoginData['password'], $userDocument['password'])) {
             echo '<p>You successfully logged in! Welcome ' . $userDocument['firstname'] . '!';
-        }
-        if (!isset($userDocument['lastLogin'])) {
-            // incremenet loginAttempts
-            echo '<p>You have never logged in before.</p>';
+            if (!isset($userDocument['lastLogin'])) {
+                $success = MongoUpdate::insertManyFields('users', $userDocument['_id'],
+                    [
+                        'isActivated'   => true,
+                        'lastLogin'     => MongoUtilities::timestamp(),
+                        'loginAttempts' => 0
+                    ]);
+                echo $success ? '<p>You have never logged in before.</p>': '<p>Uh oh. Something went wrong.</p>';
+            }
+        } else {
+            if (!isset($userDocument['lastLogin']) && !isset($userDocument['loginAttempts'])) {
+                Utilities::redirect(Utilities::WEB_ROOT, false);
+                // TODO send a JWT with the username and loginAttempts
+                $success = MongoUpdate::insertOneField('users', $userDocument['_id'],
+                    'loginAttempts', 1);
+                echo $success ? '<p>Hmm... It appears that is the incorrect password. Please try again.</p>';
+            }
+            // TODO implement other incorrect logins
+
         }
     }
 }
