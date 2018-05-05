@@ -8,8 +8,8 @@ use MongoShared\MongoUpdate;
 use MongoDB;
 use Utility\Key;
 use Utility\Utilities;
-use Mailgun\Mailgun;
-use Firebase\JWT\JWT;
+use \Mailgun\Mailgun;
+use \Firebase\JWT\JWT;
 
 //require_once __DIR__ . '/../../../vendor/autoload.php';
 
@@ -17,6 +17,13 @@ class UserController implements UserControllerInterface {
 
     public function __construct()
     {
+        // THIS IS FOR TESTING
+        $data = json_decode(file_get_contents('php://input', true), true);
+        $data['server'] = 'Recieved at ' . __DIR__;
+        $data['$_SERVER'] = $_SERVER;
+        $data['$_POST'] = $_POST;
+        echo json_encode($data);
+        die();
     }
 
     /** ---Used to register new user---
@@ -236,13 +243,24 @@ class UserController implements UserControllerInterface {
         } else {
             if (!isset($userDocument['lastLogin']) && !isset($userDocument['loginAttempts'])) {
                 Utilities::redirect(Utilities::WEB_ROOT, false);
-                // TODO send a JWT with the username and loginAttempts
+                // TODO send a JWT with the username and loginAttempts why?
                 $success = MongoUpdate::insertOneField('users', $userDocument['_id'],
                     'loginAttempts', 1);
-                echo $success ? '<p>Hmm... It appears that is the incorrect password. Please try again.</p>';
+                echo $success ? '<p>Hmm... It appears that is the incorrect password. Please try again.</p>' :
+                '<p>Uh oh. something went wrong.</p>';
             }
             // TODO implement other incorrect logins
-
         }
+    }
+
+    public function makeAjaxModal($modalText) {
+        return
+        '<div class="modal-bkgd">
+            <div class="alert-modal modal" id="js-alert-modal">
+                <span id="js-x-alert-modal" class="x-modal">&times;</span>
+                <span class="subheader bold">' . $modalText . '</span>
+                <button id="js-close-alert-modal" type="button" class="close-modal-btn">Close</button>
+            </div>
+        </div>';
     }
 }

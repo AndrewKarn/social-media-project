@@ -1,0 +1,56 @@
+/**
+    Shared html styles for every page
+ */
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+}
+
+main {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+/**
+    ajax elements
+ */
+.alert-modal {
+
+}
+
+/**
+    Shared elements
+ */
+.blk-border {
+    border: 2px solid red;
+}
+.modal {
+    position: relative;
+    border-radius: 15px;
+    border: 2px solid #000;
+    width: 40%
+}
+.modal-bkgd {
+    position: fixed;
+    z-index: 3;
+    padding-top: 15%;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+}
+.alert-modal {
+    border: 2px solid rgba(255,100, 100, 0.4);
+}
+
+.box1 {
+    order: 1;
+}
+.box2 {
+    order: 2;
+}
+.box1, .box2 {
+    margin: 32px;
+}
