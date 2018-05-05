@@ -31,7 +31,7 @@ class PublicErrorView
             <head>
                 <meta charset="UTF-8">
                 <title>Zoe\'s Social Media Project</title>
-                <link href="home-styles.css?version=1" rel="stylesheet" type="text/css">
+                <link href="main.css?version=1" rel="stylesheet" type="text/css">
             </head>
             <body>
                 <main>
