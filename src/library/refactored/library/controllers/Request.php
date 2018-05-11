@@ -5,12 +5,14 @@
  * Date: 5/10/18
  * Time: 8:59 PM
  */
+namespace Controllers;
 use Firebase\JWT\JWT;
 use Utility\Key;
 
 class Request
 {
     const DEFAULT_HANDLER = 'home';
+    const DEFAULT_ACTION = 'default';
 
     private $server;
     private $uri;
@@ -73,12 +75,13 @@ class Request
         $pre = substr($this->getUri(), 1);
         if (empty($pre)) {
              $this->setHandler(self::DEFAULT_HANDLER);
+             $this->setAction(self::DEFAULT_ACTION);
              return 0; // used for tests
         }
         $sections = explode('/', $pre);
         $this->setHandler($sections[0]);
         if (empty($sections[1])) {
-            $this->setAction('default');
+            $this->setAction(self::DEFAULT_ACTION);
             return 0;
         }
         $this->setAction($sections[1]);

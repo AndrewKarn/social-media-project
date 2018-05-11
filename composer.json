@@ -8,6 +8,10 @@
     },
     "autoload": {
         "psr-4": {
+            "Controllers\\": [
+                "src/library/refactored/library/controllers/",
+                "src/library/refactored/"
+            ],
             "Front\\": "src/library/",
             "Home\\": [
                 "src/library/controllers/",

@@ -84,7 +84,6 @@ class FrontController implements FrontControllerInterface
             throw new \InvalidArgumentException("The controller '" . $controller . "' does not exist");
         }
         $this->controller = $controller;
-        return $this;
     }
 
     public function setAction($action = self::DEFAULT_ACTION)
@@ -96,7 +95,7 @@ class FrontController implements FrontControllerInterface
                 return $this;
             }
         } else {
-            throw new \InvalidArgumentException(
+            throw new \InvalidRequestException()tException(
                 "The action '" . $action . "' does not exist in " . $this->controller . ".");
         }
         return $this;
