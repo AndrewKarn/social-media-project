@@ -6,7 +6,8 @@
  * Time: 6:19 PM
  */
 namespace Home;
-use Utility\Utilities;
+use Utility\Common;
+use Utility\HttpUtils as Http;
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
@@ -33,7 +34,7 @@ class HomeController {
      * sets various initial variables to be used in the getHomePage method
      */
     private function getCookies() {
-        foreach (Utilities::COOKIES as $cookie => $setter) {
+        foreach (Http::COOKIES as $cookie => $setter) {
             if (isset($_COOKIE[$cookie]) && !empty($_COOKIE[$cookie])) {
                 $setter = 'set' . $setter;
                 $this->$setter($_COOKIE[$cookie]);
@@ -130,10 +131,11 @@ class HomeController {
     public function getHomePage() {
         if ($this->getEmailVerificationLogin()) {
             error_log("In homecontroller, routed through email verification");
-            Utilities::revokeCookie('fromEmailVerification');
-            Utilities::revokeCookie('name');
-            //Utilities::revokeCookie('email');
+            Http::revokeCookie('fromEmailVerification');
+            Http::revokeCookie('name');
+            //Common::revokeCookie('email');
             header("Cache-Control: no-cache, must-revalidate");
+            header("Authorization: Bearer: jwt");
             return new HomeView('emailFwd', [
                 'email' => $this->getUserEmail(),
                 'name' => $this->getUserName()

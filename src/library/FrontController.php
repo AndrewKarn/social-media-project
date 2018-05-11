@@ -9,7 +9,7 @@
 namespace Front;
 require __DIR__ . "/../../vendor/autoload.php";
 use Debugging\DebuggingMethods as Debug;
-use Utility\Utilities as Utility;
+use Utility\Common as Utility;
 use User\UserController;
 // use Home\HomeModel;
 
@@ -21,6 +21,7 @@ class FrontController implements FrontControllerInterface
     protected $controller = self::DEFAULT_CONTROLLER;
     protected $action = self::DEFAULT_ACTION;
     protected $params = array();
+    protected $uri;
 
     /**
      * FrontController constructor.
@@ -53,6 +54,8 @@ class FrontController implements FrontControllerInterface
      */
     protected function parseURI() {
         $uri = $_SERVER["REQUEST_URI"];
+        $this->uri = $uri;
+
         $params = Utility::formatUriQueryString($uri);
         // only allow standard characters
 
@@ -107,7 +110,7 @@ class FrontController implements FrontControllerInterface
 
     public function route($controller, $action, $params = array())
     {
-        Debug::logRouteVars($controller, $action, $params);
+        Debug::logRouteVars($controller, $action, $params, $this->uri);
         $class = new $controller;
 
         if (!empty($params)) {

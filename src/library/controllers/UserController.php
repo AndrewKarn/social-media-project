@@ -7,7 +7,8 @@ use MongoShared\MongoUtilities;
 use MongoShared\MongoUpdate;
 use MongoDB;
 use Utility\Key;
-use Utility\Utilities;
+use Utility\Common as Common;
+use Utility\HttpUtils as Http;
 use \Mailgun\Mailgun;
 use \Firebase\JWT\JWT;
 
@@ -33,7 +34,10 @@ class UserController implements UserControllerInterface {
      *  Sends verification email based on returned mongoId
      */
     public function register() {
-        $sanitizedFormData = Utilities::sanitizePostData(Utilities::SANITIZE_WHITESPACE);
+        // DEPRACATED
+        // $sanitizedFormData = Common::sanitizePostData(Common::SANITIZE_WHITESPACE);
+        $sanitizedFormData =
+
         $validatedFormData = $this->validateRegistrationData($sanitizedFormData);
         $dbResponse = MongoCreate::createUser($validatedFormData);
         var_dump($dbResponse);
@@ -172,7 +176,7 @@ class UserController implements UserControllerInterface {
      */
     public function validate($validationHash) {
         $results = BaseQueries::findBySingleFieldStr('users', 'verificationHash', $validationHash['hash'], ['email', 'firstname']);
-	    Utilities::redirect('http://www.zoes-social-media-project.com', false);
+	    Http::redirect('http://www.zoes-social-media-project.com', false);
 	    // cookie expires in 30 seconds from redirect
 	    setcookie('fromEmailVerification', 'true', time() + 30, '/',
             'zoes-social-media-project.com', false, true);
@@ -213,7 +217,7 @@ class UserController implements UserControllerInterface {
         if (isset($_COOKIE['email']) && !empty($_COOKIE['email'])) {
             $_POST['email'] = $_COOKIE['email'];
         }
-        $loginData = Utilities::sanitizePostData(Utilities::SANITIZE_WHITESPACE);
+        $loginData = Common::sanitizePostData(Common::SANITIZE_WHITESPACE);
         $validatedLoginData = $this->validateLoginData($loginData);
         $userDocument = BaseQueries::findBySingleFieldStr('users', 'email', $validatedLoginData['email'],
             [
@@ -242,7 +246,7 @@ class UserController implements UserControllerInterface {
             }
         } else {
             if (!isset($userDocument['lastLogin']) && !isset($userDocument['loginAttempts'])) {
-                Utilities::redirect(Utilities::WEB_ROOT, false);
+                Http::redirect(Http::WEB_ROOT, false);
                 // TODO send a JWT with the username and loginAttempts why?
                 $success = MongoUpdate::insertOneField('users', $userDocument['_id'],
                     'loginAttempts', 1);
@@ -253,14 +257,4 @@ class UserController implements UserControllerInterface {
         }
     }
 
-    public function makeAjaxModal($modalText) {
-        return
-        '<div class="modal-bkgd">
-            <div class="alert-modal modal" id="js-alert-modal">
-                <span id="js-x-alert-modal" class="x-modal">&times;</span>
-                <span class="subheader bold">' . $modalText . '</span>
-                <button id="js-close-alert-modal" type="button" class="close-modal-btn">Close</button>
-            </div>
-        </div>';
-    }
 }

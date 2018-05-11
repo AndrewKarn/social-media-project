@@ -1,17 +1,16 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: zoeboym
- * Date: 4/7/18
- * Time: 6:23 PM
+ * User: zoerobertson
+ * Date: 5/10/18
+ * Time: 1:40 PM
  */
 
 namespace Utility;
 
 
-class Utilities
+class HttpUtils
 {
-    const SANITIZE_WHITESPACE = 'cleanWSpaces';
     const COOKIES = [
         'name' => 'UserName',
         'email' => 'UserEmail',
@@ -19,20 +18,12 @@ class Utilities
         'PHPSESSID' => 'SessionId'
     ];
     const WEB_ROOT = 'www.zoes-social-media-project.com/';
+    /**
+     *
+     */
+    public static function readAjax() {
+        $data = json_decode(file_get_contents('php://input', true), true);
 
-    public static function formatUriQueryString($uri) {
-        parse_str(substr($uri, strpos($uri, '?') + 1), $results);
-        return $results;
-    }
-
-    public static function cleanWSpaces($val) {
-        $val = trim($val);
-        $val = strip_tags($val);
-        return preg_replace('/\(|\)|\>|\</', '', $val);
-    }
-
-    public static function sanitizePostData($callback) {
-        return array_map('self::' . $callback, $_POST);
     }
 
     public static function redirect($url, $die = true, $permanent = false)

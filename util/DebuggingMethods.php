@@ -8,13 +8,14 @@
 
 namespace Debugging;
 require_once __DIR__ . '/../vendor/autoload.php';
-use Utility\Utilities as Utilities;
+use Utility\Common as Utilities;
 
 class DebuggingMethods
 {
-    public static function logRouteVars($controller = '', $action = '', $params = []) {
+    public static function logRouteVars($controller = '', $action = '', $params = [], $uri) {
         $message = '';
         $message .= date('h:i:s A') . "\n";
+        $message .= "The request URI is: " . $uri . "\n";
         if (!empty($controller)) {
             $message .= 'The controller from this uri is: ' . $controller . "\n";
         } else {
@@ -26,7 +27,7 @@ class DebuggingMethods
             $message .= 'The action from this uri is blank.' . "\n";
         }
         if (!empty($params)) {
-           //  $params = Utilities::formatUriQueryString($params);
+           //  $params = Common::formatUriQueryString($params);
             $message .= 'The param(s) from this uri:' . "\n";
             $i = 0;
             foreach ($params as $key => $val) {
