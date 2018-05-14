@@ -6,7 +6,9 @@
  * Time: 8:59 PM
  */
 namespace Controllers;
-class Home
+use Home\HomeController;
+
+class Home extends HomeController
 {
 
 }

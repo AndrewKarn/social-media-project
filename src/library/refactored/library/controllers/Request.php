@@ -20,10 +20,27 @@ class Request
     private $params;
     private $handler;
     private $action;
+    private $requestBody;
+    private $httpMethod;
 
     public function __construct() {
         $this->setServer();
         $this->parseUri();
+        $this->setPath();
+        $this->setRequestBody();
+        $this->setHttpMethod();
+    }
+
+    private function setRequestBody() {
+        $this->requestBody = json_decode(file_get_contents('php://input', true), true);
+    }
+
+    public function getRequestBody() {
+        return $this->requestBody;
+    }
+
+    private function setHttpMethod() {
+        $this->httpMethod = $_SERVER["REQUEST_METHOD"];
     }
 
     private function setServer() {

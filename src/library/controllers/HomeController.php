@@ -6,6 +6,7 @@
  * Time: 6:19 PM
  */
 namespace Home;
+use Controllers\Request;
 use Utility\Common;
 use Utility\HttpUtils as Http;
 
@@ -54,20 +55,20 @@ class HomeController {
 //        }
     }
 
-    /** ---setter for auth token---
-     * @param string  $userToken
-     */
-    private function setAuthenticatedUser($userToken) {
-        $this->authenticatedUser = $userToken;
-    }
-
-    private function getAuthenticatedUser() {
-        if (isset($this->authenticatedUser) && $this->authenticatedUser) {
-            return $this->authenticatedUser;
-        } else {
-            return false;
-        }
-    }
+//    /** ---setter for auth token---
+//     * @param string  $userToken
+//     */
+//    private function setAuthenticatedUser($userToken) {
+//        $this->authenticatedUser = $userToken;
+//    }
+//
+//    private function getAuthenticatedUser() {
+//        if (isset($this->authenticatedUser) && $this->authenticatedUser) {
+//            return $this->authenticatedUser;
+//        } else {
+//            return false;
+//        }
+//    }
 
     private function checkAuthenticatedUser()
     {
@@ -128,7 +129,7 @@ class HomeController {
      *
      * @return HomeView
      */
-    public function getHomePage() {
+    public function getHomePage(Request $req = null) {
         if ($this->getEmailVerificationLogin()) {
             error_log("In homecontroller, routed through email verification");
             Http::revokeCookie('fromEmailVerification');
@@ -142,12 +143,12 @@ class HomeController {
             ]);
         }
 
-        $authenticatedUser = $this->getAuthenticatedUser();
-        if ($authenticatedUser) {
-            return new HomeView($authenticatedUser);
-        }
+//        $authenticatedUser = $req->getAuthenticated();
+//        if ($authenticatedUser) {
+//            return new HomeView($authenticatedUser);
+//        }
 
-        error_log("got to 3rd condition first.");
+        error_log("returned HomeView without emailVerification");
         return new HomeView();
     }
 

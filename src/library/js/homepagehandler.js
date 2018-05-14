@@ -21,7 +21,7 @@ const load = () => {
             const loginRequest = new Request('http://www.zoes-social-media-project.com/user/login/');
             const loginHeaders = new Headers();
             loginHeaders.append('Content-Type', 'application/json');
-            loginHeaders.append('Authorization', 'Bearer: zoe');
+            // loginHeaders.append('Authorization', 'Bearer: zoe');
             const loginInit = {
                 method: 'POST',
                 headers: loginHeaders,

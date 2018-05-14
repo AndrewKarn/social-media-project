@@ -95,10 +95,9 @@ class FrontController implements FrontControllerInterface
                 return $this;
             }
         } else {
-            throw new \InvalidRequestException()tException(
+            throw new InvalidRequestException(
                 "The action '" . $action . "' does not exist in " . $this->controller . ".");
         }
-        return $this;
     }
 
     public function setParams(array $params)

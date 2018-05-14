@@ -6,26 +6,20 @@
  * Time: 10:33 PM
  */
 namespace Controllers;
-use Home\HomeController;
+use ZErrors\InvalidRequestException;
+use Home\HomeController as Home;
+use Shared\Constants as Constants;
 class Router
 {
-    protected $request;
     protected $controller;
+    protected $method;
 
     public function __construct()
     {
-        $this->setRequest(new Request());
-        error_log(var_dump($this->request));
-        $this->setController();
-
-    }
-
-    private function setRequest(Request $request) {
-        $this->request = $request;
-    }
-
-    private function getRequest() {
-        return $this->request;
+        $req = new Request();
+        error_log($req->getPath());
+        $this->parsePath($req->getPath());
+        $this->exec($req->getParams());
     }
 
     private function getController() {
@@ -37,30 +31,52 @@ class Router
         var_dump($controller);
     }
 
-    private function setController() {
-        $controller = ucfirst(strtolower($this->getRequest()->getHandler()));
+    private function setController($controller) {
         try {
             if (!class_exists($controller)) {
                 error_log($controller);
-                throw new \InvalidRequestException("The controller '" . $controller . "' does not exist");
+                throw new InvalidRequestException("The controller '" . $controller . "' does not exist");
             }
-        } catch (\InvalidRequestException $e) {
+        } catch (InvalidRequestException $e) {
             error_log($e->getMessage());
+            error_log($e->getTraceAsString());
         }
         $this->controller = $controller;
     }
 
-    private function setAction($action) {
+    private function setMethod($method) {
         $methods = get_class_methods($this->controller);
-        if (isset($methods)) {
-            if (in_array($action, $methods)) {
-                $this->action = $action;
-                return $this;
+        try {
+            if (isset($methods)) {
+                if (in_array($method, $methods)) {
+                    $this->method = $method;
+                    return $this;
+                }
+            } else {
+                throw new InvalidRequestException(
+                    "The action '" . $method . "' does not exist in " . $this->getController() . ".");
             }
-        } else {
-            //throw new \InvalidRequestException()tException(
-            //    "The action '" . $action . "' does not exist in " . $this->controller . ".");
+        } catch (InvalidRequestException $e) {
+            error_log($e->getMessage());
         }
         return $this;
+    }
+
+    private function getMethod() {
+        return $this->method;
+    }
+
+    private function parsePath($path) {
+        $instructions = Constants::REQUEST_PATHS[$path];
+        $this->setController($instructions["controller"]);
+        $this->setMethod($instructions["method"]);
+    }
+
+    private function exec($req) {
+        $class = $this->getController();
+        $method = $this->getMethod();
+        error_log($method);
+        $class = new $class();
+        $req ? $class->$method($req) : $class->$method();
     }
 }

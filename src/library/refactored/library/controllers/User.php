@@ -6,7 +6,9 @@
  * Time: 8:59 PM
  */
 namespace Controllers;
-class User
+use User\UserController;
+
+class User extends UserController
 {
 
 }

@@ -1,5 +1,6 @@
 <?php
 namespace User;
+use Controllers\Request;
 use Debugging\DebuggingMethods;
 use MongoShared\BaseQueries;
 use MongoShared\MongoCreate;
@@ -19,12 +20,12 @@ class UserController implements UserControllerInterface {
     public function __construct()
     {
         // THIS IS FOR TESTING
-        $data = json_decode(file_get_contents('php://input', true), true);
-        $data['server'] = 'Recieved at ' . __DIR__;
-        $data['$_SERVER'] = $_SERVER;
-        $data['$_POST'] = $_POST;
-        echo json_encode($data);
-        die();
+//        $data = json_decode(file_get_contents('php://input', true), true);
+//        $data['server'] = 'Recieved at ' . __DIR__;
+//        $data['$_SERVER'] = $_SERVER;
+//        $data['$_POST'] = $_POST;
+//        echo json_encode($data);
+//        die();
     }
 
     /** ---Used to register new user---
@@ -213,7 +214,22 @@ class UserController implements UserControllerInterface {
         return $validLoginData;
     }
 
-    public function login() {
+    public function login(Request $req = null) {
+        if ($req) {
+            $_POST = $req->getRequestBody();
+        }
+        function generateJWT($data) {
+            $key = Key::JWT_SECRET;
+            $token = array(
+                "iss" => "zoes-social-media-project.com",
+                "aud" => "zoes-scoial-media-project.com",
+                "iat" => time(),
+                "exp" => time() + 60,
+                "dat" => $data
+            );
+            return JWT::encode($token, $key, 'HS512');
+        }
+
         if (isset($_COOKIE['email']) && !empty($_COOKIE['email'])) {
             $_POST['email'] = $_COOKIE['email'];
         }
@@ -234,6 +250,8 @@ class UserController implements UserControllerInterface {
             return false;
         }
         if (password_verify($validatedLoginData['password'], $userDocument['password'])) {
+            $jwt = generateJWT($validatedLoginData['email']);
+            header('Authorization: ' . $jwt);
             echo '<p>You successfully logged in! Welcome ' . $userDocument['firstname'] . '!';
             if (!isset($userDocument['lastLogin'])) {
                 $success = MongoUpdate::insertManyFields('users', $userDocument['_id'],

@@ -9,6 +9,8 @@
 namespace Utility;
 
 
+use Controllers\Request;
+
 class Common
 {
     const SANITIZE_WHITESPACE = 'cleanWSpaces';
@@ -25,7 +27,8 @@ class Common
     }
 
     public static function sanitizePostData($callback) {
-        return array_map('self::' . $callback, $_POST);
+        $req = new Request();
+        return array_map('self::' . $callback, $req->getRequestBody());
     }
 
     public static function makeAjaxModal($modalText) {

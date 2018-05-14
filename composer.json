@@ -12,6 +12,7 @@
                 "src/library/refactored/library/controllers/",
                 "src/library/refactored/"
             ],
+            "ZErrors\\": "src/library/refactored/library/errors/",
             "Front\\": "src/library/",
             "Home\\": [
                 "src/library/controllers/",
@@ -20,6 +21,7 @@
                 "src/library/views/Home"
 
             ],
+            "Shared\\": "src/library/refactored/shared/",
             "MongoShared\\": "src/shared/MongoShared/",
             "Debugging\\": "util/",
             "Utility\\": [
