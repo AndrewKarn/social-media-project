@@ -19,7 +19,7 @@ class Router
         $req = new Request();
         error_log($req->getPath());
         $this->parsePath($req->getPath());
-        $this->exec($req->getParams());
+        $this->exec($req);
     }
 
     private function getController() {

@@ -7,6 +7,7 @@ use MongoShared\MongoCreate;
 use MongoShared\MongoUtilities;
 use MongoShared\MongoUpdate;
 use MongoDB;
+use Utility\HttpUtils;
 use Utility\Key;
 use Utility\Common as Common;
 use Utility\HttpUtils as Http;
@@ -218,17 +219,6 @@ class UserController implements UserControllerInterface {
         if ($req) {
             $_POST = $req->getRequestBody();
         }
-        function generateJWT($data) {
-            $key = Key::JWT_SECRET;
-            $token = array(
-                "iss" => "zoes-social-media-project.com",
-                "aud" => "zoes-scoial-media-project.com",
-                "iat" => time(),
-                "exp" => time() + 60,
-                "dat" => $data
-            );
-            return JWT::encode($token, $key, 'HS512');
-        }
 
         if (isset($_COOKIE['email']) && !empty($_COOKIE['email'])) {
             $_POST['email'] = $_COOKIE['email'];
@@ -250,18 +240,19 @@ class UserController implements UserControllerInterface {
             return false;
         }
         if (password_verify($validatedLoginData['password'], $userDocument['password'])) {
-            $jwt = generateJWT($validatedLoginData['email']);
-            header('Authorization: ' . $jwt);
-            echo '<p>You successfully logged in! Welcome ' . $userDocument['firstname'] . '!';
-            if (!isset($userDocument['lastLogin'])) {
-                $success = MongoUpdate::insertManyFields('users', $userDocument['_id'],
-                    [
-                        'isActivated'   => true,
-                        'lastLogin'     => MongoUtilities::timestamp(),
-                        'loginAttempts' => 0
-                    ]);
-                echo $success ? '<p>You have never logged in before.</p>': '<p>Uh oh. Something went wrong.</p>';
-            }
+            $jwt = HttpUtils::generateJWT($validatedLoginData['email']);
+            header('Authorization:' . $jwt);
+            //echo json_encode('<p>You successfully logged in! Welcome ' . $userDocument['firstname'] . '!</p>');
+            echo json_encode($_SERVER);
+//            if (!isset($userDocument['lastLogin'])) {
+//                $success = MongoUpdate::insertManyFields('users', $userDocument['_id'],
+//                    [
+//                        'isActivated'   => true,
+//                        'lastLogin'     => MongoUtilities::timestamp(),
+//                        'loginAttempts' => 0
+//                    ]);
+//                echo $success ? '<p>You have never logged in before.</p>': '<p>Uh oh. Something went wrong.</p>';
+//            }
         } else {
             if (!isset($userDocument['lastLogin']) && !isset($userDocument['loginAttempts'])) {
                 Http::redirect(Http::WEB_ROOT, false);

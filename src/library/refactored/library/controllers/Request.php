@@ -7,6 +7,7 @@
  */
 namespace Controllers;
 use Firebase\JWT\JWT;
+use Utility\HttpUtils;
 use Utility\Key;
 
 class Request
@@ -26,6 +27,7 @@ class Request
     public function __construct() {
         $this->setServer();
         $this->parseUri();
+        $this->checkToken();
         $this->setPath();
         $this->setRequestBody();
         $this->setHttpMethod();
@@ -41,6 +43,10 @@ class Request
 
     private function setHttpMethod() {
         $this->httpMethod = $_SERVER["REQUEST_METHOD"];
+    }
+
+    public function getHttpMethod() {
+        return $this->httpMethod;
     }
 
     private function setServer() {
@@ -110,7 +116,14 @@ class Request
     }
 
     private function checkToken() {
+
         $jwt = $_SERVER["HTTP_AUTHORIZATION"];
-        JWT::decode($jwt, Key::JWT_SECRET, array('HS512'));
+        $check = JWT::decode($jwt, Key::JWT_SECRET, array('HS512'));
+        if ($check) {
+           // HttpUtils::redirect(HttpUtils::WEB_ROOT, false);
+            header('Authorization:');
+            echo json_encode('Successful validation of web token');
+
+        }
     }
 }

@@ -7,8 +7,7 @@
  */
 
 namespace Utility;
-
-
+use Firebase\JWT\JWT;
 class HttpUtils
 {
     const COOKIES = [
@@ -44,5 +43,17 @@ class HttpUtils
         foreach(self::COOKIES as $cookie => $method) {
             self::revokeCookie($cookie);
         }
+    }
+
+    public  static function generateJWT($data) {
+        $key = Key::JWT_SECRET;
+        $token = array(
+            "iss" => "zoes-social-media-project.com",
+            "aud" => "zoes-social-media-project.com",
+            "iat" => time(),
+            "exp" => time() + 120,
+            "dat" => $data
+        );
+        return JWT::encode($token, $key, 'HS512');
     }
 }

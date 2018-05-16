@@ -16,7 +16,7 @@ class Constants
             "controller" => "Controllers\Home",
             "method" => "getHomePage"
         ],
-        "user/login" => [
+        "user/default" => [
             "controller" => "Controllers\User",
             "method" => "login"
         ]

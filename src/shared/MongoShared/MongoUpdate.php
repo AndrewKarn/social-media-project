@@ -19,7 +19,7 @@ class MongoUpdate
     }
     public static function insertManyFields($collection, $query, array $fields) {
         $collection = MongoUtilities::getCollection($collection);
-        $success = $collection->updateOne($query, $fields)->isAcknowledged();
+        $success = $collection->updateMany($query, ['$set' => $fields])->isAcknowledged();
         return $success;
     }
 }
