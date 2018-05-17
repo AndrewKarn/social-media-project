@@ -21,7 +21,8 @@ const load = () => {
             const request = new ZRequest({
                 uri: 'user/default',
                 httpMethod: 'POST',
-                body: formJson
+                body: formJson,
+                needAuth: true
             });
             request.request().then(data => {
                     console.log(data);

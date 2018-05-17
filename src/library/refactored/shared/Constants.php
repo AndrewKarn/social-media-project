@@ -18,7 +18,13 @@ class Constants
         ],
         "user/default" => [
             "controller" => "Controllers\User",
-            "method" => "login"
+            "method" => "login",
+            "requestBody" => true
         ]
     ];
+
+    const VALID_TOKEN = 1;
+    const NBF_TOKEN = 2;
+    const EXP_TOKEN = 3;
+    const INVALID_TOKEN = 0;
 }

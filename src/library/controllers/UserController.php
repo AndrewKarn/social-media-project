@@ -21,7 +21,7 @@ class UserController implements UserControllerInterface {
     public function __construct()
     {
         // THIS IS FOR TESTING
-//        $data = json_decode(file_get_contents('php://input', true), true);
+//        $data = json_decode(file_get_contents('php://input', true),exit true);
 //        $data['server'] = 'Recieved at ' . __DIR__;
 //        $data['$_SERVER'] = $_SERVER;
 //        $data['$_POST'] = $_POST;

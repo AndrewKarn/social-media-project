@@ -4,7 +4,7 @@
         uri: '/example/uri',
         method: 'POST',
         body: string | int | json | array | obj,
-
+        needAuth: bool - default to false
     }
  */
 
@@ -12,7 +12,8 @@ const ZRequest = function(init) {
     this.root = 'http://www.zoes-social-media-project.com/';
     this.uri = '';
     this.setUri(init.uri);
-    this.jwt = this.setJWT();
+    this.setNeedAuth(init.needAuth);
+    this.jwt = init.needAuth ? this.setJWT(): null;
     this.setHttpMethod(init.httpMethod);
     if (this.httpMethod !== undefined) {
         this.setBody(init.body);
@@ -25,9 +26,15 @@ ZRequest.prototype.constructor = ZRequest;
 ZRequest.prototype.request = function () {
     return fetch(this.getReqUri(), this.buildFetchInit()).then(response => {
         const jwt = response.headers.get('authorization');
-        localStorage.setItem('jwt', jwt);
+        if (jwt) {
+            localStorage.setItem('jwt', jwt);
+        }
         return response.json();
     });
+};
+
+ZRequest.prototype.setNeedAuth = function (needed) {
+    this.needAuth = !(needed === undefined || needed === false);
 };
 
 ZRequest.prototype.buildFetchInit = function () {

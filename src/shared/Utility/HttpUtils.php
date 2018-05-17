@@ -45,15 +45,17 @@ class HttpUtils
         }
     }
 
-    public  static function generateJWT($data) {
+    public  static function generateJWT($data = null) {
         $key = Key::JWT_SECRET;
         $token = array(
             "iss" => "zoes-social-media-project.com",
             "aud" => "zoes-social-media-project.com",
             "iat" => time(),
-            "exp" => time() + 120,
-            "dat" => $data
+            "exp" => time() + 300,
         );
+        if (!is_null($data)) {
+            $token["dat"] = $data;
+        }
         return JWT::encode($token, $key, 'HS512');
     }
 }

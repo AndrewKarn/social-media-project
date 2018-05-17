@@ -26,6 +26,6 @@ class Response
     }
 
     public function send () {
-        echo json_encode()
+        echo json_encode($this->getResponseData());
     }
 }

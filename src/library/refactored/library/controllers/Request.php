@@ -6,7 +6,11 @@
  * Time: 8:59 PM
  */
 namespace Controllers;
+use Firebase\JWT\BeforeValidException;
+use Firebase\JWT\ExpiredException;
 use Firebase\JWT\JWT;
+use Firebase\JWT\SignatureInvalidException;
+use Shared\Constants;
 use Utility\HttpUtils;
 use Utility\Key;
 
@@ -23,6 +27,8 @@ class Request
     private $action;
     private $requestBody;
     private $httpMethod;
+    private $authenticated;
+    private $token;
 
     public function __construct() {
         $this->setServer();
@@ -115,15 +121,52 @@ class Request
         $this->setParams(array_slice($sections, 2));
     }
 
+    private function setAuthenticated ($status) {
+        $this->authenticated = $status;
+    }
+
+    public function isAuthenticated () {
+        return $this->authenticated;
+    }
+
+    private function setToken ($token) {
+        $this->token = $token;
+    }
+
+    public function getToken () {
+        return $this->isAuthenticated() ? $this->token : 'There is no token available';
+    }
+
     private function checkToken() {
+        if (isset($_SERVER["HTTP_AUTHORIZATION"])) {
+            $jwt = $_SERVER["HTTP_AUTHORIZATION"];
+            try {
+                $decoded = JWT::decode($jwt, Key::JWT_SECRET, array('HS512'));
+                if (!empty($decoded)) {
+                    $this->setAuthenticated(Constants::VALID_TOKEN);
+                    $this->setToken($decoded);
+                    // TODO implement a method to add additional data in jwt
+                    $newJWT = HttpUtils::generateJWT($decoded->dat);
+                    header('Authorization:' . $newJWT);
+                }
+            } catch (BeforeValidException $e) {
+                error_log($e->getMessage());
+                $this->setAuthenticated(Constants::NBF_TOKEN);
 
-        $jwt = $_SERVER["HTTP_AUTHORIZATION"];
-        $check = JWT::decode($jwt, Key::JWT_SECRET, array('HS512'));
-        if ($check) {
-           // HttpUtils::redirect(HttpUtils::WEB_ROOT, false);
-            header('Authorization:');
-            echo json_encode('Successful validation of web token');
+            } catch (ExpiredException $e) {
+                error_log($e->getMessage());
+                $this->setAuthenticated(Constants::EXP_TOKEN);
 
+            } catch (SignatureInvalidException $e) {
+                error_log($e->getMessage());
+                $this->setAuthenticated(Constants::INVALID_TOKEN);
+            } catch (\Exception $e) {
+                error_log($e->getMessage());
+                error_log($e->getTraceAsString());
+                http_response_code(500);
+            }
+        } else {
+            $this->setAuthenticated(false);
         }
     }
 }
