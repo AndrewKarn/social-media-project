@@ -12,6 +12,7 @@
                 "src/library/refactored/library/controllers/",
                 "src/library/refactored/"
             ],
+            "Views\\": "src/library/refactored/library/views/",
             "ZErrors\\": "src/library/refactored/library/errors/",
             "Front\\": "src/library/",
             "Home\\": [

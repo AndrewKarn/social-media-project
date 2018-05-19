@@ -14,12 +14,26 @@ class Constants
     const REQUEST_PATHS = [
         "home/default" => [
             "controller" => "Controllers\Home",
-            "method" => "getHomePage"
+            "httpMethod" => [
+                "GET" => [
+                    "method" => "getHomePage",
+                    "requestBody" => false,
+                    "protected" => false
+                ]
+            ]
         ],
         "user/default" => [
             "controller" => "Controllers\User",
-            "method" => "login",
-            "requestBody" => true
+            "httpMethod" => [
+                "GET" => [
+
+                ],
+                "POST" => [
+                    "method" => "login",
+                    "requestBody" => true,
+                    "protected" => false
+                ]
+            ]
         ]
     ];
 
@@ -27,4 +41,5 @@ class Constants
     const NBF_TOKEN = 2;
     const EXP_TOKEN = 3;
     const INVALID_TOKEN = 0;
+
 }

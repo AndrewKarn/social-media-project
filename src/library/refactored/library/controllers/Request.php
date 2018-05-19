@@ -39,6 +39,13 @@ class Request
         $this->setHttpMethod();
     }
 
+    public function getPathInfo () {
+        $pathInfo = [];
+        $pathInfo['path'] = $this->getPath();
+        $pathInfo['httpMethod'] = $this->getHttpMethod();
+        return $pathInfo;
+    }
+
     private function setRequestBody() {
         $this->requestBody = json_decode(file_get_contents('php://input', true), true);
     }

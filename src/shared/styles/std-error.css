@@ -1,0 +1,25 @@
+html {
+    box-sizing: border-box;
+}
+
+body {
+    text-align: center;
+    margin: 0 auto;
+    max-width: 900px;
+}
+
+header {
+    margin: 5%;
+}
+
+h1 {
+    font-family: Arial, sans-serif;
+    font-size: 2em;
+    padding: 1em;
+    background-color: antiquewhite;
+}
+
+pre,
+h2 {
+    text-align: left;
+}

@@ -11,10 +11,11 @@ namespace Controllers;
 
 class Response
 {
-    private $responseData;
+    private $responseData = [];
 
     public function buildResponse (array $data) {
         $this->setResponseData(array_merge($this->getResponseData(), $data));
+        return $this;
     }
 
     private function getResponseData () {
@@ -23,6 +24,7 @@ class Response
 
     private function setResponseData (array $data) {
         $this->responseData = $data;
+        return $this;
     }
 
     public function send () {
