@@ -1,9 +1,12 @@
+<?php
+    use Shared\Constants;
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="std-error.css" type="text/css">
+    <link rel="stylesheet" href="<?=Constants::WEB_ROOT?>std-error.css" type="text/css">
     <title><?=$this->getTitle();?></title>
 </head>
 <body>

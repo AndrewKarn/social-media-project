@@ -11,6 +11,7 @@ namespace Shared;
 
 class Constants
 {
+    const WEB_ROOT = 'http://www.zoes-social-media-project.com/';
     const REQUEST_PATHS = [
         "home/default" => [
             "controller" => "Controllers\Home",
