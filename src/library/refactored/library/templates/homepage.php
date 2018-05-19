@@ -8,29 +8,26 @@
     <meta charset="UTF-8">
     <title>Zoe's Social Media Project</title>
     <link href="<?=Constants::WEB_ROOT?>main.css" rel="stylesheet" type="text/css">
+    <link href="<?=Constants::WEB_ROOT?>login-header.css" rel="stylesheet" type="text/css">
     <script src="<?=Constants::WEB_ROOT?>ZRequest.js" type="application/x-javascript"></script>
 </head>
 <body>
+<?=$this->getHeader();?>
+<!--<header>-->
+<!--    <h1><a href="--><?//=Constants::WEB_ROOT?><!-->/home/default">Z.S.M.P</a></h1>-->
+<!--    <h2>Welcome!</h2>-->
+<!--    <form id="js-login-form">-->
+<!--        <span>Existing Users:</span>-->
+<!--        <div>-->
+<!--            <input name="email" type="email" placeholder="user@example.com">-->
+<!--            <input name="password" type="password" placeholder="password">-->
+<!--            <button type="submit">Login</button>-->
+<!--        </div>-->
+<!--    </form>-->
+<!--</header>-->
 <main>
-    <div class="box1">
-        <span>Existing Users Login:</span>
-        <form id="js-login-form">
-            <div>
-                <label for="email">Input your email:</label>
-                <input name="email" type="email" >
-            </div>
-            <div>
-                <label for="password">Input your password:</label>
-                <input name="password" type="password">
-            </div>
-            <div>
-                <button type="submit">Submit</button>
-            </div>
-        </form>
-    </div>
-    <br />
     <div class="box2">
-        <form action="http://www.zoes-social-media-project.com/user/register/" method="post" id="js-register-form">
+        <form action="<?=Constants::WEB_ROOT?>user/register/" method="post" id="js-register-form">
             <div>
                 <label for="firstname">First Name:</label>
                 <input id="firstname-register" type="text" name="firstname" required>
