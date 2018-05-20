@@ -38,7 +38,7 @@ class InvalidRequestException extends Exception
             $formatted .= "#" . $i++ . "\n";
             $formatted .= "File: " . $detail["file"] . "\n";
             $formatted .= "Line: " . $detail["line"] . "\n";
-            $formatted .= "Function: " . $detail["function"] . '(' . $detail["args"] . ')' . "\n\n";
+            $formatted .= "Function: " . $detail["function"] . '(' . @$detail["args"] . ')' . "\n\n";
         }
         return $formatted;
     }

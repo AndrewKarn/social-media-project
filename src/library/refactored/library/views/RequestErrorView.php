@@ -30,17 +30,6 @@ class RequestErrorView extends BaseView
         $this->setTemplate('request-error');
     }
 
-    protected function setTemplate($name) {
-        $file = self::TEMPLATES_DIR . $name . '.php';
-        if (!file_exists($file)) {
-            error_log($file . ' not found.');
-            die();
-        }
-        ob_start();
-            include $file;
-        $this->template = ob_get_clean();
-    }
-
     protected function setMessage($message) {
         $this->message = $message;
     }

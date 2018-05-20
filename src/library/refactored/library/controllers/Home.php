@@ -7,8 +7,17 @@
  */
 namespace Controllers;
 use Home\HomeController;
+use Views\HomeView;
 
-class Home extends HomeController
+class Home
 {
+    public function __construct()
+    {
 
+    }
+
+    public function getHomePage() {
+        $view = new HomeView();
+        $view->render();
+    }
 }

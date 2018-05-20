@@ -38,8 +38,6 @@ class Constants
         ]
     ];
 
-    const TEMPLATE_DIR = __DIR__ . '/../templates/';
-
     const VALID_TOKEN = 1;
     const NBF_TOKEN = 2;
     const EXP_TOKEN = 3;

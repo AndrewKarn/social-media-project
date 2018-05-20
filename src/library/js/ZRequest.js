@@ -30,6 +30,14 @@ ZRequest.prototype.request = function () {
             localStorage.setItem('jwt', jwt);
         }
         return response.json();
+    }).then(data => {
+        if (data.error) {
+            document.open();
+            document.write(data.error);
+            document.close();
+        } else {
+            return data;
+        }
     });
 };
 

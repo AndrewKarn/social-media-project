@@ -13,10 +13,6 @@ class HomeView extends BaseView
 {
     public function __construct() {
         $this->setTitle('Home');
-    }
-
-    protected function setTemplate($name)
-    {
-
+        $this->setTemplate('homepage');
     }
 }

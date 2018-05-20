@@ -30,7 +30,7 @@ abstract class BaseView
         return $this->title;
     }
 
-    protected function getTemplate() {
+    public function getTemplate() {
         return $this->template;
     }
 
@@ -41,7 +41,7 @@ abstract class BaseView
     }
 
     protected function setTemplate($name) {
-        $file = Constants::TEMPLATE_DIR . $name . '.php';
+        $file = self::TEMPLATES_DIR . $name . '.php';
         if (!file_exists($file)) {
             error_log($file . ' not found.');
             die();
