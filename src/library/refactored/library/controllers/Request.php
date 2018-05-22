@@ -47,8 +47,26 @@ class Request
     }
 
     private function setRequestBody() {
-        $this->requestBody = json_decode(file_get_contents('php://input', true), true);
+        $raw = json_decode(file_get_contents('php://input', true), true);
+        if (!is_null($raw)) {
+            $this->requestBody = $this->sanitizeRequestBody($raw);
+        }
     }
+
+    /**
+     * Iterates over requestBody elements and cleans them before processing
+     * @param array $requestBody
+     * @return array $requestBody - clean
+     */
+    private function sanitizeRequestBody(array $requestBody) {
+        array_walk_recursive($requestBody, function (&$val) {
+            $val = trim($val);
+            $val = strip_tags($val);
+            $val = preg_replace('/\(|\)|\>|\</', '', $val);
+        });
+        return $requestBody;
+    }
+
 
     public function getRequestBody() {
         return $this->requestBody;
@@ -144,6 +162,9 @@ class Request
         return $this->isAuthenticated() ? $this->token : 'There is no token available';
     }
 
+    /**
+     * If there is a token in the request, check the token, sets authentication status
+     */
     private function checkToken() {
         if (isset($_SERVER["HTTP_AUTHORIZATION"])) {
             $jwt = $_SERVER["HTTP_AUTHORIZATION"];

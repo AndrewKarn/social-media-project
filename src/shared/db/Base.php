@@ -6,11 +6,11 @@
  * Time: 3:58 PM
  */
 
-namespace MongoShared;
+namespace DB;
 require __DIR__ . '/../../../vendor/autoload.php';
 use MongoDB;
 
-class MongoUtilities
+class Base
 {
     public static function getCollection($collection) {
         $db = new MongoDB\Client("mongodb://192.168.50.40:27017", [], [
@@ -23,7 +23,7 @@ class MongoUtilities
         return $db->main->$collection;
     }
 
-    public static function makeProjection(array $fields) {
+    public static function project(array $fields) {
         $fieldsToProject = array();
         foreach($fields as $field) {
             $fieldsToProject[$field] = 1;

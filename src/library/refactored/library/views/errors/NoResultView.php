@@ -2,32 +2,24 @@
 /**
  * Created by PhpStorm.
  * User: zoerobertson
- * Date: 5/18/18
- * Time: 9:21 PM
+ * Date: 5/21/18
+ * Time: 7:30 PM
  */
 
 namespace Views;
+use ZErrors\NoResultException;
 
-
-use Shared\Constants;
-use ZErrors\InvalidRequestException;
-
-class RequestErrorView extends BaseView
+class NoResultView extends BaseView
 {
-    const ERROR_TITLES = [
-        400 => "400 Bad Request",
-        403 => "403 Forbidden",
-        404 => "404 Page Not Found"
-    ];
 
     protected $message;
     protected $trace;
 
-    public function __construct(InvalidRequestException $error) {
+    public function __construct(NoResultException $error) {
         $this->setMessage($error->getMessage());
         $this->setStackTrace($error->formatStackTrace());
-        $this->setTitle(self::ERROR_TITLES[http_response_code()]);
-        $this->setTemplate('request-error');
+        $this->setTitle('No Results');
+        $this->setTemplate('error-page');
     }
 
     protected function setMessage($message) {

@@ -7,8 +7,8 @@ use Utility;
 class MongoCreate {
 	public static function createUser(array $validData) {
 	    $validData['isActivated'] = false;
-	    $validData['dateCreated'] = MongoUtilities::timestamp();
-		$usersDB = MongoUtilities::getCollection('users');
+	    $validData['dateCreated'] = Base::timestamp();
+		$usersDB = Base::getCollection('users');
 		try {
             $response = $usersDB->insertOne($validData);
             return $response;

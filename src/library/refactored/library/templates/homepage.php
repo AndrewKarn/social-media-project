@@ -9,7 +9,6 @@
     <title>Zoe's Social Media Project</title>
     <link href="<?=Constants::WEB_ROOT?>main.css" rel="stylesheet" type="text/css">
     <link href="<?=Constants::WEB_ROOT?>login-header.css" rel="stylesheet" type="text/css">
-    <script src="<?=Constants::WEB_ROOT?>ZRequest.js" type="application/x-javascript"></script>
 </head>
 <body>
 <?=$this->getHeader();?>
@@ -47,7 +46,6 @@
         </form>
     </div>
 </main>
-<script src="<?=Constants::WEB_ROOT?>ZUtils.js" type="application/x-javascript"></script>
-<script src="<?=Constants::WEB_ROOT?>homepagehandler.js" type="application/x-javascript"></script>
+<?=$this->getSharedScripts();?>
 </body>
 </html>

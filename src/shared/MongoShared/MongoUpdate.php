@@ -13,12 +13,12 @@ use MongoDB;
 class MongoUpdate
 {
     public static function insertOneField($collection, $query, $field, $val) {
-        $collection = MongoUtilities::getCollection($collection);
+        $collection = Base::getCollection($collection);
         $success = $collection->updateOne($query, ['$set' => [$field => $val]])->isAcknowledged();
         return $success;
     }
     public static function insertManyFields($collection, $query, array $fields) {
-        $collection = MongoUtilities::getCollection($collection);
+        $collection = Base::getCollection($collection);
         $success = $collection->updateMany($query, ['$set' => $fields])->isAcknowledged();
         return $success;
     }

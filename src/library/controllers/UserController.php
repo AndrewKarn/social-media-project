@@ -2,9 +2,8 @@
 namespace User;
 use Controllers\Request;
 use Debugging\DebuggingMethods;
-use MongoShared\BaseQueries;
 use MongoShared\MongoCreate;
-use MongoShared\MongoUtilities;
+use DB\Base;
 use MongoShared\MongoUpdate;
 use MongoDB;
 use Utility\HttpUtils;
@@ -43,7 +42,7 @@ class UserController implements UserControllerInterface {
         $validatedFormData = $this->validateRegistrationData($sanitizedFormData);
         $dbResponse = MongoCreate::createUser($validatedFormData);
         var_dump($dbResponse);
-        $mongoId = MongoUtilities::readInsertCursor($dbResponse, 1);
+        $mongoId = Base::readInsertCursor($dbResponse, 1);
         $this->sendActivationEmail($mongoId);
     }
 
@@ -58,10 +57,10 @@ class UserController implements UserControllerInterface {
      */
     public function sendActivationEmail($mongoId)
     {
-        $document = BaseQueries::findById('users', $mongoId, ['email']);
+        $document = Base::findById('users', $mongoId, ['email']);
         $email = $document['email'];
         $generatedKey = sha1(mt_rand(10000,99999) . time() . $email);
-        $inserted = MongoUpdate::insertOneField('users', ['_id'=> MongoUtilities::makeMongoId($mongoId)], 'verificationHash', $generatedKey);
+        $inserted = MongoUpdate::insertOneField('users', ['_id'=> Base::makeMongoId($mongoId)], 'verificationHash', $generatedKey);
         try {
             if (!$inserted) {
                 throw new \MongoWriteConcernException("The database failed to write the account verification hash");
@@ -177,7 +176,7 @@ class UserController implements UserControllerInterface {
      * @param array $validationHash  containing activation hash
      */
     public function validate($validationHash) {
-        $results = BaseQueries::findBySingleFieldStr('users', 'verificationHash', $validationHash['hash'], ['email', 'firstname']);
+        $results = Base::findBySingleFieldStr('users', 'verificationHash', $validationHash['hash'], ['email', 'firstname']);
 	    Http::redirect('http://www.zoes-social-media-project.com', false);
 	    // cookie expires in 30 seconds from redirect
 	    setcookie('fromEmailVerification', 'true', time() + 30, '/',
@@ -225,7 +224,7 @@ class UserController implements UserControllerInterface {
         }
         $loginData = Common::sanitizePostData(Common::SANITIZE_WHITESPACE);
         $validatedLoginData = $this->validateLoginData($loginData);
-        $userDocument = BaseQueries::findBySingleFieldStr('users', 'email', $validatedLoginData['email'],
+        $userDocument = Query::query('users', 'email', $validatedLoginData['email'],
             [
             '_id',
             'email',
@@ -248,7 +247,7 @@ class UserController implements UserControllerInterface {
 //                $success = MongoUpdate::insertManyFields('users', $userDocument['_id'],
 //                    [
 //                        'isActivated'   => true,
-//                        'lastLogin'     => MongoUtilities::timestamp(),
+//                        'lastLogin'     => Base::timestamp(),
 //                        'loginAttempts' => 0
 //                    ]);
 //                echo $success ? '<p>You have never logged in before.</p>': '<p>Uh oh. Something went wrong.</p>';

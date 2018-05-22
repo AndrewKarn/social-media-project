@@ -2,14 +2,14 @@
 /**
  * Created by PhpStorm.
  * User: zoerobertson
- * Date: 5/10/18
- * Time: 10:41 PM
+ * Date: 5/21/18
+ * Time: 7:26 PM
  */
+
 namespace ZErrors;
-use Controllers\Request;
-use Controllers\Response;
-use Exception;
-class InvalidRequestException extends Exception
+
+
+class NoResultException extends \Exception
 {
     public function formatStackTrace() {
         $trace = $this->getTrace();

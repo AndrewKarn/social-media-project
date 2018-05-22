@@ -6,11 +6,11 @@
  * Time: 6:30 PM
  */
 
-namespace MongoShared;
+namespace DB;
 require __DIR__ . '/../../../vendor/autoload.php';
 use MongoDB;
 
-class BaseQueries
+class Query extends Base
 {
     /** Queries db by collection for objectId
      *
@@ -21,14 +21,14 @@ class BaseQueries
      * @return array|null|object
      */
     public static function findById($collection, $objectId, $projectionFields = array()) {
-        $collection = MongoUtilities::getCollection($collection);
+        $collection = parent::getCollection($collection);
 
         $idQuery = [
             "_id" => new MongoDB\BSON\ObjectId($objectId)
         ];
 
         if (!empty($projectionFields)) {
-            $projection = MongoUtilities::makeProjection($projectionFields);
+            $projection = parent::project($projectionFields);
             $result = $collection->findOne($idQuery, $projection);
         } else {
             $result = $collection->findOne($idQuery);
@@ -41,22 +41,18 @@ class BaseQueries
         return $result;
     }
 
-    public static function findBySingleFieldStr($collection, $field, $val, $projection = array()) {
-        $collection = MongoUtilities::getCollection($collection);
-
-        $query = [
-            $field => $val
-        ];
+    public static function query($collection, $query, $projection = array()) {
+        $collection = parent::getCollection($collection);
 
         if (!empty($projection)) {
-            $projection = MongoUtilities::makeProjection($projection);
+            $projection = parent::project($projection);
             $result = $collection->findOne($query, $projection);
         } else {
             $result = $collection->findOne($query);
         }
 
         if (empty($result)) {
-            throw new \InvalidArgumentException("No results for $field: $val in $collection");
+            throw new \InvalidArgumentException("No results for $query[0] in $collection");
         }
 
         return $result;

@@ -19,4 +19,6 @@
         <pre><?=$this->getStackTrace();?></pre>
         <p><?='at: ' . date('g:i:s');?></p>
     </main>
+    <?=$this->getSharedScripts();?>
 </body>
+</html>

@@ -144,15 +144,15 @@ class Router
 //                $response = new Response();
 //                $response->buildResponse(['Error from Router::parsePath' => $e->getMessage()])->send();
 //            } else {
-                $errorView = new RequestErrorView($e);
-                $errorView->render();
-           // }
-
-        } catch (\Error $err) {
-            http_response_code(500);
-            $response = new Response();
-            $response->buildResponse([$err->getTraceAsString(), $err->getMessage()])->send();
+            $errorView = new RequestErrorView($e);
+            $errorView->render();
+            // }
         }
+//        } catch (\Error $err) {
+//            http_response_code(500);
+//            $response = new Response();
+//            $response->buildResponse(["error" => [$err->getTraceAsString(), $err->getMessage(), $data]])->send();
+//        }
     }
 
     private function exec($req) {

@@ -13,6 +13,7 @@ abstract class BaseView
 {
     const TEMPLATES_DIR = __DIR__ . '/../templates/';
     const HEADER = self::TEMPLATES_DIR . 'header.php';
+    const SCRIPTS = self::TEMPLATES_DIR . 'shared-scripts.php';
 
     protected $template;
     protected $title;
@@ -37,6 +38,12 @@ abstract class BaseView
     protected function getHeader() {
         ob_start();
             include self::HEADER;
+        return ob_get_clean();
+    }
+
+    protected function getSharedScripts() {
+        ob_start();
+            include self::SCRIPTS;
         return ob_get_clean();
     }
 
