@@ -20,7 +20,6 @@ class Router
         $req = new Request();
         error_log($req->getPath());
         $this->parsePath($req);
-        //$this->exec($req);
     }
 
     private function getController() {
@@ -30,37 +29,6 @@ class Router
     public function route() {
         $controller = $this->getController();
         var_dump($controller);
-    }
-
-    private function setController($controller) {
-        try {
-            if (!class_exists($controller)) {
-                error_log($controller);
-                throw new InvalidRequestException("The controller '" . $controller . "' does not exist");
-            }
-        } catch (InvalidRequestException $e) {
-            error_log($e->getMessage());
-            error_log($e->getTraceAsString());
-        }
-        $this->controller = $controller;
-    }
-
-    private function setMethod($method) {
-        $methods = get_class_methods($this->controller);
-        try {
-            if (isset($methods)) {
-                if (in_array($method, $methods)) {
-                    $this->method = $method;
-                    return $this;
-                }
-            } else {
-                throw new InvalidRequestException(
-                    "The action '" . $method . "' does not exist in " . $this->getController() . ".");
-            }
-        } catch (InvalidRequestException $e) {
-            error_log($e->getMessage());
-        }
-        return $this;
     }
 
     private function getMethod() {
@@ -103,8 +71,8 @@ class Router
                 }
                 $data = $req->getRequestBody();
                 if (!empty($data)) {
-                    $class = new $controller();
-                    $class->$method($data);
+                    $class = new $controller($req);
+                    $class->$method();
                 } else {
                     http_response_code(400);
                     throw new InvalidRequestException('A request body was expected but not received.');
@@ -118,7 +86,7 @@ class Router
                     throw new InvalidRequestException('A protected resource
                     was requested from an unauthenticated client.');
                 }
-                $class = new $controller();
+                $class = new $controller($req);
                 $class->$method();
             /**
              * For unprotected post, put, delete requests
@@ -126,8 +94,8 @@ class Router
             } elseif ($pathInstrcts["requestBody"] && !$pathInstrcts["protected"]) {
                 $data = $req->getRequestBody();
                 if (!empty($data)) {
-                    $class = new $controller();
-                    $class->$method($data);
+                    $class = new $controller($req);
+                    $class->$method();
                 } else {
                     http_response_code(400);
                     throw new InvalidRequestException('A request body was expected but not received.');
@@ -136,30 +104,13 @@ class Router
              * For unprotected get requests
              */
             } else {
-                $class = new $controller();
+                $class = new $controller($req);
                 $class->$method();
             }
         } catch (InvalidRequestException $e) {
-//            if ($req->isAjax()) {
-//                $response = new Response();
-//                $response->buildResponse(['Error from Router::parsePath' => $e->getMessage()])->send();
-//            } else {
             $errorView = new RequestErrorView($e);
             $errorView->render();
-            // }
         }
-//        } catch (\Error $err) {
-//            http_response_code(500);
-//            $response = new Response();
-//            $response->buildResponse(["error" => [$err->getTraceAsString(), $err->getMessage(), $data]])->send();
-//        }
     }
 
-    private function exec($req) {
-        $class = $this->getController();
-        $method = $this->getMethod();
-        error_log($method);
-        $class = new $class();
-        $req ? $class->$method($req) : $class->$method();
-    }
 }

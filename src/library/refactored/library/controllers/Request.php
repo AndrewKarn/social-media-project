@@ -191,7 +191,8 @@ class Request
             } catch (\Exception $e) {
                 error_log($e->getMessage());
                 error_log($e->getTraceAsString());
-                http_response_code(500);
+                error_log('Error catch in checkToken');
+                http_response_code(501);
             }
         } else {
             $this->setAuthenticated(false);

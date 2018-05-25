@@ -1,6 +1,7 @@
 <?php
 namespace User;
 use Controllers\Request;
+use DB\Query;
 use Debugging\DebuggingMethods;
 use MongoShared\MongoCreate;
 use DB\Base;
@@ -57,7 +58,7 @@ class UserController implements UserControllerInterface {
      */
     public function sendActivationEmail($mongoId)
     {
-        $document = Base::findById('users', $mongoId, ['email']);
+        $document = Query::findById('users', $mongoId, ['email']);
         $email = $document['email'];
         $generatedKey = sha1(mt_rand(10000,99999) . time() . $email);
         $inserted = MongoUpdate::insertOneField('users', ['_id'=> Base::makeMongoId($mongoId)], 'verificationHash', $generatedKey);

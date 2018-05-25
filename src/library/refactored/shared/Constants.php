@@ -23,15 +23,28 @@ class Constants
                 ]
             ]
         ],
-        "user/default" => [
+        "user/login" => [
             "controller" => "Controllers\User",
             "httpMethod" => [
-                "GET" => [
-
-                ],
                 "POST" => [
                     "method" => "login",
                     "requestBody" => true,
+                    "protected" => false
+                ]
+            ]
+        ],
+        "user/register" => [
+            "controller" => "Controllers\User",
+            "httpMethod" => [
+                "POST" => [
+                    "method" => "register",
+                    "requestBody" => true,
+                    "protected" => false
+                ],
+                "GET" => [
+                    // to be implemented
+                    "method" => "getRegistration",
+                    "requestBody" => false,
                     "protected" => false
                 ]
             ]

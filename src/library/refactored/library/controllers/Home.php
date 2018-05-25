@@ -9,13 +9,8 @@ namespace Controllers;
 use Home\HomeController;
 use Views\HomeView;
 
-class Home
+class Home extends AbstractController
 {
-    public function __construct()
-    {
-
-    }
-
     public function getHomePage() {
         $view = new HomeView();
         $view->render();

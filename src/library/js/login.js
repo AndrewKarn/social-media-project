@@ -19,7 +19,7 @@ const load = () => {
             // room to do stuff to form
             const formJson = JSON.stringify(formObj);
             const request = new ZRequest({
-                uri: 'user/default',
+                uri: 'user/login',
                 httpMethod: 'POST',
                 body: formJson,
                 needAuth: true

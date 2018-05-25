@@ -7,26 +7,27 @@
  */
 namespace Controllers;
 use MongoDB\Exception\InvalidArgumentException;
-use User\UserController;
 use Utility\HttpUtils;
 use Views\NoResultView;
 use Views\RequestErrorView;
+use ZErrors\InvalidFormException;
 use ZErrors\InvalidRequestException;
 use DB\Query;
 use ZErrors\NoResultException;
 
-class User
+class User extends AbstractController
 {
-    public function __construct()
-    {
+    private $validationMessages = [
+        "email" => 'Must be in valid user@email.com format.',
+        "password" => 'Must be between 8 and 16 characters. Allowable special characters: ! @ $ _ .',
+        "firstname" => 'Only alphabetical characters and \' allowed. Between 2 and 25.',
+        "lastname" => 'Only alphabetical characters and \' allowed. Between 2 and 25.',
 
-    }
+    ];
 
-    /**
-     * @param array $reqBody - form data from login form
-     */
-    public function login(array $reqBody) {
-        $validated = $this->validateLoginData($reqBody);
+    public function login() {
+        $request = $this->getRequest();
+        $validated = $this->validateLoginData($request->getRequestBody());
 
         try {
             $user = Query::query('users', ['email' => $validated['email']], [
@@ -38,8 +39,6 @@ class User
                 'loginAttempts',
                 'lastLogin'
             ]);
-//            $response = new Response();
-//            $response->buildResponse($userDocument)->send();
             if (empty($user)) {
                 throw new NoResultException('There was no document found with email' . $validated["email"]);
             }
@@ -51,7 +50,7 @@ class User
             $view->render();
             die();
         }
-
+        // TODO implement what to do after login.
         if (password_verify($validated["password"], $user["password"])) {
             $jwt = HttpUtils::generateJWT([$user["email"], $user["_id"]->__toString()]);
             header('Authorization: ' . $jwt);
@@ -93,4 +92,90 @@ class User
         return $validLoginData;
     }
 
+    public function register () {
+        $request = $this->getRequest();
+        $validated = $this->validateRegistrationData($request->getRequestBody());
+    }
+
+    /** ---Validates registration post data fits db schema---
+     * @param  array  $registrationFields sanitized post data
+     * @return array  $cleanData          validated post data
+     * @throws \InvalidArgumentException  if any fields do not match
+     */
+    private function validateRegistrationData($registrationFields) {
+        $caughtErrors = [];
+        try {
+            if (is_array($registrationFields)) {
+                $cleanData = array();
+                $check = 0;
+                foreach ($registrationFields as $field => $val) {
+                    switch ($field) {
+                        case 'email':
+                            if (filter_var($val, FILTER_VALIDATE_EMAIL)) {
+                                $cleanData['email'] = $val;
+                            } else {
+                                throw new InvalidFormException($field, $this->validationMessages[$field]);
+                            }
+                            break;
+                        case 'password':
+                        case 'passwordVerify':
+                            if (preg_match('/^[\da-zA-Z!@$_.]{8,16}$/', $val)) {
+                                $check++;
+                                if ($check === 1) {
+                                    $firstPassword = $val;
+                                    continue;
+                                }
+                                if ($check === 2 && $firstPassword === $val) {
+                                    $cleanData['password'] = password_hash($val, PASSWORD_DEFAULT);
+                                } else {
+                                    throw new InvalidFormException($field, $this->validationMessages[$field]);
+                                }
+                            } else {
+                                throw new InvalidFormException($field, $this->validationMessages[$field]);
+                            }
+                            break;
+                        case 'firstname':
+                        case 'lastname':
+                            if (preg_match("/^[a-zA-Z']{2,25}$/", $val)) {
+                                $cleanData[$field] = $val;
+                            } else {
+                                throw new InvalidFormException($field, $this->validationMessages[$field]);
+                            }
+                            break;
+                        case 'dob':
+                            if (preg_match('/^(19|20)\d\d[\-\/.](0[1-9]|1[012])[\-\/.](0[1-9]|[12][0-9]|3[01])$/', $val)) {
+                                $cleanData['dob'] = $val;
+                            } else {
+                                throw new InvalidRequestException("This date is not in a valid format.");
+                            }
+                            break;
+                        default:
+                            http_response_code(400);
+                            throw new InvalidRequestException('The field: ' . $field . ' is not valid at ' . $request->getPath());
+                            break;
+                    }
+                }
+                if (isset($cleanData['email']) && isset($cleanData['password']) && isset($cleanData['firstname'])
+                    && isset($cleanData['lastname']) && isset($cleanData['dob'])) {
+                    return $cleanData;
+                }
+            }
+        } catch (InvalidFormException $e) {
+            $caughtErrors[] = [$e->getField(), $e->getMessage()];
+
+        } catch (InvalidRequestException $e) {
+            $res = new Response();
+            $res->buildResponse(['error' => $e->getMessage()])->send();
+            die();
+        }
+        if (!empty($caughtErrors)) {
+            $res = new Response();
+            $res->buildResponse(["invalidForm" => $caughtErrors])->send();
+            die();
+        } else {
+            // temporary
+            $res = new Response();
+            $res->buildResponse(['congrats, you registered'])->send();
+        }
+    }
 }
