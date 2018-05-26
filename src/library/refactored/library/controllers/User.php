@@ -6,6 +6,7 @@
  * Time: 8:59 PM
  */
 namespace Controllers;
+use DB\Write;
 use MongoDB\Exception\InvalidArgumentException;
 use Utility\HttpUtils;
 use Views\NoResultView;
@@ -22,10 +23,11 @@ class User extends AbstractController
         "password" => 'Must be between 8 and 16 characters. Allowable special characters: ! @ $ _ .',
         "firstname" => 'Only alphabetical characters and \' allowed. Between 2 and 25.',
         "lastname" => 'Only alphabetical characters and \' allowed. Between 2 and 25.',
-
+        "passwordVerify" => 'Must be between 8 and 16 characters. Allowable special characters: ! @ $ _ .'
     ];
 
-    public function login() {
+    public function login()
+    {
         $request = $this->getRequest();
         $validated = $this->validateLoginData($request->getRequestBody());
 
@@ -60,7 +62,8 @@ class User extends AbstractController
         }
     }
 
-    private function validateLoginData($loginData) {
+    private function validateLoginData($loginData)
+    {
         $validLoginData = array();
         try {
             if (isset($loginData['email']) && !empty($loginData['email'])) {
@@ -92,23 +95,26 @@ class User extends AbstractController
         return $validLoginData;
     }
 
-    public function register () {
+    public function register()
+    {
         $request = $this->getRequest();
         $validated = $this->validateRegistrationData($request->getRequestBody());
+        $dbResult = Write::createUser($validated);
     }
 
     /** ---Validates registration post data fits db schema---
-     * @param  array  $registrationFields sanitized post data
+     * @param  array $registrationFields sanitized post data
      * @return array  $cleanData          validated post data
      * @throws \InvalidArgumentException  if any fields do not match
      */
-    private function validateRegistrationData($registrationFields) {
+    private function validateRegistrationData($registrationFields)
+    {
         $caughtErrors = [];
-        try {
-            if (is_array($registrationFields)) {
-                $cleanData = array();
-                $check = 0;
-                foreach ($registrationFields as $field => $val) {
+        if (is_array($registrationFields)) {
+            $cleanData = array();
+            $check = 0;
+            foreach ($registrationFields as $field => $val) {
+                try {
                     switch ($field) {
                         case 'email':
                             if (filter_var($val, FILTER_VALIDATE_EMAIL)) {
@@ -128,7 +134,7 @@ class User extends AbstractController
                                 if ($check === 2 && $firstPassword === $val) {
                                     $cleanData['password'] = password_hash($val, PASSWORD_DEFAULT);
                                 } else {
-                                    throw new InvalidFormException($field, $this->validationMessages[$field]);
+                                    throw new InvalidFormException($field, 'Password fields do not match!');
                                 }
                             } else {
                                 throw new InvalidFormException($field, $this->validationMessages[$field]);
@@ -154,28 +160,25 @@ class User extends AbstractController
                             throw new InvalidRequestException('The field: ' . $field . ' is not valid at ' . $request->getPath());
                             break;
                     }
-                }
-                if (isset($cleanData['email']) && isset($cleanData['password']) && isset($cleanData['firstname'])
-                    && isset($cleanData['lastname']) && isset($cleanData['dob'])) {
-                    return $cleanData;
+                } catch (InvalidFormException $e) {
+                    $caughtErrors[] = [$e->getField(), $e->getMessage()];
+                } catch (InvalidRequestException $e) {
+                    $res = new Response();
+                    $res->buildResponse(['error' => $e->getMessage()])->send();
+                    die();
                 }
             }
-        } catch (InvalidFormException $e) {
-            $caughtErrors[] = [$e->getField(), $e->getMessage()];
-
-        } catch (InvalidRequestException $e) {
-            $res = new Response();
-            $res->buildResponse(['error' => $e->getMessage()])->send();
-            die();
+            if (isset($cleanData['email']) && isset($cleanData['password']) && isset($cleanData['firstname'])
+                && isset($cleanData['lastname']) && isset($cleanData['dob'])) {
+                $res = new Response();
+                $res->buildResponse(['congrats, you registered'])->send();
+                return $cleanData;
+            }
         }
         if (!empty($caughtErrors)) {
             $res = new Response();
             $res->buildResponse(["invalidForm" => $caughtErrors])->send();
             die();
-        } else {
-            // temporary
-            $res = new Response();
-            $res->buildResponse(['congrats, you registered'])->send();
         }
     }
 }

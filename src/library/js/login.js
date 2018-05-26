@@ -22,7 +22,7 @@ const load = () => {
                 uri: 'user/login',
                 httpMethod: 'POST',
                 body: formJson,
-                needAuth: true
+                needAuth: false
             });
             request.request().then(data => {
                 console.log(data);

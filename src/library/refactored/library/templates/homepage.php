@@ -13,39 +13,48 @@
 <body>
 <?=$this->getHeader();?>
 <main>
-    <div class="box2">
-        <form action="<?=Constants::WEB_ROOT?>user/register" method="post" id="js-register-form">
-            <div>
-                <label for="firstname">First Name:</label>
-                <input id="firstname-register" type="text" name="firstname" required>
-            </div>
-            <div>
-                <label for="lastname">Last Name:</label>
-                <input id="lastname-register" type="text" name="lastname" required>
-            </div>
-            <div>
-                <label for="dob">Birth Date:</label>
-                <input id="dob-register" type="Date" name="dob" required>
-            </div>
-            <div>
-                <label for="email">Email (This will be used for login):</label>
-                <input id="email-register" type="email" name="email" required>
-            </div>
-            <div>
-                <label for="password">Enter Password:</label>
-                <input id="password-register1" type="password" name="password" required>
-            </div>
-            <div>
-                <label for="passwordVerify">Re-enter Password:</label>
-                <input id="password-register2" type="password" name="passwordVerify" required>
-            </div>
-            <div>
-                <button id="reset-registration" type="reset">Reset</button>
-                <button id="submit-registration" type="submit">Submit</button>
-            </div>
-        </form>
+    <div class="box1">
+
+        <table class="form" id="js-registration-table">
+            <caption>New Users: Register!</caption>
+            <form action="<?=Constants::WEB_ROOT?>user/register" method="post" id="js-register-form">
+            <tr>
+                <td><label for="firstname">First Name:</label></td>
+                <td><input id="firstname-register" type="text" name="firstname" required></td>
+            </tr>
+            <tr>
+                <td><label for="lastname">Last Name:</label></td>
+                <td><input id="lastname-register" type="text" name="lastname" required></td>
+            </tr>
+            <tr>
+                <td><label for="email">Email:</label></td>
+                <td><input id="email-register" type="email" name="email" required></td>
+            </tr>
+            <tr>
+                <td><label for="dob">Birth Date:</label></td>
+                <td><input id="dob-register" type="Date" name="dob" required></td>
+            </tr>
+
+            <tr>
+                <td><label for="password">Enter Password:</label></td>
+                <td><input id="password-register1" type="password" name="password" required></td>
+            </tr>
+            <tr>
+                <td><label for="passwordVerify">Re-enter Password:</label></td>
+                <td><input id="password-register2" type="password" name="passwordVerify" required></td>
+            </tr>
+            <tr class="form-btns">
+                <td colspan="2">
+                    <button id="reset-registration" type="reset">Reset</button>
+                    <button id="submit-registration" type="submit">Submit</button>
+                </td>
+            </tr>
+            </form>
+        </table>
+
     </div>
 </main>
 <?=$this->getSharedScripts();?>
+<script src="<?=Constants::WEB_ROOT?>homepage.js" type="application/x-javascript"></script>
 </body>
 </html>

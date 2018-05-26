@@ -1,10 +1,8 @@
 <?php
-namespace MongoShared;
+namespace DB;
 use Utility;
-//require __DIR__ . '/../../../vendor/autoload.php';
-//use MongoDB;
 
-class MongoCreate {
+class Write {
 	public static function createUser(array $validData) {
 	    $validData['isActivated'] = false;
 	    $validData['dateCreated'] = Base::timestamp();

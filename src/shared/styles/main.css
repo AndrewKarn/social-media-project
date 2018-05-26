@@ -14,6 +14,9 @@ body {
 main {
     display: flex;
     flex-wrap: wrap;
+    max-width: 900px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
 }
 
 /**
@@ -51,10 +54,54 @@ main {
 
 .box1 {
     order: 1;
+    width: 100%;
 }
+
 .box2 {
     order: 2;
 }
-.box1, .box2 {
+
+.box1,
+.box2 {
     margin: 32px;
+}
+
+.box1 > *:first-child,
+.box2 > *:first-child {
+    margin: 0 auto;
+}
+
+/*
+    Form elements
+ */
+.form-btns {
+    text-align: right;
+}
+
+table caption {
+    font-size: 1.5em;
+    text-decoration: underline;
+    margin-bottom: 1em;
+}
+
+table.form {
+    width: 50%;
+    font-size: 1.25em;
+}
+
+table.form input {
+    width: 100%;
+    font-size: 0.75em;
+}
+
+.validation-errors {
+    background-color: rgba(216, 3, 3, 0.28);
+    border-radius: 10px;
+}
+
+.validation-errors p {
+    padding: 0 1em;
+    margin: 5px;
+    font-size: 0.75em;
+    text-align: center;
 }

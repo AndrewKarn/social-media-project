@@ -45,13 +45,13 @@ class HttpUtils
         }
     }
 
-    public  static function generateJWT($data = null) {
+    public  static function generateJWT($data = null, $mins = 5) {
         $key = Key::JWT_SECRET;
         $token = array(
             "iss" => "zoes-social-media-project.com",
             "aud" => "zoes-social-media-project.com",
             "iat" => time(),
-            "exp" => time() + 300,
+            "exp" => time() + $mins * 60,
         );
         if (!is_null($data)) {
             $token["dat"] = $data;
