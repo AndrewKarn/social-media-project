@@ -170,8 +170,8 @@ class User extends AbstractController
             }
             if (isset($cleanData['email']) && isset($cleanData['password']) && isset($cleanData['firstname'])
                 && isset($cleanData['lastname']) && isset($cleanData['dob'])) {
-                $res = new Response();
-                $res->buildResponse(['congrats, you registered'])->send();
+               // $res = new Response();
+               // $res->buildResponse(['congrats, you registered'])->send();
                 return $cleanData;
             }
         }

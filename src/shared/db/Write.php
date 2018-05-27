@@ -1,5 +1,8 @@
 <?php
 namespace DB;
+use Controllers\Response;
+use Views\GenericErrorView;
+use Shared\Constants;
 use Utility;
 
 class Write {
@@ -18,7 +21,10 @@ class Write {
 		    // TODO implement a MongoUtility which checks error code.
 		    if ($code == 11000) {
 		        $email = $validData['email'];
-		        return new Utility\ErrorController(['email' => $email]);
+		        $view = new GenericErrorView('An account with ' . $email . ' already exists.<br>
+Please click <a href="' . Constants::WEB_ROOT . 'home/default">here</a> to return home.');
+		        $response = new Response();
+		        $response->buildResponse(['error' => $view->getTemplate()])->send();
             }
         }
 	}

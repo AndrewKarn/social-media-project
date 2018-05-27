@@ -27,7 +27,7 @@ class RequestErrorView extends BaseView
         $this->setMessage($error->getMessage());
         $this->setStackTrace($error->formatStackTrace());
         $this->setTitle(self::ERROR_TITLES[http_response_code()]);
-        $this->setTemplate('error-page');
+        $this->setTemplate('exception-page');
     }
 
     protected function setMessage($message) {

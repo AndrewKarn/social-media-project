@@ -19,7 +19,7 @@ class NoResultView extends BaseView
         $this->setMessage($error->getMessage());
         $this->setStackTrace($error->formatStackTrace());
         $this->setTitle('No Results');
-        $this->setTemplate('error-page');
+        $this->setTemplate('exception-page');
     }
 
     protected function setMessage($message) {
