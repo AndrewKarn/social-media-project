@@ -99,7 +99,14 @@ class User extends AbstractController
     {
         $request = $this->getRequest();
         $validated = $this->validateRegistrationData($request->getRequestBody());
-        $dbResult = Write::createUser($validated);
+        $generatedKey = sha1(mt_rand(10000,99999) . time() . $validated["email"]);
+        $validated["actHash"] = $generatedKey;
+       // echo json_encode($validated);
+        $mongoId = Write::createUser($validated);
+       // echo json_encode($dbResult);
+        if (isset($mongoId)) {
+            $this->sendActivationEmail($validated["email"], $generatedKey);
+        }
     }
 
     /** ---Validates registration post data fits db schema---
@@ -180,5 +187,9 @@ class User extends AbstractController
             $res->buildResponse(["invalidForm" => $caughtErrors])->send();
             die();
         }
+    }
+
+    private function sendActivationEmail ($email, $hash) {
+
     }
 }

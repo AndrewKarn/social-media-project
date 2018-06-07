@@ -12,7 +12,8 @@ class Write {
 		$usersDB = Base::getCollection('users');
 		try {
             $response = $usersDB->insertOne($validData);
-            return $response;
+            // return mongoId string if successful
+            return $response->getInsertedId()->__toString();
         } catch (\MongoDB\Driver\Exception\BulkWriteException $bulkWriteException) {
 		    $exception = $bulkWriteException->getWriteResult();
 		    $exception = $exception->getWriteErrors();

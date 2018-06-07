@@ -1,15 +1,6 @@
 "use strict";
 const FrontUtils = new ZUtils();
 const loginForm = document.querySelector('#js-login-form');
-
-if (localStorage) {
-    let token = localStorage.getItem('jwt');
-    // NEED TO implement sending token
-
-} else {
-
-}
-
 if (loginForm !== undefined) {
     loginForm.onsubmit = (e) => {
         e.preventDefault();
