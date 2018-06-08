@@ -29,9 +29,11 @@ class Request
     private $httpMethod;
     private $authenticated;
     private $token;
+    private $queryStr;
 
     public function __construct() {
         $this->setServer();
+        $this->setQueryStr();
         $this->parseUri();
         $this->checkToken();
         $this->setPath();
@@ -122,6 +124,16 @@ class Request
 
     public function getPath() {
         return $this->path;
+    }
+
+    private function setQueryStr() {
+        $this->queryStr = $_SERVER["QUERY_STRING"];
+    }
+
+    public function getQueryParams() {
+        $params = [];
+        parse_str($this->queryStr, $params);
+        return $params;
     }
 
     private function parseUri() {

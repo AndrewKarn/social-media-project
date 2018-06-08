@@ -4,6 +4,12 @@ const registration = () => {
     if (regisForm !== undefined) {
         regisForm.onsubmit = e => {
             e.preventDefault();
+            const prevValidationErrs = document.querySelectorAll('.validation-errors');
+            if (prevValidationErrs.length >= 1) {
+                prevValidationErrs.forEach(err => {
+                    err.remove();
+                });
+            }
             let formObj = FrontUtils.objectifyForm(regisForm);
             // room to do stuff to form
             const formJson = JSON.stringify(formObj);

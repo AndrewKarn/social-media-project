@@ -42,13 +42,12 @@ class Constants
                     "protected" => false
                 ],
                 "GET" => [
-                    // to be implemented
-                    "method" => "getRegistration",
+                    "method" => "getRegisSuccess",
                     "requestBody" => false,
                     "protected" => false
                 ]
             ]
-        ]
+        ],
     ];
 
     const VALID_TOKEN = 1;

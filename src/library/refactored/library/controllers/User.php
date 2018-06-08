@@ -8,6 +8,7 @@
 namespace Controllers;
 use DB\Write;
 use MongoDB\Exception\InvalidArgumentException;
+use Shared\Constants;
 use Utility\HttpUtils;
 use Views\NoResultView;
 use Views\RequestErrorView;
@@ -105,6 +106,7 @@ class User extends AbstractController
         $mongoId = Write::createUser($validated);
        // echo json_encode($dbResult);
         if (isset($mongoId)) {
+            header('Location: ' . Constants::WEB_ROOT . 'user/register/?actHash=' . $generatedKey, true, 304);
             $this->sendActivationEmail($validated["email"], $generatedKey);
         }
     }
@@ -191,5 +193,16 @@ class User extends AbstractController
 
     private function sendActivationEmail ($email, $hash) {
 
+    }
+
+    /**
+     * @var $request Request
+     */
+    public function getRegisSuccess () {
+        $request = $this->getRequest();
+        $queryParams = $request->getQueryParams();
+        $hash = $queryParams["actHash"];
+        $results = Query::query('users', ['actHash' => $hash]);
+        echo json_encode($results);
     }
 }

@@ -5,7 +5,8 @@ use Views\GenericErrorView;
 use Shared\Constants;
 use Utility;
 
-class Write {
+class Write extends Query
+{
 	public static function createUser(array $validData) {
 	    $validData['isActivated'] = false;
 	    $validData['dateCreated'] = Base::timestamp();
@@ -29,4 +30,8 @@ Please click <a href="' . Constants::WEB_ROOT . 'home/default">here</a> to retur
             }
         }
 	}
+
+	public static function update($collection, $query, $update) {
+	    // TODO self::getCollection($collection)
+    }
 }
