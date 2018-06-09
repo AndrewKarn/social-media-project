@@ -12,11 +12,21 @@ namespace Views;
 class EmailView extends BaseView
 {
     private $header;
+    private $body;
+    private $footer;
+
+    const DEFAULT_EMAIL_FOOTER = '<p style="font-style: italic;">This is a test footer</p>';
 
     public function __construct($type, array $data)
     {
-        $this->setTemplate('email-template');
         $this->setEmailHeader($type);
+        $this->setEmailBody($data['body']);
+        if (isset($data['footer'])) {
+            $this->setEmailFooter($data['footer']);
+        } else {
+            $this->setEmailFooter();
+        }
+        $this->setTemplate('email-template');
     }
 
     private function setEmailHeader($type) {
@@ -32,4 +42,19 @@ class EmailView extends BaseView
     }
 
     // TODO implement get/setBodyCont, get/setEmailFooter
+    private function setEmailBody ($body) {
+        $this->body = $body;
+    }
+
+    public function getEmailBody() {
+        return $this->body;
+    }
+
+    private function setEmailFooter ($footer = self::DEFAULT_EMAIL_FOOTER) {
+        $this->footer = $footer;
+    }
+
+    public function getEmailFooter() {
+        return $this->footer;
+    }
 }

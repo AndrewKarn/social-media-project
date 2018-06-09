@@ -10,7 +10,7 @@ class Write extends Query
 	public static function createUser(array $validData) {
 	    $validData['isActivated'] = false;
 	    $validData['dateCreated'] = Base::timestamp();
-		$usersDB = Base::getCollection('users');
+		$usersDB = self::getCollection('users');
 		try {
             $response = $usersDB->insertOne($validData);
             // return mongoId string if successful
@@ -31,7 +31,22 @@ Please click <a href="' . Constants::WEB_ROOT . 'home/default">here</a> to retur
         }
 	}
 
-	public static function update($collection, $query, $update) {
+	public static function update($collection, array $query, array $update) {
 	    // TODO self::getCollection($collection)
+        $db = self::getCollection($collection);
+        try {
+            $result = $db->updateOne($query, $update);
+            return $result->isAcknowledged();
+        } catch (\MongoDB\Driver\Exception\BulkWriteException $e) {
+            $details = $e->getWriteResult();
+            $details = $details->getWriteErrors();
+            $detail = $details[0];
+            $code = $detail->getCode();
+            $message = $detail->getMessage();
+            $view = new GenericErrorView($message . '<br>' . 'Code: ' . $code);
+            $response = new Response();
+            $response->buildResponse(['error' =>  $view->getTemplate()])->send();
+        }
+
     }
 }

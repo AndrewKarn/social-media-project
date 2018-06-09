@@ -7,15 +7,20 @@
  */
 namespace Controllers;
 use DB\Write;
+use Home\HomeView;
 use MongoDB\Exception\InvalidArgumentException;
 use Shared\Constants;
 use Utility\HttpUtils;
+use Views\EmailView;
+use Views\GenericErrorView;
 use Views\NoResultView;
 use Views\RequestErrorView;
 use ZErrors\InvalidFormException;
 use ZErrors\InvalidRequestException;
 use DB\Query;
 use ZErrors\NoResultException;
+use Mailgun\Mailgun;
+use Utility\Key;
 
 class User extends AbstractController
 {
@@ -106,8 +111,9 @@ class User extends AbstractController
         $mongoId = Write::createUser($validated);
        // echo json_encode($dbResult);
         if (isset($mongoId)) {
-            header('Location: ' . Constants::WEB_ROOT . 'user/register/?actHash=' . $generatedKey, true, 304);
-            $this->sendActivationEmail($validated["email"], $generatedKey);
+            // TODO header('Location: ' . Constants::WEB_ROOT . 'user/register/?actHash=' . $generatedKey, true, 304);
+            $link = Constants::WEB_ROOT . 'user/register/?actHash=' . $generatedKey;
+            $this->sendActivationEmail($validated["email"], $link);
         }
     }
 
@@ -191,8 +197,29 @@ class User extends AbstractController
         }
     }
 
-    private function sendActivationEmail ($email, $hash) {
+    private function sendActivationEmail ($email, $link) {
+        $data = [];
+        $data['body'] =  '<p>Thank you for joining!</p>
+<br><a href="' . $link . '">' . $link . '</a>
+<br><p>Clink the link above to register your email!</p>';
 
+        $view = new EmailView('activation', $data);
+        $emailContent = $view->getTemplate();
+        $subject = "Your account with Zoe's Social Media!";
+        $mgClient = new Mailgun(Key::MAIL_GUN_API_KEY);
+        $domain = "mg.zoes-social-media-project.com";
+
+        $result = $mgClient->sendMessage("$domain",
+            array('from'    => 'Zoe\'s Social Media <postmaster@mg.zoes-social-media-project.com>',
+                'to'      => 'Zoe Robertson <' . $email .'>',
+                'subject' => $subject,
+                'html'    => $emailContent));
+
+        if ($result) {
+            $response = new Response();
+            $response->buildResponse(['message' => 'Email Verification sent! Please check your email to finish activation.'])->send();
+            die();
+        }
     }
 
     /**
@@ -202,7 +229,11 @@ class User extends AbstractController
         $request = $this->getRequest();
         $queryParams = $request->getQueryParams();
         $hash = $queryParams["actHash"];
-        $results = Query::query('users', ['actHash' => $hash]);
-        echo json_encode($results);
+        $acknowledgement = Write::update('users', ['actHash' => $hash], [
+            '$set' => [
+                'isActivated' => true
+            ]
+        ]);
+        echo json_encode($acknowledgement);
     }
 }
