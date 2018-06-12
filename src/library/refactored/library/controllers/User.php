@@ -7,7 +7,6 @@
  */
 namespace Controllers;
 use DB\Write;
-use Home\HomeView;
 use MongoDB\Exception\InvalidArgumentException;
 use Shared\Constants;
 use Utility\HttpUtils;
@@ -58,7 +57,6 @@ class User extends AbstractController
             $view->render();
             die();
         }
-        // TODO implement what to do after login.
         if (password_verify($validated["password"], $user["password"])) {
             $jwt = HttpUtils::generateJWT([$user["email"], $user["_id"]->__toString()]);
             header('Authorization: ' . $jwt);
@@ -107,11 +105,8 @@ class User extends AbstractController
         $validated = $this->validateRegistrationData($request->getRequestBody());
         $generatedKey = sha1(mt_rand(10000,99999) . time() . $validated["email"]);
         $validated["actHash"] = $generatedKey;
-       // echo json_encode($validated);
         $mongoId = Write::createUser($validated);
-       // echo json_encode($dbResult);
         if (isset($mongoId)) {
-            // TODO header('Location: ' . Constants::WEB_ROOT . 'user/register/?actHash=' . $generatedKey, true, 304);
             $link = Constants::WEB_ROOT . 'user/register/?actHash=' . $generatedKey;
             $this->sendActivationEmail($validated["email"], $link);
         }
@@ -172,7 +167,7 @@ class User extends AbstractController
                             break;
                         default:
                             http_response_code(400);
-                            throw new InvalidRequestException('The field: ' . $field . ' is not valid at ' . $request->getPath());
+                            throw new InvalidRequestException('The field: ' . $field . ' is not valid at ' . $this->getRequest()->getPath());
                             break;
                     }
                 } catch (InvalidFormException $e) {

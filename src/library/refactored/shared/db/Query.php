@@ -7,7 +7,7 @@
  */
 
 namespace DB;
-require __DIR__ . '/../../../vendor/autoload.php';
+//require __DIR__ . '/../../../vendor/autoload.php';
 use MongoDB;
 
 class Query extends Base

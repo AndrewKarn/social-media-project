@@ -18,36 +18,13 @@
             ],
             "ZErrors\\": "src/library/refactored/library/errors/",
             "Front\\": "src/library/",
-            "DB\\": "src/shared/db/",
-            "Home\\": [
-                "src/library/controllers/",
-                "src/library/interfaces/",
-                "src/library/models/",
-                "src/library/views/Home"
-
-            ],
+            "DB\\": "src/library/refactored/shared/db/",
             "Shared\\": "src/library/refactored/shared/",
             "MongoShared\\": "src/shared/MongoShared/",
             "Debugging\\": "util/",
-            "Utility\\": [
-                "src/library/controllers/",
-                "src/library/views/Error/",
-                "src/shared/Utility/",
-                "util/"
-            ],
-            "User\\": [
-                "src/library/controllers/",
-                "src/library/interfaces/",
-                "src/library/views/",
-                "src/library/views/User"
-            ]
+            "Utility\\": "src/library/refactored/shared/"
         },
         "classmap": [
-            "src/library/controllers/HomeController.php",
-            "src/library/interfaces/HomeControllerInterface.php",
-            "src/library/interfaces/FrontControllerInterface.php",
-            "src/library/models/HomeModel.php",
-            "src/library/views/Home/HomeView.php",
             "util/DebuggingMethods.php",
             "util/test.php"
         ]
