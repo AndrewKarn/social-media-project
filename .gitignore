@@ -2,4 +2,4 @@
 .vagrant/
 vendor/
 util/logs/*.log
-util/Key.php
+src/library/refactored/shared/Key.php
