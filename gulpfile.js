@@ -5,20 +5,10 @@ const gulp = require('gulp'),
     sass = require('gulp-sass'),
     concat = require('gulp-concat'),
     uglify = require('gulp-uglify-es').default,
-    pump = require('pump'),
     gutil = require('gulp-util'),
     scssRoot = 'src/library/styles/scss',
     htmlRoot = 'src/library/refactored/library/templates/html',
     jsRoot = 'src/library/js';
-
-// gulp.task('default', function () {
-//     gulp.watch('src/library/styles/scss/**/*.scss', ['styles']);
-//     gulp.watch('src/library/refactored/library/templates/**/*.html').on('change', browserSync.reload);
-//     browserSync.init({
-//         server: './src/library/refactored/library/templates/',
-//         index: 'homepage.html'
-//     });
-// });
 
 gulp.task('styles', function () {
    gulp.src(scssRoot + '/**/*.scss')

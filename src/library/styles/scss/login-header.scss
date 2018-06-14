@@ -3,14 +3,13 @@
 header {
   width: 100%;
   background-color: $third_shade;
-  * {
-    font-family: Arial, sans-serif;
-  }
+  border-bottom: 2px solid $darkest_blue;
+  * { font-family: Arial, sans-serif; }
     ul {
       max-width: $main-max-width;
       list-style-type: none;
       margin: 0 auto;
-      padding: 12px;
+      padding: $nav-pad;
       li {
         display: inline;
         font-size: 1.5em;
@@ -18,13 +17,10 @@ header {
           text-align: center;
           color: black;
           text-decoration: none;
-          padding: 12px;
-          &:hover, &:active {
-          background-color: $darkest_blue;
-          }
-          &.selected {
-            background-color: $light_color;
-          }
+          padding: $nav-pad;
+          transition: all 0.3s;
+          &:hover, &:active, &:focus { background-color: $darkest_blue; }
+          &.selected { background-color: $light_color; }
         }
       }
     }

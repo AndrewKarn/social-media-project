@@ -8,25 +8,35 @@
 </head>
 <body>
 <header>
-    <ul>
-        <li><a href="http://www.zoes-social-media-project.com/home/default" class="selected">Home</a></li>
-        <li><a href="#">Login</a></li>
-        <li><a href="#">Register</a></li>
+    <ul id="js-nav-bar">
+        <li><a id="js-nav-home" href="http://www.zoes-social-media-project.com/home/default" class="selected">Home</a></li>
+        <li><a id="js-nav-login" href="#">Login</a></li>
+        <li><a id="js-nav-register" href="#">Register</a></li>
     </ul>
 </header>
 <main>
     <div id="js-content" class="content">
+        <div class="box1">
+            <h1>Welcome to Zoe's Social Media Project!</h1>
+            <p>I created this project in an effort to really <span class="em">stretch </span>my developer skills.</p>
+            <p>This project is powered by <span class="em">PHP</span>.</p>
+        </div>
         <div class="box2">
-            <form id="js-login-form">
-                <span>Existing Users:</span>
-                <div>
-                    <input name="email" type="email" placeholder="user@example.com" required>
-                    <input name="password" type="password" placeholder="password" required>
-                    <button type="submit">Login</button>
-                </div>
-            </form>
-            <span class="em">OR:</span>
-            <button id="js-register" class="register-btn">Register</button>
+            <div class="form">
+                <form id="js-login-form">
+                    <span>Existing Users</span>
+                    <div>
+                        <input name="email" type="email" placeholder="user@example.com" required>
+                        <input name="password" type="password" placeholder="password" required>
+                        <button id="js-login-btn" class="btn btn-right" type="submit">Login</button>
+                    </div>
+                </form>
+            </div>
+            <div class="register">
+                <span>New Users</span>
+                <button id="js-register-btn" class="btn btn-right">Register</button>
+            </div>
+
            <!-- <table class="form" id="js-registration-table">
                 <caption>New Users: Register!</caption>
                 <form action="http://www.zoes-social-media-project.com/user/register" method="post" id="js-register-form">
@@ -66,19 +76,13 @@
             !-->
 
         </div>
-        <div class="box1">
-            <h1>Welcome to Zoe's Social Media Project!</h1>
-            <p>
-                I created this project in an effort to really <span class="em">stretch </span>my developer skills.<br>
-                This project is powered by <span class="em">PHP</span>.
-            </p>
-        </div>
     </div>
 </main>
 <!--<script src="http://www.zoes-social-media-project.com/ZUtils.js" type="application/x-javascript"></script>-->
 <script src="http://www.zoes-social-media-project.com/dist/utils.js" type="application/x-javascript"></script>
 <script src="http://www.zoes-social-media-project.com/login.js" type="application/x-javascript"></script>
+<script src="http://www.zoes-social-media-project.com/nav-bar.js" type="application/x-javascript"></script>
 <!--<script src="http://www.zoes-social-media-project.com/ZRequest.js" type="application/x-javascript"></script>-->
-<!--<script src="http://www.zoes-social-media-project.com/homepage.js" type="application/x-javascript"></script>-->
+<script src="http://www.zoes-social-media-project.com/homepage.js" type="application/x-javascript"></script>
 </body>
 </html>

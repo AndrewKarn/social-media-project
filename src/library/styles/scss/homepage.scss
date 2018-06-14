@@ -6,23 +6,66 @@
   flex-wrap: inherit;
   width: inherit;
   margin: inherit;
-}
-
-.box1 {
-  order: 1;
-  width: 55%;
-}
-
-.box2 {
-  order: 2;
-  width: 35%;
-}
-
-.box1, .box2 {
-  margin: 32px 2.5%;
-  padding: 16px;
-}
-
-.box1 > *:first-child, .box2 > *:first-child {
-  margin: 0 auto;
+  .box1 {
+    order: 1;
+    width: 55%;
+    h1 {
+      background-color: $third_shade;
+      font-size: 2.5em;
+    }
+    p {
+      margin-top: 0;
+      background-color: $second_shade;
+      font-size: 1.5em;
+    }
+    h1, p {
+      border-radius: 10px;
+      padding: $std-pad;
+    }
+    & > *:first-child { margin: 0 auto; }
+  }
+  .box2 {
+    order: 2;
+    width: 35%;
+    .form {
+      text-align: center;
+      background-color: $second_shade;
+      font-size: 1.2em;
+      input {
+        padding: $std-pad;
+        margin: $std-pad;
+        font-size: 0.8em;
+        &:first-child { margin-bottom: 0; }
+      }
+    }
+    .register {
+      width: 100%;
+      background-color: $second_shade;
+      border-radius: 10px;
+      padding: $std-pad;
+      height: 50px;
+      position: relative;
+      // TODO add media breakpoint for positioning < 800px
+      span {
+        font-size: 1.2em;
+        padding: inherit;
+        left: 10%;
+      }
+      button {
+        left: 50%;
+      }
+      button, span {
+        position: absolute;
+        top: $std-pad;
+      }
+    }
+    div {
+      border-radius: 10px;
+      padding: $std-pad;
+      &:first-child { margin-bottom: ($std-pad * 2); }
+    }
+  }
+  .box1, .box2 {
+    margin: 32px 2.5%;
+  }
 }

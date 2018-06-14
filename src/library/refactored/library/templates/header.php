@@ -8,14 +8,10 @@ use Shared\Constants;
  */
 ?>
 <header>
-    <h1><a href="<?=Constants::WEB_ROOT?>home/default">Z.S.M.P</a></h1>
-    <h2>Welcome!</h2>
-    <form id="js-login-form">
-        <span>Existing Users:</span>
-        <div>
-            <input name="email" type="email" placeholder="user@example.com" required>
-            <input name="password" type="password" placeholder="password" required>
-            <button type="submit">Login</button>
-        </div>
-    </form>
+    <ul id="js-nav-bar">
+        <li><a id="js-nav-home" href="<?=Constants::WEB_ROOT?>home/default" class="selected">Home</a></li>
+        <li><a id="js-nav-login" href="#">Login</a></li>
+        <li><a id="js-nav-register" href="#">Register</a></li>
+    </ul>
+    <script src="<?=Constants::WEB_ROOT?>nav-bar.js" type="application/x-javascript"></script>
 </header>
