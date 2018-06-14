@@ -1,0 +1,28 @@
+@import "vars";
+@import "main";
+
+.content {
+  display: inherit;
+  flex-wrap: inherit;
+  width: inherit;
+  margin: inherit;
+}
+
+.box1 {
+  order: 1;
+  width: 55%;
+}
+
+.box2 {
+  order: 2;
+  width: 35%;
+}
+
+.box1, .box2 {
+  margin: 32px 2.5%;
+  padding: 16px;
+}
+
+.box1 > *:first-child, .box2 > *:first-child {
+  margin: 0 auto;
+}

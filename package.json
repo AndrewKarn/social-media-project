@@ -1,0 +1,30 @@
+{
+  "name": "social-media-project",
+  "version": "1.0.0",
+  "description": "build manager",
+  "main": "index.php",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zoemrob/social-media-project.git"
+  },
+  "author": "Zoe Robertson",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zoemrob/social-media-project/issues"
+  },
+  "homepage": "https://github.com/zoemrob/social-media-project#readme",
+  "dependencies": {
+    "browser-sync": "^2.24.4",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^5.0.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-sass": "^4.0.1",
+    "gulp-uglify": "^3.0.0",
+    "gulp-uglify-es": "^1.0.4",
+    "gulp-util": "^3.0.8",
+    "pump": "^3.0.0"
+  }
+}

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Zoe's Social Media Project</title>
+    <link href="http://www.zoes-social-media-project.com/homepage.css" rel="stylesheet" type="text/css">
+    <link href="http://www.zoes-social-media-project.com/login-header.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<header>
+    <ul>
+        <li><a href="http://www.zoes-social-media-project.com/home/default" class="selected">Home</a></li>
+        <li><a href="#">Login</a></li>
+        <li><a href="#">Register</a></li>
+    </ul>
+</header>
+<main>
+    <div id="js-content" class="content">
+        <div class="box2">
+            <form id="js-login-form">
+                <span>Existing Users:</span>
+                <div>
+                    <input name="email" type="email" placeholder="user@example.com" required>
+                    <input name="password" type="password" placeholder="password" required>
+                    <button type="submit">Login</button>
+                </div>
+            </form>
+            <span class="em">OR:</span>
+            <button id="js-register" class="register-btn">Register</button>
+           <!-- <table class="form" id="js-registration-table">
+                <caption>New Users: Register!</caption>
+                <form action="http://www.zoes-social-media-project.com/user/register" method="post" id="js-register-form">
+                    <tr>
+                        <td><label for="firstname">First Name:</label></td>
+                        <td><input id="firstname-register" type="text" name="firstname" required></td>
+                    </tr>
+                    <tr>
+                        <td><label for="lastname">Last Name:</label></td>
+                        <td><input id="lastname-register" type="text" name="lastname" required></td>
+                    </tr>
+                    <tr>
+                        <td><label for="email">Email:</label></td>
+                        <td><input id="email-register" type="email" name="email" required></td>
+                    </tr>
+                    <tr>
+                        <td><label for="dob">Birth Date:</label></td>
+                        <td><input id="dob-register" type="Date" name="dob" required></td>
+                    </tr>
+
+                    <tr>
+                        <td><label for="password">Enter Password:</label></td>
+                        <td><input id="password-register1" type="password" name="password" required></td>
+                    </tr>
+                    <tr>
+                        <td><label for="passwordVerify">Re-enter Password:</label></td>
+                        <td><input id="password-register2" type="password" name="passwordVerify" required></td>
+                    </tr>
+                    <tr class="form-btns">
+                        <td colspan="2">
+                            <button id="reset-registration" type="reset">Reset</button>
+                            <button id="submit-registration" type="submit">Submit</button>
+                        </td>
+                    </tr>
+                </form>
+            </table>
+            !-->
+
+        </div>
+        <div class="box1">
+            <h1>Welcome to Zoe's Social Media Project!</h1>
+            <p>
+                I created this project in an effort to really <span class="em">stretch </span>my developer skills.<br>
+                This project is powered by <span class="em">PHP</span>.
+            </p>
+        </div>
+    </div>
+</main>
+<!--<script src="http://www.zoes-social-media-project.com/ZUtils.js" type="application/x-javascript"></script>-->
+<script src="http://www.zoes-social-media-project.com/dist/utils.js" type="application/x-javascript"></script>
+<script src="http://www.zoes-social-media-project.com/login.js" type="application/x-javascript"></script>
+<!--<script src="http://www.zoes-social-media-project.com/ZRequest.js" type="application/x-javascript"></script>-->
+<!--<script src="http://www.zoes-social-media-project.com/homepage.js" type="application/x-javascript"></script>-->
+</body>
+</html>
