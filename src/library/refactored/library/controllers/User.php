@@ -12,6 +12,7 @@ use Shared\Constants;
 use Utility\HttpUtils;
 use Views\EmailView;
 use Views\GenericErrorView;
+use Views\RegisterView;
 use Views\NoResultView;
 use Views\RequestErrorView;
 use ZErrors\InvalidFormException;
@@ -223,12 +224,17 @@ class User extends AbstractController
     public function getRegisSuccess () {
         $request = $this->getRequest();
         $queryParams = $request->getQueryParams();
-        $hash = $queryParams["actHash"];
-        $acknowledgement = Write::update('users', ['actHash' => $hash], [
-            '$set' => [
-                'isActivated' => true
-            ]
-        ]);
-        echo json_encode($acknowledgement);
+        if (!empty($queryParams)) {
+            $hash = $queryParams["actHash"];
+            $acknowledgement = Write::update('users', ['actHash' => $hash], [
+                '$set' => [
+                   'isActivated' => true
+                ]
+            ]);
+            //TODO implement redirect
+        } else {
+            $view = new RegisterView();
+            $view->render();
+        }
     }
 }

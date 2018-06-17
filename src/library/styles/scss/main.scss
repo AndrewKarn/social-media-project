@@ -26,13 +26,8 @@ main {
   margin: 0 auto;
   font-family: Arial, sans-serif;
   background-color: $light_color;
+  box-shadow: $box-shdw-0;
 }
-
-/**
-    ajax elements
- */
-
-.alert-modal {}
 
 /**
     Shared elements
@@ -80,8 +75,14 @@ table {
     text-decoration: underline;
     margin-bottom: 1em;
   }
+  tr > td:first-child {
+    text-align: left;
+  }
+  tr > td:last-child {
+    text-align: right;
+  }
   &.form {
-    width: 50%;
+    /*width: 60%;*/
     font-size: 1.25em;
     input {
       width: 100%;
@@ -91,15 +92,20 @@ table {
 }
 
 .validation-errors {
-  background-color: rgba(216, 3, 3, 0.28);
+  background-color: $light_color;
+  border: 2px solid #ff0000;
   border-radius: 10px;
   p {
     padding: 0 1em;
-    margin: 5px;
+    margin: 10px;
     font-size: 0.75em;
     text-align: center;
   }
 }
+
+/*
+  Shared components/styles
+ */
 
 .em {
   font-size: 1.1em;
@@ -122,7 +128,7 @@ button:focus {
   overflow: hidden;
   &:before {
     position: absolute;
-    font-size: 125%;
+    //font-size: 125%;
     content: $arrow;
   }
 }
@@ -151,6 +157,27 @@ button:focus {
   }
 }
 
+.btn-reset {
+  @include btn($reset-sym);
+  &:before {
+    transition: all 0.6s ease;
+    transform: rotate(220deg);
+    font-size: 1.8em;
+    font-weight: bold;
+    left: 75%;
+    opacity: 0;
+    top: 10%;
+  }
+  &:hover:before, &:focus:before, &:active:before {
+    transform: rotate(-140deg);
+    opacity: 1;
+  }
+}
+
+
+/*
+  Apply shadow to each content card element within div.content and div.boxN
+ */
 .content > * > * {
-  box-shadow:  0 3px 5px gray;
+  box-shadow: $box-shdw-1;
 }

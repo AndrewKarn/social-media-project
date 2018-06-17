@@ -7,5 +7,23 @@ const navBar = () => {
             evt.target.classList.toggle('selected');
         }
     });
+    switch (window.location.pathname) {
+        case '/user/registration':
+        case '/user/registration/':
+        case '/user/registration#':
+            document.getElementById('js-nav-register').classList.add('selected');
+            break;
+        case '/':
+        case '/home/default':
+        case '/home/default#':
+        case '/home/default/':
+            document.getElementById('js-nav-home').classList.add('selected');
+            break;
+        case '/user/login':
+        case '/user/login#':
+        case '/user/login/':
+            document.getElementById('js-nav-login').classList.add('selected');
+            break;
+    }
 };
 document.addEventListener('DOMContentLoaded', navBar);

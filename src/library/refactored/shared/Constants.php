@@ -33,7 +33,7 @@ class Constants
                 ]
             ]
         ],
-        "user/register" => [
+        "user/registration" => [
             "controller" => "Controllers\User",
             "httpMethod" => [
                 "POST" => [

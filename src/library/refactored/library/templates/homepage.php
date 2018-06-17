@@ -6,6 +6,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zoe's Social Media Project</title>
     <link href="<?=Constants::WEB_ROOT?>homepage.css" rel="stylesheet" type="text/css">
     <link href="<?=Constants::WEB_ROOT?>login-header.css" rel="stylesheet" type="text/css">
@@ -32,12 +33,12 @@
             </div>
             <div class="register">
                 <span>New Users</span>
-                <button id="js-register-btn" class="btn btn-right">Register</button>
+                <button id="js-register-btn" class="btn btn-right" onclick="location.href='<?=Constants::WEB_ROOT?>user/registration'">Register</button>
             </div>
         </div>
     </div>
 </main>
 <?=$this->getSharedScripts();?>
-<!--<script src="--><?//=Constants::WEB_ROOT?><!--login.js" type="application/x-javascript"></script>-->
+<script src="<?=Constants::WEB_ROOT?>login.js" type="application/x-javascript"></script>
 </body>
 </html>

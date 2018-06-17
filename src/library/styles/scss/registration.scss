@@ -1,0 +1,53 @@
+@import "main";
+@import "vars";
+.content {
+  text-align: center;
+  .box1 {
+    width: 70%;
+    margin: 0 auto;
+    table {
+      caption {
+        background-color: $third_shade;
+        box-shadow: $box-shdw-2;
+      }
+      &, caption {
+        padding: $std-pad;
+        border-radius: 10px;
+      }
+      margin: 5% auto;
+      background-color: $second_shade;
+      width: 70%;
+    }
+  }
+}
+@media screen and (max-width: 770px){
+  .content {
+    .box1 {
+      table {
+        width: 80%;
+      }
+    }
+  }
+}
+@media screen and (max-width: 700px) {
+  .content {
+    .box1 {
+      width: 80%;
+    }
+  }
+}
+@media screen and (max-width: 600px) {
+  .content {
+    .box1 {
+      table {
+        font-size: 1em;
+        caption {
+          font-size: 1.5em;
+        }
+        button {
+          font-size: 0.6em;
+        }
+      }
+    }
+  }
+}

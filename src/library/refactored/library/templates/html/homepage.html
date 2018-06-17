@@ -9,10 +9,11 @@
 <body>
 <header>
     <ul id="js-nav-bar">
-        <li><a id="js-nav-home" href="http://www.zoes-social-media-project.com/home/default" class="selected">Home</a></li>
+        <li><a id="js-nav-home" href="http://www.zoes-social-media-project.com/home/default">Home</a></li>
         <li><a id="js-nav-login" href="#">Login</a></li>
         <li><a id="js-nav-register" href="#">Register</a></li>
     </ul>
+    <script src="http://www.zoes-social-media-project.com/nav-bar.js" type="application/x-javascript"></script>
 </header>
 <main>
     <div id="js-content" class="content">
@@ -34,55 +35,16 @@
             </div>
             <div class="register">
                 <span>New Users</span>
-                <button id="js-register-btn" class="btn btn-right">Register</button>
+                <button id="js-register-btn" class="btn btn-right" onclick="location.href='http://www.zoes-social-media-project.com/user/registration'">Register</button>
             </div>
 
-           <!-- <table class="form" id="js-registration-table">
-                <caption>New Users: Register!</caption>
-                <form action="http://www.zoes-social-media-project.com/user/register" method="post" id="js-register-form">
-                    <tr>
-                        <td><label for="firstname">First Name:</label></td>
-                        <td><input id="firstname-register" type="text" name="firstname" required></td>
-                    </tr>
-                    <tr>
-                        <td><label for="lastname">Last Name:</label></td>
-                        <td><input id="lastname-register" type="text" name="lastname" required></td>
-                    </tr>
-                    <tr>
-                        <td><label for="email">Email:</label></td>
-                        <td><input id="email-register" type="email" name="email" required></td>
-                    </tr>
-                    <tr>
-                        <td><label for="dob">Birth Date:</label></td>
-                        <td><input id="dob-register" type="Date" name="dob" required></td>
-                    </tr>
-
-                    <tr>
-                        <td><label for="password">Enter Password:</label></td>
-                        <td><input id="password-register1" type="password" name="password" required></td>
-                    </tr>
-                    <tr>
-                        <td><label for="passwordVerify">Re-enter Password:</label></td>
-                        <td><input id="password-register2" type="password" name="passwordVerify" required></td>
-                    </tr>
-                    <tr class="form-btns">
-                        <td colspan="2">
-                            <button id="reset-registration" type="reset">Reset</button>
-                            <button id="submit-registration" type="submit">Submit</button>
-                        </td>
-                    </tr>
-                </form>
-            </table>
+           <!--
             !-->
 
         </div>
     </div>
 </main>
-<!--<script src="http://www.zoes-social-media-project.com/ZUtils.js" type="application/x-javascript"></script>-->
 <script src="http://www.zoes-social-media-project.com/dist/utils.js" type="application/x-javascript"></script>
 <script src="http://www.zoes-social-media-project.com/login.js" type="application/x-javascript"></script>
-<script src="http://www.zoes-social-media-project.com/nav-bar.js" type="application/x-javascript"></script>
-<!--<script src="http://www.zoes-social-media-project.com/ZRequest.js" type="application/x-javascript"></script>-->
-<script src="http://www.zoes-social-media-project.com/homepage.js" type="application/x-javascript"></script>
 </body>
 </html>

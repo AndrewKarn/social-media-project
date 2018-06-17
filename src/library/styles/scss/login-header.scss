@@ -1,17 +1,24 @@
 @import "vars";
 
 header {
+  position: fixed;
+  top: 0;
   width: 100%;
   background-color: $third_shade;
-  border-bottom: 2px solid $darkest_blue;
+  height: 51px;
+ box-shadow: $box-shdw-1;
+  & + main { padding-top: 52px; }
   * { font-family: Arial, sans-serif; }
     ul {
       max-width: $main-max-width;
       list-style-type: none;
       margin: 0 auto;
-      padding: $nav-pad;
+      padding-left: 0;
+      padding-top: $nav-pad;
+      padding-bottom: $nav-pad;
       li {
-        display: inline;
+        //display: inline;
+        float: left;
         font-size: 1.5em;
         a {
           text-align: center;

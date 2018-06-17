@@ -36,7 +36,7 @@ gulp.task('registration', ['js-utils'], function () {
     gulp.watch(htmlRoot + '/registration.html').on('change', browserSync.reload);
     browserSync.init({
         server: './' + htmlRoot,
-        index: 'homepage.html'
+        index: 'registration.html'
     });
 });
 

@@ -10,12 +10,12 @@ const registration = () => {
                     err.remove();
                 });
             }
-            let formObj = FrontUtils.objectifyForm(regisForm);
+            let formObj = ZUtils.objectifyForm(regisForm);
             // room to do stuff to form
             const formJson = JSON.stringify(formObj);
             console.log(formJson);
             const request = new ZRequest({
-                uri: 'user/register',
+                uri: 'user/registration',
                 httpMethod: 'POST',
                 body: formJson,
                 needAuth: false
