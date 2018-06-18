@@ -22,7 +22,7 @@ gulp.task('styles', function () {
        .pipe(browserSync.stream());
 });
 
-gulp.task('homepage', ['js-utils'], function () {
+gulp.task('homepage', ['js-utils', 'js-tingle'], function () {
     gulp.watch(scssRoot + '/**/*.scss', ['styles']);
     gulp.watch(htmlRoot + '/**/*.html').on('change', browserSync.reload);
     browserSync.init({
@@ -31,7 +31,7 @@ gulp.task('homepage', ['js-utils'], function () {
     });
 });
 
-gulp.task('registration', ['js-utils'], function () {
+gulp.task('registration', ['js-utils', 'js-tingle'], function () {
     gulp.watch(scssRoot + '/**/*.scss', ['styles']);
     gulp.watch(htmlRoot + '/registration.html').on('change', browserSync.reload);
     browserSync.init({
@@ -47,5 +47,15 @@ gulp.task('js-utils', function () {
         .on('error', function (err) {
             gutil.log(gutil.colors.red('[Error'), err.toString());
         })
-        .pipe(gulp.dest(jsRoot + '/dist'))
+        .pipe(gulp.dest(jsRoot + '/dist'));
+});
+
+gulp.task('js-tingle', function () {
+    return gulp.src(jsRoot + '/vendor/tingle.js')
+        .pipe(concat('tingle.min.js'))
+        .pipe(uglify())
+        .on('error', function (err) {
+            gutil.log(gutil.colors.red('[Error'), err.toString());
+        })
+        .pipe(gulp.dest(jsRoot + '/dist'));
 });

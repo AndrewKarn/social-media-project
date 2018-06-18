@@ -14,7 +14,7 @@ abstract class BaseView
     const TEMPLATES_DIR = __DIR__ . '/../templates/';
     const HEADER = self::TEMPLATES_DIR . 'header.php';
     const SCRIPTS = self::TEMPLATES_DIR . 'shared-scripts.php';
-    const SHARED_STYLES = ['main', 'main-responsive', 'tingle.min', 'login-header'];
+    const SHARED_STYLES = ['main', 'main-responsive', 'custom-tingle', 'login-header'];
 
     protected $template;
     protected $title;

@@ -91,10 +91,11 @@
   background: #fff;
   opacity: 1;
   cursor: auto;
-  -webkit-transition: -webkit-transform .3s cubic-bezier(.175, .885, .32, 1.275);
-  transition: -webkit-transform .3s cubic-bezier(.175, .885, .32, 1.275);
-  transition: transform .3s cubic-bezier(.175, .885, .32, 1.275);
-  transition: transform .3s cubic-bezier(.175, .885, .32, 1.275), -webkit-transform .3s cubic-bezier(.175, .885, .32, 1.275);
+  /*-webkit-transition: -webkit-transform .3s cubic-bezier(.175, .885, .32, 1.275);*/
+  /*transition: -webkit-transform .3s cubic-bezier(.175, .885, .32, 1.275);*/
+  /*transition: transform .3s cubic-bezier(.175, .885, .32, .885);*/
+  /*//transition: transform .3s cubic-bezier(.175, .885, .32, 1.275), -webkit-transform .3s cubic-bezier(.175, .885, .32, 1.275);*/
+  transition: 0.3s ease;
   -webkit-transform: scale(.8);
   -ms-transform: scale(.8);
   transform: scale(.8);

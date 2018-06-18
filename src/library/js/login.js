@@ -3,25 +3,26 @@ function login () {
     const loginForm = document.querySelector('#js-login-form');
     loginForm.onsubmit = (e) => {
         e.preventDefault();
+        let formObj = ZUtils.objectifyForm(loginForm);
         //check if account is locked out
         if (localStorage.getItem('loginLockout') !== null) {
-            const lockoutTimer = new Date(localStorage.getItem('loginLockout') * 1000);
-            if (Date.now() < lockoutTimer.getTime()) {
+            const stored = JSON.parse(localStorage.getItem('loginLockout')),
+                lockoutTimer = new Date(stored.lockout * 1000),
+                lockedEmail = stored.email;
+            if (Date.now() < lockoutTimer.getTime() && formObj.email === lockedEmail) {
                 const raw = new Date(lockoutTimer - Date.now()),
                     message = 'Account locked for ' + raw.getMinutes() + ' minutes and ' + raw.getSeconds() + ' seconds.',
                     modal = accLockModal(message);
                 modal.open();
             } else {
-                post();
+                post(formObj);
             }
         } else {
-            post();
+            post(formObj);
         }
     };
 
-    function post() {
-        let formObj = ZUtils.objectifyForm(loginForm);
-        // room to do stuff to form
+    function post(formObj) {
         const formJson = JSON.stringify(formObj);
         const request = new ZRequest({
             uri: 'user/login',
@@ -32,7 +33,7 @@ function login () {
         request.request().then(data => {
             console.log(data);
             if (typeof data.lockout !== 'undefined') {
-                localStorage.setItem('loginLockout', data.lockout);
+                localStorage.setItem('loginLockout', JSON.stringify(data.lockout));
             }
         });
     }
@@ -41,9 +42,7 @@ function login () {
         //const existing = document.querySelector('div.tingle-modal');
         const modal = new tingle.modal({
             footer: false,
-            closeMethods: ['overlay', 'button', 'escape'],
             closeLabel: "Close",
-            // cssClass: [],
             onOpen: function () {
                 console.log(message);
             },

@@ -33,7 +33,7 @@ class HttpUtils
         }
     }
     public static function revokeCookie($cookie, $kill = false) {
-        setcookie($cookie, '',time() - 3600, '/', 'zoes-social-media-project.com');
+        setcookie($cookie, '',time() - 7200, '/', 'zoes-social-media-project.com');
         if ($kill) {
             die();
         }

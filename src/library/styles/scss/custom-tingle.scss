@@ -1,0 +1,12 @@
+@import "vars";
+@import "main";
+@import "../tingle.css";
+.custom-tingle {
+  font-family: Arial, sans-serif;
+  .tingle-modal-box {
+    border-radius: 10px;
+    h1 {
+      text-align: center;
+    }
+  }
+}

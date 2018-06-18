@@ -6,10 +6,13 @@
  * Time: 8:59 PM
  */
 namespace Controllers;
-use DB\Write;
-use MongoDB\Exception\InvalidArgumentException;
 use Shared\Constants;
 use Utility\HttpUtils;
+use Utility\Key;
+use Mailgun\Mailgun;
+use DB\Write;
+use DB\Query;
+use MongoDB\Exception\InvalidArgumentException;
 use Views\EmailView;
 use Views\GenericErrorView;
 use Views\RegisterView;
@@ -17,10 +20,7 @@ use Views\NoResultView;
 use Views\RequestErrorView;
 use ZErrors\InvalidFormException;
 use ZErrors\InvalidRequestException;
-use DB\Query;
 use ZErrors\NoResultException;
-use Mailgun\Mailgun;
-use Utility\Key;
 
 class User extends AbstractController
 {
@@ -76,7 +76,9 @@ class User extends AbstractController
                     } else {
                         $lockout = time() + 900; // 15 min
                         $resp = new Response();
-                        $resp->buildResponse(['message' => 'Maximum login attempts. Account locked for 15 minutes.', 'lockout' => $lockout])->send();
+                        $resp->buildResponse(['message' => 'Maximum login attempts. Account locked for 15 minutes.',
+                            'lockout' => ['lockout' => $lockout, 'email' => $validated['email']]
+                        ])->send();
                     }
                 } else {
                     $attempts = 1;
@@ -95,7 +97,9 @@ class User extends AbstractController
             $min = date('i', $diff);
             $secs = date('s', $diff);
             $resp = new Response();
-            $resp->buildResponse(['message' => 'Account locked for ' . $min . ' minutes and ' . $secs . ' seconds.'])->send();
+            $resp->buildResponse(['message' => 'Account locked for ' . $min . ' minutes and ' . $secs . ' seconds.',
+                'lockout' => ['lockout' => $user['lockout'], 'email' => $validated['email']]
+            ])->send();
         }
     }
 
