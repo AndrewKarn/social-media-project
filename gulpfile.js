@@ -18,11 +18,11 @@ gulp.task('styles', function () {
        .pipe(autoprefixer({
            browsers: ['last 2 versions']
        }))
-       .pipe(gulp.dest('src/library/styles/'))
+       .pipe(gulp.dest('src/library/styles/dist/'))
        .pipe(browserSync.stream());
 });
 
-gulp.task('homepage', ['js-utils', 'js-tingle'], function () {
+gulp.task('homepage', ['js-utils', 'js-tingle', 'js-specifics'], function () {
     gulp.watch(scssRoot + '/**/*.scss', ['styles']);
     gulp.watch(htmlRoot + '/**/*.html').on('change', browserSync.reload);
     browserSync.init({
@@ -31,12 +31,21 @@ gulp.task('homepage', ['js-utils', 'js-tingle'], function () {
     });
 });
 
-gulp.task('registration', ['js-utils', 'js-tingle'], function () {
+gulp.task('registration', ['js-utils', 'js-tingle', 'js-specifics'], function () {
     gulp.watch(scssRoot + '/**/*.scss', ['styles']);
     gulp.watch(htmlRoot + '/registration.html').on('change', browserSync.reload);
     browserSync.init({
         server: './' + htmlRoot,
         index: 'registration.html'
+    });
+});
+
+gulp.task('one-box-view', ['js-utils', 'js-tingle', 'js-specifics'], function () {
+    gulp.watch(scssRoot + '/**/*.scss', ['styles']);
+    gulp.watch(htmlRoot + '/one-box-view.html').on('change', browserSync.reload);
+    browserSync.init({
+        server: './' + htmlRoot,
+        index: 'one-box-view.html'
     });
 });
 
@@ -59,3 +68,13 @@ gulp.task('js-tingle', function () {
         })
         .pipe(gulp.dest(jsRoot + '/dist'));
 });
+
+gulp.task('js-specifics', function () {
+    return gulp.src(jsRoot + '/specific/**/*.js')
+        .pipe(uglify())
+        .on('error', function (err) {
+            gutil.log(gutil.colors.red('[Error'), err.toString());
+        })
+        .pipe(gulp.dest(jsRoot + '/dist'));
+});
+

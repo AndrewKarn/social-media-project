@@ -19,6 +19,7 @@ abstract class BaseView
     protected $template;
     protected $title;
     protected $styles;
+    protected $scripts;
 
     public function render() {
         echo $this->getTemplate();
@@ -68,12 +69,26 @@ abstract class BaseView
         }
         ob_start();
             foreach ($stylesToGet as $style) {
-                echo '<link href="' . Constants::WEB_ROOT . $style . '.css" rel="stylesheet" type="text/css">';
+                echo '<link href="' . Constants::WEB_ROOT . 'dist/' . $style . '.css" rel="stylesheet" type="text/css">';
             }
         return ob_get_clean();
     }
 
     protected function setStyles(array $styles) {
         $this->styles = $styles;
+    }
+
+    public function getUniqueScripts() {
+        if (!empty($this->scripts)) {
+            ob_start();
+            foreach ($this->scripts as $script) {
+                echo '<script src="' . Constants::WEB_ROOT . 'dist/' . $script . '.js" type="application/x-javascript"></script>';
+            }
+            return ob_get_clean();
+        }
+    }
+
+    protected function setUniqueScripts(array $scripts = []) {
+        $this->scripts = $scripts;
     }
 }

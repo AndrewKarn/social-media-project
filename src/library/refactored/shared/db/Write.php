@@ -36,7 +36,7 @@ Please click <a href="' . Constants::WEB_ROOT . 'home/default">here</a> to retur
         $db = self::getCollection($collection);
         try {
             $result = $db->updateOne($query, $update);
-            return $result->isAcknowledged();
+            return $result->getModifiedCount();
         } catch (\MongoDB\Driver\Exception\BulkWriteException $e) {
             $details = $e->getWriteResult();
             $details = $details->getWriteErrors();

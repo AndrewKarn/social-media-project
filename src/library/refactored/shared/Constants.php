@@ -30,6 +30,11 @@ class Constants
                     "method" => "login",
                     "requestBody" => true,
                     "protected" => false
+                ],
+                "GET" => [
+                    "method" => 'getLoginPage',
+                    "requestBody" => false,
+                    "protected" => false
                 ]
             ]
         ],
@@ -42,7 +47,7 @@ class Constants
                     "protected" => false
                 ],
                 "GET" => [
-                    "method" => "getRegisSuccess",
+                    "method" => "getRegistration",
                     "requestBody" => false,
                     "protected" => false
                 ]

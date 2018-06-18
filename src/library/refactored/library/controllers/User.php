@@ -18,6 +18,7 @@ use Views\GenericErrorView;
 use Views\RegisterView;
 use Views\NoResultView;
 use Views\RequestErrorView;
+use Views\SingleBoxView;
 use ZErrors\InvalidFormException;
 use ZErrors\InvalidRequestException;
 use ZErrors\NoResultException;
@@ -257,20 +258,57 @@ class User extends AbstractController
     /**
      * @var $request Request
      */
-    public function getRegisSuccess () {
+    public function getRegistration () {
         $request = $this->getRequest();
         $queryParams = $request->getQueryParams();
         if (!empty($queryParams)) {
-            $hash = $queryParams["actHash"];
-            $acknowledgement = Write::update('users', ['actHash' => $hash], [
-                '$set' => [
-                   'isActivated' => true
-                ]
-            ]);
-            //TODO implement redirect
+            $hash = $queryParams["hash"];
+            $this->getEmailValidationSuccess($hash);
         } else {
-            $view = new RegisterView();
+            $this->getRegistrationPage();
+        }
+    }
+
+    private function getEmailValidationSuccess ($hash) {
+        $acknowledgement = Write::update('users', ['actHash' => $hash], [
+            '$set' => [
+                'isActivated' => true
+            ]
+        ]);
+        if ($acknowledgement) {
+            $data = [];
+            $data['title'] = 'Welcome!';
+            $data['content'] = '<h1>Thanks for registering!</h1>' .
+                '<p>Click <a href="' . Constants::WEB_ROOT . 'user/login">here</a> to login!</p>';
+            $view = new SingleBoxView($data);
+            $view->render();
+            die();
+        } else {
+            $view = new GenericErrorView('Uh oh, something went wrong. Sorry!');
             $view->render();
         }
+    }
+
+    private function getRegistrationPage() {
+        $view = new RegisterView();
+        $view->render();
+    }
+
+    public function getLoginPage() {
+        $data = [];
+        $data["scripts"] = ['login'];
+        $data["title"] = 'Login';
+        $data["content"] = '<h1>Login Here</h1>
+            <div class="form">
+                <form id="js-login-form">
+                    <div>
+                        <input name="email" type="email" placeholder="user@example.com" required>
+                        <input name="password" type="password" placeholder="password" required>
+                        <button id="js-login-btn" class="btn btn-right" type="submit">Login</button>
+                    </div>
+                </form>
+            </div>';
+        $view = new SingleBoxView($data);
+        $view->render();
     }
 }

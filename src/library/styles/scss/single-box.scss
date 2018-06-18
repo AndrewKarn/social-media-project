@@ -1,0 +1,53 @@
+@import "vars";
+.box1 {
+  width: 75%;
+  text-align: center;
+  margin: 0 auto;
+
+  & > * {
+    padding: $std-pad;
+    border-radius: 10px;
+  }
+
+  h1 {
+    background-color: $third_shade;
+    font-size: 3em;
+    font-style: italic;
+  }
+
+  form, div {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    position: relative;
+    //margin: $std-pad;
+    input {
+      font-size: 1em;
+      padding: $std-pad;
+      width: 70%;
+      margin: $std-pad;
+    }
+    button {
+      left: 80%;
+      top: 30%;
+      position: absolute;
+      margin: 0 auto;
+    }
+  }
+
+  p:nth-child(2) {
+    background-color: $second_shade;
+    font-size: 2em;
+
+    a {
+      text-decoration: none;
+      color: $green_accent;
+    }
+  }
+
+  p:nth-child(3) {
+    text-align: left;
+    background-color: $light_color;
+    border: 5px solid $second_shade;
+  }
+}
