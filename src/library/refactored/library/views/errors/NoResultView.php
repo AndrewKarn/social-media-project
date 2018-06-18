@@ -11,6 +11,7 @@ use ZErrors\NoResultException;
 
 class NoResultView extends BaseView
 {
+    const NO_RESULT_STYLES = ['std-error'];
 
     protected $message;
     protected $trace;
@@ -19,6 +20,7 @@ class NoResultView extends BaseView
         $this->setMessage($error->getMessage());
         $this->setStackTrace($error->formatStackTrace());
         $this->setTitle('No Results');
+        $this->setStyles(self::NO_RESULT_STYLES);
         $this->setTemplate('exception-page');
     }
 

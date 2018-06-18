@@ -12,9 +12,8 @@ use Shared\Constants;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zoe's Social Media Project</title>
-    <link href="<?=Constants::WEB_ROOT?>registration.css" rel="stylesheet" type="text/css">
-    <link href="<?=Constants::WEB_ROOT?>login-header.css" rel="stylesheet" type="text/css">
+    <title><?=$this->getTitle(); ?></title>
+    <?=$this->getStyles(); ?>
 </head>
 <body>
 <?=$this->getHeader();?>

@@ -11,8 +11,11 @@ namespace Views;
 
 class HomeView extends BaseView
 {
+    const HOME_STYLES = ['homepage', 'tingle.min'];
+
     public function __construct() {
         $this->setTitle('Home');
+        $this->setStyles(self::HOME_STYLES);
         $this->setTemplate('homepage');
     }
 }

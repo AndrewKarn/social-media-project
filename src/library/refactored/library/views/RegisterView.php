@@ -11,9 +11,12 @@ namespace Views;
 
 class RegisterView extends BaseView
 {
+    const REGISTER_STYLES = ['registration'];
+
     public function __construct()
     {
         $this->setTitle('Register!');
+        $this->setStyles(self::REGISTER_STYLES);
         $this->setTemplate('register-page');
     }
 }

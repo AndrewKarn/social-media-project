@@ -45,7 +45,8 @@ class User extends AbstractController
                 'firstname',
                 'isActivated',
                 'loginAttempts',
-                'lastLogin'
+                'lastLogin',
+                'lockout'
             ]);
             if (empty($user)) {
                 throw new NoResultException('There was no document found with email' . $validated["email"]);
@@ -58,12 +59,43 @@ class User extends AbstractController
             $view->render();
             die();
         }
-        if (password_verify($validated["password"], $user["password"])) {
-            $jwt = HttpUtils::generateJWT([$user["email"], $user["_id"]->__toString()]);
-            header('Authorization: ' . $jwt);
+        if (!isset($user['lockout']) || $user['lockout'] < time()) {
+            // check if account is currently locked.
+            if (password_verify($validated["password"], $user["password"])) {
+                $jwt = HttpUtils::generateJWT([$user["email"], $user["_id"]->__toString()]);
+                header('Authorization: ' . $jwt);
+                $resp = new Response();
+                $resp->buildResponse(['message' => 'Congrats ' . $user["firstname"] . '. You successfully logged in.'])->send();
+                die();
+            } else {
+                // if password is not validated.
+                if (isset($user["loginAttempts"])) {
+                    $attempts = $user["loginAttempts"];
+                    if ($attempts < 5) {
+                        $attempts++;
+                    } else {
+                        $lockout = time() + 900; // 15 min
+                        $resp = new Response();
+                        $resp->buildResponse(['message' => 'Maximum login attempts. Account locked for 15 minutes.', 'lockout' => $lockout])->send();
+                    }
+                } else {
+                    $attempts = 1;
+                }
+
+                if (isset($lockout)) {
+                    Write::update('users', ['_id' => $user['_id']], ['$set' => ['lockout' => $lockout, 'loginAttempts' => 0]]);
+                } else {
+                    Write::update('users', ['_id' => $user['_id']], ['$set' => ['loginAttempts' => $attempts]]);
+                    $resp = new Response();
+                    $resp->buildResponse(['message' => 'Wrong username or password.'])->send();
+                }
+            }
+        } else {
+            $diff = $user['lockout'] - time();
+            $min = date('i', $diff);
+            $secs = date('s', $diff);
             $resp = new Response();
-            $resp->buildResponse(['Congrats ' . $user["firstname"] . '. You successfully logged in.'])->send();
-            die();
+            $resp->buildResponse(['message' => 'Account locked for ' . $min . ' minutes and ' . $secs . ' seconds.'])->send();
         }
     }
 

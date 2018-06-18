@@ -4,3 +4,4 @@ vendor/
 util/logs/*.log
 src/library/refactored/shared/Key.php
 refactored/shared/Key.php
+node_modules/

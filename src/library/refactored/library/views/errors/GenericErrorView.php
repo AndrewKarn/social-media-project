@@ -11,13 +11,16 @@ namespace Views;
 
 class GenericErrorView extends BaseView
 {
+    const GENERIC_ERR_STYLES = ['std-error'];
+
     private $errors = [];
 
     public function __construct(string $message)
     {
         $this->addErrorMessage($message);
-        $this->setTemplate('error');
         $this->setTitle('Error');
+        $this->setStyles(self::GENERIC_ERR_STYLES);
+        $this->setTemplate('error');
     }
 
     public function addErrorMessage (string $message) {

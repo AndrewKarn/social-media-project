@@ -14,9 +14,11 @@ abstract class BaseView
     const TEMPLATES_DIR = __DIR__ . '/../templates/';
     const HEADER = self::TEMPLATES_DIR . 'header.php';
     const SCRIPTS = self::TEMPLATES_DIR . 'shared-scripts.php';
+    const SHARED_STYLES = ['main', 'main-responsive', 'tingle.min', 'login-header'];
 
     protected $template;
     protected $title;
+    protected $styles;
 
     public function render() {
         echo $this->getTemplate();
@@ -56,5 +58,22 @@ abstract class BaseView
         ob_start();
             include $file;
         $this->template = ob_get_clean();
+    }
+
+    public function getStyles() {
+        if (isset($this->styles) && !empty($this->styles)) {
+            $stylesToGet = array_merge(self::SHARED_STYLES, $this->styles);
+        } else {
+            $stylesToGet = self::SHARED_STYLES;
+        }
+        ob_start();
+            foreach ($stylesToGet as $style) {
+                echo '<link href="' . Constants::WEB_ROOT . $style . '.css" rel="stylesheet" type="text/css">';
+            }
+        return ob_get_clean();
+    }
+
+    protected function setStyles(array $styles) {
+        $this->styles = $styles;
     }
 }

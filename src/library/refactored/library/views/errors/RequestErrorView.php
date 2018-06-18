@@ -20,6 +20,8 @@ class RequestErrorView extends BaseView
         404 => "404 Page Not Found"
     ];
 
+    const REQUEST_ERR_STYLES = ['std-error'];
+
     protected $message;
     protected $trace;
 
@@ -27,6 +29,7 @@ class RequestErrorView extends BaseView
         $this->setMessage($error->getMessage());
         $this->setStackTrace($error->formatStackTrace());
         $this->setTitle(self::ERROR_TITLES[http_response_code()]);
+        $this->setStyles(self::REQUEST_ERR_STYLES);
         $this->setTemplate('exception-page');
     }
 
