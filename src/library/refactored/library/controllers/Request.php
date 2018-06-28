@@ -190,8 +190,8 @@ class Request
      * If there is a token in the request, check the token, sets authentication status
      */
     private function checkToken() {
-        if (isset($_SERVER["HTTP_AUTHORIZATION"])) {
-            $jwt = $_SERVER["HTTP_AUTHORIZATION"];
+        if (isset($_COOKIE["jwt_payload"]) && isset($_COOKIE["jwt_sig"])) {
+            $jwt = $_COOKIE["jwt_payload"] . '.' . $_COOKIE["jwt_sig"];
             try {
                 $decoded = JWT::decode($jwt, Key::JWT_SECRET, array('HS512'));
                 if (!empty($decoded)) {
@@ -201,12 +201,16 @@ class Request
                     $newJWT = HttpUtils::generateJWT($decoded->dat);
 
                     // experimental
-//                    $pos1 = strpos($newJWT, '.');
-//                    $pos2 = strpos($newJWT, '.', $pos1 + 1);
-//                    $headerPaylod = substr($newJWT, 0, $pos2);
-//                    $signature = substr($newJWT, $pos2);
+                    // Break jwt into two sections to send with cookie
+                    //$pos1 = strpos($newJWT, '.');
+                    $pos2 = strpos($newJWT, '.', strpos($newJWT, '.') + 1);
+                    $headerPayload = substr($newJWT, 0, $pos2);
+                    $signature = substr($newJWT, $pos2);
 
-                    header('Authorization:' . $newJWT);
+                    //header('Authorization:' . $newJWT);
+                    // ! Set to not secure for testing, look into https later.
+                    setcookie("jwt_payload", $headerPayload, time() + (60 * 15), '/',Constants::DOMAIN, false);
+                    setcookie("jwt_sig", $signature, time() + (60 * 15), '/',Constants::DOMAIN, false, true);
                 }
             } catch (BeforeValidException $e) {
                 error_log($e->getMessage());

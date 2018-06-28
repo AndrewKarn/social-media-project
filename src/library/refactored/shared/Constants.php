@@ -12,6 +12,7 @@ namespace Shared;
 class Constants
 {
     const WEB_ROOT = 'http://www.zoes-social-media-project.com/';
+    const DOMAIN = 'zoes-social-media-project.com';
     const REQUEST_PATHS = [
         // WILL RENAME ROOT DIRECTORY WHEN DOMAIN IS SET UP
         "home/default" => [
