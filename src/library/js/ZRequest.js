@@ -72,7 +72,7 @@ ZRequest.prototype.setDefaultHeaders = function () {
     const headers = new Headers(),
         jwt = this.getJWT();
     if (jwt) {
-        headers.append('Authorization', jwt);
+
     }
     if (this.isBody()) {
         headers.append('Content-Type', 'application/json');

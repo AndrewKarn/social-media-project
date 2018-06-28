@@ -35,6 +35,11 @@ function login () {
             if (typeof data.lockout !== 'undefined') {
                 localStorage.setItem('loginLockout', JSON.stringify(data.lockout));
             }
+            if (data.loggedIn === true) {
+                const headers = new Headers();
+                headers.append('Authorization', localStorage.getItem('jwt'));
+                window.location = 'user/home';
+            }
         });
     }
 

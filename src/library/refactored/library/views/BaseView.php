@@ -23,7 +23,6 @@ abstract class BaseView
 
     public function render() {
         echo $this->getTemplate();
-        die();
     }
 
     protected function setTitle($title) {

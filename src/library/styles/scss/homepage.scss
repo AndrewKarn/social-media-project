@@ -1,6 +1,10 @@
 @import "vars";
 @import "main";
-
+input {
+  padding: $std-pad;
+  margin: $std-pad;
+  font-size: 0.8em;
+}
 .content {
   display: inherit;
   flex-wrap: inherit;
@@ -9,6 +13,7 @@
   .box1 {
     order: 1;
     width: 55%;
+    margin: 32px 2.5% 0 2.5%;
     h1 {
       background-color: $third_shade;
       font-size: 2.5em;
@@ -18,31 +23,23 @@
       background-color: $second_shade;
       font-size: 1.5em;
     }
-    h1, p {
-      border-radius: 10px;
-      padding: $std-pad;
-    }
     & > *:first-child { margin: 0 auto; }
   }
   .box2 {
     order: 2;
-    width: 35%;
+    width: 37.5%;
+    margin: 32px 2.5% 0 0;
     .form {
       text-align: center;
       background-color: $second_shade;
       font-size: 1.2em;
       input {
-        padding: $std-pad;
-        margin: $std-pad;
-        font-size: 0.8em;
         &:first-child { margin-bottom: 0; }
       }
     }
     .register {
       width: 100%;
       background-color: $second_shade;
-      border-radius: 10px;
-      padding: $std-pad;
       height: 50px;
       position: relative;
       // TODO add media breakpoint for positioning < 800px
@@ -60,12 +57,108 @@
       }
     }
     div {
-      border-radius: 10px;
       padding: $std-pad;
       &:first-child { margin-bottom: ($std-pad * 2); }
     }
   }
-  .box1, .box2 {
-    margin: 32px 2.5%;
+  .box3 {
+    order: 3;
+    text-align: center;
+    width: 100%;
+    h2, ul {
+      margin: 0 2.5% $std-pad 2.5%;
+    }
+    ul {
+      box-shadow: none;
+      background-color: $backdrop;
+      list-style: none;
+      display: flex;
+      padding: $std-pad 0;
+      li {
+        width: 33%;
+        padding: $std-pad;
+        box-shadow: $box-shdw-2;
+        background-color: $light_color;
+        font-size: 1.5em;
+        &:first-child, &:nth-child(2) { margin-right: 2.5%; }
+      }
+      a {
+        text-decoration: none;
+        color: $green_accent;
+      }
+    }
   }
 }
+
+@media screen and (max-width: 700px){
+  .content {
+    .box1, .box2, .box3 {
+      width: 100%;
+    }
+    .box2, .box3 {
+      margin: 0 2.5%;
+    }
+    .box2 {
+      display: flex;
+      flex-wrap: wrap;
+      .form, .register {
+        width: 50% - 1.25%;
+      }
+      .form {
+        margin-right: 2.5%;
+      }
+    }
+    //.box3 {
+    //  margin-top: $std-pad * 2;
+    //  h2, ul {
+    //    width: 100%;
+    //  }
+    //}
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .content {
+    .box2 {
+      .register, .form {
+        display: flex;
+        flex-wrap: wrap;
+        height: 100%;
+      }
+      .register {
+        button {
+          top: 60%;
+        }
+        span {
+          padding-left: initial;
+          font-size: 125%;
+          top: 10%;
+        }
+        span, button {
+          left: 15%;
+        }
+      }
+    }
+  }
+}
+
+//@media screen and (max-width: 500px) {
+//  .content {
+//    .box2 {
+//      .register, .form {
+//        width: 100%;
+//        display: block;
+//        height: initial;
+//        position: initial;
+//      }
+//      .register {
+//        button, span {
+//          position: initial;
+//        }
+//        .btn {
+//          position: relative;
+//        }
+//      }
+//    }
+//  }
+//}

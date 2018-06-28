@@ -30,8 +30,10 @@ class Request
     private $authenticated;
     private $token;
     private $queryStr;
+    //private $sessionId;
 
     public function __construct() {
+        //$this->setSessionId();
         $this->setServer();
         $this->setQueryStr();
         $this->parseUri();
@@ -54,6 +56,16 @@ class Request
             $this->requestBody = $this->sanitizeRequestBody($raw);
         }
     }
+
+//    private function setSessionId() {
+//        session_start();
+//        if (isset($_SERVER['PHPSESSID']) && !empty($_SERVER['PHPSESSID'])) {
+//            $this->sessionId = $_SERVER['PHPSESSID'];
+//        } else {
+//            session_create_id();
+//
+//        }
+//    }
 
     /**
      * Iterates over requestBody elements and cleans them before processing
@@ -187,6 +199,13 @@ class Request
                     $this->setToken($decoded);
                     // TODO implement a method to add additional data in jwt
                     $newJWT = HttpUtils::generateJWT($decoded->dat);
+
+                    // experimental
+//                    $pos1 = strpos($newJWT, '.');
+//                    $pos2 = strpos($newJWT, '.', $pos1 + 1);
+//                    $headerPaylod = substr($newJWT, 0, $pos2);
+//                    $signature = substr($newJWT, $pos2);
+
                     header('Authorization:' . $newJWT);
                 }
             } catch (BeforeValidException $e) {

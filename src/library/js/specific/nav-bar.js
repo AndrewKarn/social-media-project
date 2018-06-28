@@ -14,6 +14,7 @@ const navBar = () => {
             document.getElementById('js-nav-register').classList.add('selected');
             break;
         case '/':
+        case '/home':
         case '/home/default':
         case '/home/default#':
         case '/home/default/':

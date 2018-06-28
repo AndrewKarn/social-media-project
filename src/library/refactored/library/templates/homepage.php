@@ -35,9 +35,17 @@
                 <button id="js-register-btn" class="btn btn-right" onclick="location.href='<?=Constants::WEB_ROOT?>user/registration'">Register</button>
             </div>
         </div>
+        <div class="box3">
+            <h2>This project is mostly from <span class="em">scratch</span> however,<br>a few dependencies were used...</h2>
+            <ul>
+                <li>Firebase JWT PHP Library: <a href="https://github.com/firebase/php-jwt">Source</a></li>
+                <li>Tingle.js Frontend Modal library: <a href="https://github.com/robinparisi/tingle">Source</a></li>
+                <li>MailGun API - Email delivery service: <a href="https://www.mailgun.com/">Source</a></li>
+            </ul>
+        </div>
     </div>
 </main>
-<?=$this->getSharedScripts();?>
-<script src="<?=Constants::WEB_ROOT?>login.js" type="application/x-javascript"></script>
+<?=$this->getSharedScripts(); ?>
+<?=$this->getUniqueScripts(); ?>
 </body>
 </html>

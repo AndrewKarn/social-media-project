@@ -6,6 +6,7 @@
  * Time: 8:59 PM
  */
 namespace Controllers;
+use DB\Base;
 use Shared\Constants;
 use Utility\HttpUtils;
 use Utility\Key;
@@ -66,7 +67,8 @@ class User extends AbstractController
                 $jwt = HttpUtils::generateJWT([$user["email"], $user["_id"]->__toString()]);
                 header('Authorization: ' . $jwt);
                 $resp = new Response();
-                $resp->buildResponse(['message' => 'Congrats ' . $user["firstname"] . '. You successfully logged in.'])->send();
+                $resp->buildResponse(['message' => 'Congrats ' . $user["firstname"] . '. You successfully logged in.', 'loggedIn' => true])->send();
+                Write::update('users', ['_id' => $user["_id"]], ['$set' => ['lastLogin' => Base::timestamp()]]);
                 die();
             } else {
                 // if password is not validated.

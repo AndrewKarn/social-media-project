@@ -13,6 +13,7 @@ class Constants
 {
     const WEB_ROOT = 'http://www.zoes-social-media-project.com/';
     const REQUEST_PATHS = [
+        // WILL RENAME ROOT DIRECTORY WHEN DOMAIN IS SET UP
         "home/default" => [
             "controller" => "Controllers\Home",
             "httpMethod" => [
@@ -53,6 +54,16 @@ class Constants
                 ]
             ]
         ],
+        "user/home" => [
+            "controller" => "Controllers\Home",
+            "httpMethod" => [
+                "GET" => [
+                    "method" => "getUserHomepage",
+                    "requestBody" => false,
+                    "protected" => true
+                ]
+            ]
+        ]
     ];
 
     const VALID_TOKEN = 1;
