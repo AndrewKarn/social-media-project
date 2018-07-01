@@ -307,7 +307,7 @@ class User extends AbstractController
 
     public function getLoginPage() {
         $data = [];
-        $data["scripts"] = ['login'];
+        $data["scripts"] = ['login', 'nav-bar'];
         $data["title"] = 'Login';
         $data["content"] = '<h1>Login Here</h1>
             <div class="form">

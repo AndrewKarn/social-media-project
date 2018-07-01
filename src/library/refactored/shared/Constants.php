@@ -40,6 +40,16 @@ class Constants
                 ]
             ]
         ],
+        "user/logout" => [
+            "controller" => "Controllers\User",
+            "httpMethod" => [
+                "GET" => [
+                    "method" => "logout",
+                    "requestBody" => false,
+                    "protected" => true
+                ]
+            ]
+        ],
         "user/registration" => [
             "controller" => "Controllers\User",
             "httpMethod" => [

@@ -205,17 +205,12 @@ class Request
                 if (!empty($decoded)) {
                     $this->setAuthenticated(Constants::VALID_TOKEN);
                     $this->setToken($decoded);
-                    // TODO implement a method to add additional data in jwt
                     $newJWT = HttpUtils::generateJWT($decoded->dat);
 
-                    // experimental
                     // Break jwt into two sections to send with cookie
-                    //$pos1 = strpos($newJWT, '.');
                     $pos2 = strpos($newJWT, '.', strpos($newJWT, '.') + 1);
                     $headerPayload = substr($newJWT, 0, $pos2);
                     $signature = substr($newJWT, $pos2);
-
-                    //header('Authorization:' . $newJWT);
                     // ! Set to not secure for testing, look into https later.
                     setcookie("jwt_payload", $headerPayload, time() + (60 * 15), '/',Constants::DOMAIN, false);
                     setcookie("jwt_sig", $signature, time() + (60 * 15), '/',Constants::DOMAIN, false, true);

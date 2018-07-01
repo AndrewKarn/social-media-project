@@ -12,7 +12,7 @@ namespace Views;
 class HomeView extends BaseView
 {
     const HOME_STYLES = ['homepage'];
-    const HOME_SCRIPTS = ['login'];
+    const HOME_SCRIPTS = ['login', 'nav-bar'];
 
     public function __construct() {
         $this->setTitle('Home');

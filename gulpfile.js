@@ -78,5 +78,14 @@ gulp.task('js-specifics', function () {
         .pipe(gulp.dest(jsRoot + '/dist'));
 });
 
+gulp.task('user-homepage', ['js-utils', 'js-tingle', 'js-specifics'], function() {
+    gulp.watch(scssRoot + '/**/*.scss', ['styles']);
+    gulp.watch(htmlRoot + '/user-homepage.html').on('change', browserSync.reload);
+    browserSync.init({
+        server: './' + htmlRoot,
+        index: 'user-homepage.html'
+    });
+});
+
 
 

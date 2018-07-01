@@ -2,6 +2,7 @@
     Shared html styles for every page
  */
 @import "vars";
+@import "buttons";
 
 * {
   box-sizing: border-box;
@@ -11,7 +12,7 @@
 }
 html, body {
   margin: 0;
-  background-color: $second_shade;
+  background-color: $backdrop;
   height: 100%;
 }
 
@@ -26,7 +27,7 @@ main {
   margin: 0 auto;
   font-family: Arial, sans-serif;
   background-color: $backdrop;
-  box-shadow: $box-shdw-0;
+  //box-shadow: $box-shdw-0;
 }
 
 /**
@@ -41,6 +42,10 @@ main {
   border: 2px solid rgba(255, 100, 100, 0.4);
 }
 
+a {
+  text-decoration: none;
+  color: #000
+}
 
 /*
     Form elements
@@ -93,67 +98,6 @@ table {
   font-style: italic;
   font-weight: bold;
 }
-
-button:focus {
-  outline: none;
-  box-shadow: 0 0 2px 2px #5b9dd9;
-}
-
-@mixin btn($icon) {
-  border: 3px solid #000;
-  border-radius: 50px;
-  text-transform: uppercase;
-  color: #000;
-  padding: $std-pad 30px;
-  transition: all 0.3s;
-  overflow: hidden;
-  &:before {
-    position: absolute;
-    content: $icon;
-  }
-}
-
-.btn {
-  position: relative;
-  transition: all 0.3s ease;
-}
-
-.btn-right {
-  @include btn($right_arr);
-  &:before {
-    transition: all 0.3s ease;
-    font-size: 2em;
-    left: 70%;
-    opacity: 0;
-    top: 0;
-  }
-  &:hover:before, &:focus:before, &:active:before {
-    left: 80%;
-    opacity: 1;
-  }
-  &:hover, &:focus, &:active {
-    background-color: $third_shade;
-    color: $light_color;
-  }
-}
-
-.btn-reset {
-  @include btn($reset-sym);
-  &:before {
-    transition: all 0.6s ease;
-    transform: rotate(220deg);
-    font-size: 1.8em;
-    font-weight: bold;
-    left: 75%;
-    opacity: 0;
-    top: 10%;
-  }
-  &:hover:before, &:focus:before, &:active:before {
-    transform: rotate(-140deg);
-    opacity: 1;
-  }
-}
-
 
 /*
   Apply shadow to each content card element within div.content and div.boxN

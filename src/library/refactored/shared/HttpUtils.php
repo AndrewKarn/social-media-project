@@ -45,7 +45,7 @@ class HttpUtils
         }
     }
 
-    public  static function generateJWT($data = null, $mins = 5) {
+    public  static function generateJWT($data = null, $mins = 15) {
         $key = Key::JWT_SECRET;
         $token = array(
             "iss" => "zoes-social-media-project.com",

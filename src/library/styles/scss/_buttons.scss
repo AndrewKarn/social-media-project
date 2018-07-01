@@ -1,0 +1,85 @@
+@import "vars";
+button:focus {
+  outline: none;
+  box-shadow: 0 0 2px 2px #5b9dd9;
+}
+
+@mixin btn($icon) {
+  border: 3px solid #000;
+  border-radius: 50px;
+  text-transform: uppercase;
+  color: #000;
+  padding: $std-pad 30px;
+  transition: all 0.3s;
+  overflow: hidden;
+  &:before {
+    position: absolute;
+    content: $icon;
+  }
+}
+
+.btn {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.btn-right {
+  @include btn($right_arr);
+  &:before {
+    transition: all 0.3s ease;
+    font-size: 2em;
+    left: 70%;
+    opacity: 0;
+    top: 0;
+  }
+  &:hover:before, &:focus:before, &:active:before {
+    left: 80%;
+    opacity: 1;
+  }
+  &:hover, &:focus, &:active {
+    background-color: $third_shade;
+    color: $light_color;
+  }
+}
+
+.btn-reset {
+  @include btn($reset-sym);
+  &:before {
+    transition: all 0.6s ease;
+    transform: rotate(220deg);
+    font-size: 1.8em;
+    font-weight: bold;
+    left: 75%;
+    opacity: 0;
+    top: 10%;
+  }
+  &:hover:before, &:focus:before, &:active:before {
+    transform: rotate(-140deg);
+    opacity: 1;
+  }
+}
+
+i.logout {
+  width: 125px;
+  line-height: 50px;
+  text-align: left;
+
+  &::before {
+    content: 'logout >'; }
+  &:focus:before, &:hover:before, &:active:before {
+    animation-duration: 2s;
+    animation-name: logout;
+    animation-direction: alternate;
+  }
+  @keyframes logout {
+    from {
+      padding-left: 0;
+    }
+    50% {
+      padding-left: 25%;
+    }
+    to {
+      padding-left: 0%;
+    }
+  }
+}

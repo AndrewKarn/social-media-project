@@ -36,15 +36,12 @@ function login () {
                 localStorage.setItem('loginLockout', JSON.stringify(data.lockout));
             }
             if (data.loggedIn === true) {
-                const headers = new Headers();
-                //headers.append('Authorization', localStorage.getItem('jwt'));
-                window.location = 'user/home';
+                window.location.href = '/user/home';
             }
         });
     }
 
     function accLockModal (message) {
-        //const existing = document.querySelector('div.tingle-modal');
         const modal = new tingle.modal({
             footer: false,
             closeLabel: "Close",

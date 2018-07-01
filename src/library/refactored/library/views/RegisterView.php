@@ -12,7 +12,7 @@ namespace Views;
 class RegisterView extends BaseView
 {
     const REGISTER_STYLES = ['registration'];
-    const REGISTER_SCRIPTS = ['register'];
+    const REGISTER_SCRIPTS = ['register', 'nav-bar'];
 
     public function __construct()
     {
