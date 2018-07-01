@@ -183,7 +183,14 @@ class Request
     }
 
     public function getToken () {
-        return $this->isAuthenticated() ? $this->token : 'There is no token available';
+        return $this->isAuthenticated() ? (array) $this->token : 'There is no token available';
+    }
+
+    public function getTokenData () {
+        $token = $this->getToken();
+        if (is_array($token)) {
+            return (array) $token['dat'];
+        }
     }
 
     /**
@@ -191,7 +198,8 @@ class Request
      */
     private function checkToken() {
         if (isset($_COOKIE["jwt_payload"]) && isset($_COOKIE["jwt_sig"])) {
-            $jwt = $_COOKIE["jwt_payload"] . '.' . $_COOKIE["jwt_sig"];
+            $jwt = $_COOKIE["jwt_payload"] . $_COOKIE["jwt_sig"];
+            error_log($jwt);
             try {
                 $decoded = JWT::decode($jwt, Key::JWT_SECRET, array('HS512'));
                 if (!empty($decoded)) {

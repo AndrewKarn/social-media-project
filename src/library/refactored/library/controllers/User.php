@@ -64,8 +64,17 @@ class User extends AbstractController
         if (!isset($user['lockout']) || $user['lockout'] < time()) {
             // check if account is currently locked.
             if (password_verify($validated["password"], $user["password"])) {
-                $jwt = HttpUtils::generateJWT([$user["email"], $user["_id"]->__toString()]);
-                header('Authorization: ' . $jwt);
+                $jwt = HttpUtils::generateJWT(['email' => $user["email"], '_id' => $user["_id"]->__toString(), 'firstname' => $user["firstname"]]);
+
+                $pos2 = strpos($jwt, '.', strpos($jwt, '.') + 1);
+                $headerPayload = substr($jwt, 0, $pos2);
+                $signature = substr($jwt, $pos2);
+
+                //header('Authorization:' . $newJWT);
+                // ! Set to not secure for testing, look into https later.
+                setcookie("jwt_payload", $headerPayload, time() + (60 * 15), '/',Constants::DOMAIN, false);
+                setcookie("jwt_sig", $signature, time() + (60 * 15), '/',Constants::DOMAIN, false, true);
+                //header('Authorization: ' . $jwt);
                 $resp = new Response();
                 $resp->buildResponse(['message' => 'Congrats ' . $user["firstname"] . '. You successfully logged in.', 'loggedIn' => true])->send();
                 Write::update('users', ['_id' => $user["_id"]], ['$set' => ['lastLogin' => Base::timestamp()]]);

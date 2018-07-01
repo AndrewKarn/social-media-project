@@ -49,6 +49,7 @@ ZRequest.prototype.buildFetchInit = function () {
     let init = {};
     init.method = this.getHttpMethod();
     init.headers = this.getHeaders();
+    init.credentials = "same-origin";
     if (this.isBody()) {
         init.body = this.getBody();
     }

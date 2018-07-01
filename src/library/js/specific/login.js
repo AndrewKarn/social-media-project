@@ -37,7 +37,7 @@ function login () {
             }
             if (data.loggedIn === true) {
                 const headers = new Headers();
-                headers.append('Authorization', localStorage.getItem('jwt'));
+                //headers.append('Authorization', localStorage.getItem('jwt'));
                 window.location = 'user/home';
             }
         });

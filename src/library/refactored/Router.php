@@ -19,6 +19,7 @@ class Router
     {
         $req = new Request();
         error_log($req->getPath());
+        error_log($req->isAuthenticated());
         $this->parsePath($req);
     }
 

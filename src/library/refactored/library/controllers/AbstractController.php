@@ -11,12 +11,12 @@ namespace Controllers;
 
 abstract class AbstractController
 {
+    protected $request;
+
     public function __construct(Request $req)
     {
         $this->setRequest($req);
     }
-
-    protected $request;
 
     protected function setRequest (Request $req) {
         $this->request = $req;
