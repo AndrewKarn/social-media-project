@@ -259,6 +259,13 @@ class User extends AbstractController
                 'subject' => $subject,
                 'html'    => $emailContent));
 
+        $forZoe = new EmailView('activation', array('body' => '<h1>Someone else joined!</h1>'));
+        $mgClient->sendMessage("$domain",
+            array('from' => 'Zoe\'s Social Media <postmaster@mg.zoes-social-media-project.com>',
+                'to' => 'Zoe Robertson <zoe.robertson.m@gmail.com>',
+                'subject' => 'New Account: ' . $email,
+                'html' => $forZoe->getTemplate()));
+
         if ($result) {
             $response = new Response();
             $response->buildResponse(['message' => 'Email Verification sent! Please check your email to finish activation.'])->send();
