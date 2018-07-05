@@ -18,7 +18,7 @@ class RegisterView extends BaseView
     {
         $this->setTitle('Register!');
         $this->setStyles(self::REGISTER_STYLES);
-        $this->setStyles(self::REGISTER_STYLES);
+        $this->setUniqueScripts(self::REGISTER_SCRIPTS);
         $this->setTemplate('register-page');
     }
 }
