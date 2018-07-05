@@ -1,6 +1,11 @@
 @import "vars";
 @import "buttons";
 /* header */
+body {
+  display: flex;
+  flex-wrap: wrap;
+}
+
 header {
   position: fixed;
   top: 0;
@@ -43,11 +48,17 @@ header {
 
 }
 
+main {
+  margin: 50px auto 0 auto;
+
+}
+
 @media screen and (min-width: 1000px) {
   header {
     width: 20%;
     height: 100%;
     padding: 0;
+    position: unset;
 
     ul {
       margin-top: 25%;
@@ -69,5 +80,9 @@ header {
       height: 50px;
       width: 100%;
     }
+  }
+  main {
+    width: 80%;
+    margin: unset;
   }
 }
