@@ -156,7 +156,7 @@ class User extends AbstractController
         $validated["actHash"] = $generatedKey;
         $mongoId = Write::createUser($validated);
         if (isset($mongoId)) {
-            $link = Constants::WEB_ROOT . 'user/register/?actHash=' . $generatedKey;
+            $link = Constants::WEB_ROOT . 'user/registration/?hash=' . $generatedKey;
             $this->sendActivationEmail($validated["email"], $link);
         }
     }
