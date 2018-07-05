@@ -59,7 +59,7 @@ use Shared\Constants;
         </div>
     </div>
 </main>
-<?=$this->getSharedScripts();?>
-<script src="<?=Constants::WEB_ROOT?>register.js" type="application/x-javascript"></script>
+<?=$this->getSharedScripts(); ?>
+<?=$this->getUniqueScripts(); ?>
 </body>
 </html>

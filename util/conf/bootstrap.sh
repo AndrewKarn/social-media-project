@@ -103,6 +103,8 @@ configureMongoDB() {
 }
 configureMongoDB
 
+# for droplet config
+# "var db = connect('127.0.0.1:27017/main');db.createCollection('users');db.users.createIndex({'email': 1}, { 'unique': true});db.createCollection('conversations');var users = db.getCollection('users');"
 
 # change log file to nginx owner so nginx can write log files
 sudo chown www-data /var/log/nginx
